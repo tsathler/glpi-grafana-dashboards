@@ -6,7 +6,7 @@ Operational dashboard foundation for a GLPI database, using Grafana and its nati
 
 ## Overview
 
-Milestone 1 — Foundation and Milestone 2 — Database Discovery are complete. The **GLPI Service Desk** dashboard remains intentionally empty: metric and query implementation belongs to a later milestone. See [docs/database.md](docs/database.md) for the confirmed discovery findings.
+Milestones 1 and 2 are complete. Milestone 3 — Core Metrics is in progress, with seven read-only ticket metrics provisioned in the **GLPI Service Desk** dashboard. Validate their results against the GLPI UI in the test environment before considering the milestone complete. See [docs/database.md](docs/database.md) for the confirmed schema findings and [docs/metrics.md](docs/metrics.md) for metric definitions.
 
 ## Goals
 
@@ -55,7 +55,7 @@ See [docs/development.md](docs/development.md) for test environment setup and de
 
 ## Dashboard
 
-The provisioned **GLPI Service Desk** dashboard is a minimal placeholder; no metrics are implemented in Milestone 1.
+The provisioned **GLPI Service Desk** dashboard includes six stat cards and a **Created vs Solved** time series for the Milestone 3 core metrics. Further metric categories remain out of scope.
 
 ## Metrics
 
@@ -71,8 +71,8 @@ GitHub Actions runs static validation on pushes and pull requests: Compose confi
 
 ## Limitations
 
-Production metrics and functional queries have not been implemented. The dashboard therefore displays no ticket data; the confirmed Service Desk schema findings are documented in [docs/database.md](docs/database.md).
+The implemented queries and dashboard panels still require runtime and semantic validation in the test environment against the GLPI UI. Static SQL and JSON validation does not establish metric correctness.
 
 ## Roadmap
 
-Milestone 1: foundation (complete). Milestone 2: Database Discovery (complete). Metric implementation is deferred to a later milestone.
+Milestone 1: Foundation (complete). Milestone 2: Database Discovery (complete). Milestone 3: Core Metrics (in progress; test-environment validation pending).
