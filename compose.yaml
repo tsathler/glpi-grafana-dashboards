@@ -3,8 +3,7 @@ services:
     image: grafana/grafana:13.2.2
     container_name: glpi-service-desk-grafana
     restart: unless-stopped
-    ports:
-      - "3000:3000"
+    network_mode: host
     env_file:
       - .env
     environment:
