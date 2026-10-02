@@ -17,3 +17,7 @@ An earlier account associated with the host's network IP was not sufficient for 
 ## Discovery plan
 
 In the database discovery milestone, record the GLPI version and inspect ticket, status, user, technician, group, category, entity, and date relationships. Validate findings against the actual application before documenting query assumptions.
+
+## Database Discovery status
+
+Milestone 2 — Database Discovery is in progress. Read-only exploratory queries are prepared under `sql/discovery/`; they have not been executed against the GLPI database in this task, and no schema findings or domain meanings are documented yet.

@@ -36,4 +36,27 @@ The dashboard intentionally contains no functional metrics or queries in this mi
 
 ### Deferred to Database Discovery and subsequent milestones
 
-Metric and query work depends on Database Discovery. The installed GLPI version and actual schema must be verified before writing metric SQL. Later milestones will implement queries and validate results against GLPI, documenting mappings, filters, and limitations. These activities have not started as part of Milestone 1. Do not modify the GLPI database, schema, or application.
+Metric and query work depends on verified schema findings from Database Discovery. Later milestones will implement metrics and validate results against GLPI, documenting mappings, filters, and limitations. Do not modify the GLPI database, schema, or application.
+
+## Milestone 2 — Database Discovery
+
+Status: In Progress
+
+Scope: Read-only discovery of the GLPI/MariaDB environment and only the Service Desk structures needed for future metrics. The scripts under `sql/discovery/` are prepared for execution with the dedicated read-only account in the test environment. They have not been run against the database by this documentation/workspace task; no schema conclusions are recorded here.
+
+### Completion criteria
+
+- [ ] GLPI/MariaDB environment identified.
+- [ ] `glpi_tickets` schema documented.
+- [ ] Actual ticket domain values discovered.
+- [ ] User/technician relationship verified.
+- [ ] Group relationship verified.
+- [ ] Category relationship verified.
+- [ ] Entity relationship verified.
+- [ ] Lifecycle date semantics investigated.
+- [ ] SLA/TTO/TTR fields investigated.
+- [ ] Join cardinality risks documented.
+- [ ] Representative SQL results compared with GLPI UI.
+- [x] No database mutation performed; this task only added documentation and read-only query files.
+
+All SQL prepared for this milestone is limited to `SELECT`, `SHOW`, and `DESCRIBE`. Do not infer meanings for stored values or relationships until observed schema and GLPI UI evidence support them. Do not investigate unrelated inventory modules. Milestone 3 has not started.
