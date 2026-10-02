@@ -15,9 +15,9 @@
       "description": "Snapshot atual: status New, não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 1,
+          "decimals": 0,
           "mappings": [],
-          "unit": "short"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -68,9 +68,9 @@
       "description": "Snapshot atual: status Processing (assigned), não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 1,
+          "decimals": 0,
           "mappings": [],
-          "unit": "short"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -121,9 +121,9 @@
       "description": "Tickets abertos e não deletados cujo deadline TTR calculado pelo GLPI já passou. Sem deadline, não conta como atrasado.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 1,
+          "decimals": 0,
           "mappings": [],
-          "unit": "short"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -174,9 +174,9 @@
       "description": "Snapshot atual: status Solved, não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 1,
+          "decimals": 0,
           "mappings": [],
-          "unit": "short"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -227,9 +227,9 @@
       "description": "Snapshot atual: status Pending, não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 1,
+          "decimals": 0,
           "mappings": [],
-          "unit": "short"
+          "unit": "none"
         },
         "overrides": []
       },
@@ -330,7 +330,7 @@
         "type": "mysql",
         "uid": "glpi-mysql"
       },
-      "description": "Tickets criados versus solucionados por intervalo no período selecionado.",
+      "description": "Compara chamados criados e solucionados no per?odo selecionado e mostra o saldo l?quido entre entrada e sa?da.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -368,32 +368,7 @@
           "mappings": [],
           "unit": "short"
         },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Created"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Criados"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Solved"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Solucionados"
-              }
-            ]
-          }
-        ]
+        "overrides": []
       },
       "gridPos": {
         "x": 0,
@@ -425,11 +400,11 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "-- Event series follow the selected Grafana time range and adaptive bucket interval.\n-- Return one timestamp and one numeric column per series, ordered by time.\nSELECT ticket_events.time,\n       SUM(CASE WHEN ticket_events.metric = 'Created' THEN ticket_events.value ELSE 0 END) AS Created,\n       SUM(CASE WHEN ticket_events.metric = 'Solved' THEN ticket_events.value ELSE 0 END) AS Solved\nFROM (\n    SELECT $__timeGroupAlias(t.date, '$__interval'),\n           COUNT(*) AS value,\n           'Created' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.entities_id IN ($entity)\n      AND t.date IS NOT NULL\n      AND $__timeFilter(t.date)\n    GROUP BY time\n\n    UNION ALL\n\n    SELECT $__timeGroupAlias(t.solvedate, '$__interval'),\n           COUNT(*) AS value,\n           'Solved' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.entities_id IN ($entity)\n      AND t.solvedate IS NOT NULL\n      AND $__timeFilter(t.solvedate)\n    GROUP BY time\n) AS ticket_events\nGROUP BY ticket_events.time\nORDER BY ticket_events.time;",
+          "rawSql": "-- Event series follow the selected Grafana time range and adaptive bucket interval.\n-- Return one timestamp and one numeric column per series, ordered by time.\nSELECT ticket_totals.time,\n       ticket_totals.Criados,\n       ticket_totals.Solucionados,\n       ticket_totals.Criados - ticket_totals.Solucionados AS Saldo\nFROM (\n    SELECT ticket_events.time,\n           SUM(CASE WHEN ticket_events.metric = 'Created' THEN ticket_events.value ELSE 0 END) AS Criados,\n           SUM(CASE WHEN ticket_events.metric = 'Solved' THEN ticket_events.value ELSE 0 END) AS Solucionados\n    FROM (\n        SELECT $__timeGroupAlias(t.date, '$__interval'),\n               COUNT(*) AS value,\n               'Created' AS metric\n        FROM glpi_tickets AS t\n        WHERE t.is_deleted = 0\n          AND t.entities_id IN ($entity)\n          AND t.date IS NOT NULL\n          AND $__timeFilter(t.date)\n        GROUP BY time\n\n        UNION ALL\n\n        SELECT $__timeGroupAlias(t.solvedate, '$__interval'),\n               COUNT(*) AS value,\n               'Solved' AS metric\n        FROM glpi_tickets AS t\n        WHERE t.is_deleted = 0\n          AND t.entities_id IN ($entity)\n          AND t.solvedate IS NOT NULL\n          AND $__timeFilter(t.solvedate)\n        GROUP BY time\n    ) AS ticket_events\n    GROUP BY ticket_events.time\n) AS ticket_totals\nORDER BY ticket_totals.time;",
           "refId": "A"
         }
       ],
-      "title": "Criados vs Solucionados",
+      "title": "Fluxo de chamados",
       "type": "timeseries"
     }
   ],
