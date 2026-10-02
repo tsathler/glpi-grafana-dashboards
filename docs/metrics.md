@@ -2,7 +2,7 @@
 
 ## Implemented
 
-Milestone 3 — Core Metrics implements six current-state snapshots and one time series using read-only queries in `sql/queries/` and panels in the provisioned **GLPI Service Desk** dashboard:
+The provisioned **GLPI Service Desk** dashboard contains six current-state snapshots and a time series from Milestone 3, plus a Gauge added afterward. Its read-only queries are versioned in `sql/queries/`:
 
 - **Chamados novos:** current tickets with status `1` and `is_deleted = 0`.
 - **Chamados atribuídos:** current tickets with status `2` and `is_deleted = 0`.

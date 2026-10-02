@@ -41,6 +41,14 @@ jobs:
               print(f"OK: {path}")
           PY
 
+      - name: Set up Node.js for SQL validation
+        uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Validate read-only SQL and dashboard parity
+        run: node scripts/validate-sql.mjs
+
       - name: Validate YAML files
         run: |
           python - <<'PY'

@@ -330,7 +330,7 @@
         "type": "mysql",
         "uid": "glpi-mysql"
       },
-      "description": "Compara chamados criados e solucionados no per?odo selecionado e mostra o saldo l?quido entre entrada e sa?da.",
+      "description": "Compara chamados criados e solucionados no período selecionado e mostra o saldo líquido entre entrada e saída.",
       "fieldConfig": {
         "defaults": {
           "color": {
