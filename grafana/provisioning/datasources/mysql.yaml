@@ -1,0 +1,17 @@
+apiVersion: 1
+
+datasources:
+  - name: GLPI MySQL
+    uid: glpi-mysql
+    type: mysql
+    access: proxy
+    url: ${GLPI_DB_HOST}:${GLPI_DB_PORT}
+    database: ${GLPI_DB_NAME}
+    user: ${GLPI_DB_USER}
+    isDefault: true
+    editable: false
+    jsonData:
+      tlsAuth: false
+      tlsSkipVerify: false
+    secureJsonData:
+      password: ${GLPI_DB_PASSWORD}

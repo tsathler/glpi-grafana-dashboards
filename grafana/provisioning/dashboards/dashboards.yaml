@@ -1,0 +1,11 @@
+apiVersion: 1
+
+providers:
+  - name: GLPI dashboards
+    orgId: 1
+    folder: GLPI
+    type: file
+    disableDeletion: true
+    editable: false
+    options:
+      path: /var/lib/grafana/dashboards
