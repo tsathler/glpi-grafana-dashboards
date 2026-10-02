@@ -6,7 +6,7 @@ Operational dashboard foundation for a GLPI database, using Grafana and its nati
 
 ## Overview
 
-Milestones 1 and 2 are complete. Milestone 3 — Core Metrics is in progress, with seven read-only ticket metrics provisioned in the **GLPI Service Desk** dashboard. Validate their results against the GLPI UI in the test environment before considering the milestone complete. See [docs/database.md](docs/database.md) for the confirmed schema findings and [docs/metrics.md](docs/metrics.md) for metric definitions.
+Milestones 1 and 2 are complete. Milestone 3 — Core Metrics is in progress, with six current-state cards and a Created vs Solved time series in the **GLPI Service Desk** dashboard. Validate their results against the GLPI UI in the test environment before considering the milestone complete. See [docs/database.md](docs/database.md) for the confirmed schema findings and [docs/metrics.md](docs/metrics.md) for metric definitions, including the GLPI-calculated TTR deadline rule for overdue tickets.
 
 ## Goals
 

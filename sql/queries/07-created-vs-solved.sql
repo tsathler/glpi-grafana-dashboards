@@ -5,7 +5,7 @@ SELECT ticket_events.time,
        SUM(CASE WHEN ticket_events.metric = 'Solved' THEN ticket_events.value ELSE 0 END) AS Solved
 FROM (
     SELECT $__timeGroupAlias(t.date, '$__interval'),
-           COUNT(DISTINCT t.id) AS value,
+           COUNT(*) AS value,
            'Created' AS metric
     FROM glpi_tickets AS t
     WHERE t.is_deleted = 0
@@ -16,7 +16,7 @@ FROM (
     UNION ALL
 
     SELECT $__timeGroupAlias(t.solvedate, '$__interval'),
-           COUNT(DISTINCT t.id) AS value,
+           COUNT(*) AS value,
            'Solved' AS metric
     FROM glpi_tickets AS t
     WHERE t.is_deleted = 0
