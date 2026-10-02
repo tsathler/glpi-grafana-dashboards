@@ -32,7 +32,7 @@ CI runs Compose configuration, dashboard JSON, YAML and Markdown parsing/linting
 
 ### Runtime / integration validation
 
-The dashboard intentionally contains no functional metrics or queries in this milestone. Its empty state is expected and does not indicate a Milestone 1 failure: it validates the Grafana foundation, provisioning, datasource connectivity, runtime, and persistence only.
+At the close of Milestone 1, the dashboard intentionally contained no functional metrics or queries. That empty state was expected and did not indicate a Milestone 1 failure: it validated the Grafana foundation, provisioning, datasource connectivity, runtime, and persistence only. Core metrics were added in Milestone 3.
 
 ### Deferred to subsequent milestones
 
@@ -59,4 +59,31 @@ Scope: Read-only discovery of the GLPI/MariaDB environment and only the Service 
 - [x] Representative SQL results compared with GLPI UI and considered coherent.
 - [x] No database mutation performed; this task only added documentation and read-only query files.
 
-All discovery SQL is limited to `SELECT`, `SHOW`, and `DESCRIBE`. Metric implementation and production queries are deferred to later milestones. Do not investigate unrelated inventory modules. Milestone 3 has not started.
+All discovery SQL is limited to `SELECT`, `SHOW`, and `DESCRIBE`. Do not investigate unrelated inventory modules.
+
+## Milestone 3 — Core Metrics
+
+Status: In Progress
+
+Scope: Seven core ticket metrics and their dashboard panels, based on the verified findings from Milestone 2. SLA/TTO/TTR, categories, technicians, entities, and backlog aging are excluded.
+
+### Implemented
+
+- [x] Open Tickets current snapshot.
+- [x] New Tickets in the selected time range.
+- [x] Solved Tickets in the selected time range.
+- [x] Closed Tickets in the selected time range.
+- [x] Pending Tickets current snapshot.
+- [x] Unassigned open Tickets current snapshot using `NOT EXISTS` for technician relationships.
+- [x] Created vs Solved time series using Grafana time macros and ordering by time.
+- [x] Provisioned six stat cards and one time-series panel.
+- [x] Versioned SQL under `sql/queries/`; all metrics exclude logically deleted tickets.
+
+### Pending test-environment validation
+
+- [ ] Run all dashboard queries through the provisioned datasource in the test environment.
+- [ ] Compare each card and time-series result with the corresponding GLPI UI view for matching filters and time ranges.
+- [ ] Confirm time-picker changes affect period metrics while current-state snapshots remain unchanged by the selected range.
+- [ ] Review query execution and returned values for the current GLPI installation.
+
+Static SQL/JSON validation does not establish semantic correctness. Do not mark this milestone complete until the test-environment results have been compared with GLPI. No database, schema, or index changes are part of this milestone.

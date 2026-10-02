@@ -6,9 +6,406 @@
   "graphTooltip": 0,
   "id": null,
   "links": [],
-  "panels": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 8,
+        "h": 5
+      },
+      "id": 1,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "-- Current snapshot: intentionally independent of the Grafana time picker.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status NOT IN (5, 6);",
+          "refId": "A"
+        }
+      ],
+      "title": "Open Tickets",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 0,
+        "w": 8,
+        "h": 5
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "-- Tickets created during the selected Grafana time range.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.date IS NOT NULL\n  AND $__timeFilter(t.date);",
+          "refId": "A"
+        }
+      ],
+      "title": "New Tickets",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 0,
+        "w": 8,
+        "h": 5
+      },
+      "id": 3,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "-- Tickets solved during the selected Grafana time range.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.solvedate IS NOT NULL\n  AND $__timeFilter(t.solvedate);",
+          "refId": "A"
+        }
+      ],
+      "title": "Solved Tickets",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 8,
+        "h": 5
+      },
+      "id": 4,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "-- Tickets closed during the selected Grafana time range.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.closedate IS NOT NULL\n  AND $__timeFilter(t.closedate);",
+          "refId": "A"
+        }
+      ],
+      "title": "Closed Tickets",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 8,
+        "y": 5,
+        "w": 8,
+        "h": 5
+      },
+      "id": 5,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "-- Current snapshot: intentionally independent of the Grafana time picker.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status = 4;",
+          "refId": "A"
+        }
+      ],
+      "title": "Pending Tickets",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 5,
+        "w": 8,
+        "h": 5
+      },
+      "id": 6,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "-- Current open-ticket snapshot with no assigned/technician relation.\n-- NOT EXISTS avoids multiplying tickets if multiple user relations are present.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status NOT IN (5, 6)\n  AND NOT EXISTS (\n      SELECT 1\n      FROM glpi_tickets_users AS tu\n      WHERE tu.tickets_id = t.id\n        AND tu.type = 2\n  );",
+          "refId": "A"
+        }
+      ],
+      "title": "Unassigned Tickets",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 12,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 2,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "unit": "short"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 10,
+        "w": 24,
+        "h": 10
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "asc"
+        }
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "-- Event series follow the selected Grafana time range and adaptive bucket interval.\n-- Return one timestamp and one numeric column per series, ordered by time.\nSELECT ticket_events.time,\n       SUM(CASE WHEN ticket_events.metric = 'Created' THEN ticket_events.value ELSE 0 END) AS Created,\n       SUM(CASE WHEN ticket_events.metric = 'Solved' THEN ticket_events.value ELSE 0 END) AS Solved\nFROM (\n    SELECT $__timeGroupAlias(t.date, '$__interval'),\n           COUNT(DISTINCT t.id) AS value,\n           'Created' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.date IS NOT NULL\n      AND $__timeFilter(t.date)\n    GROUP BY time\n\n    UNION ALL\n\n    SELECT $__timeGroupAlias(t.solvedate, '$__interval'),\n           COUNT(DISTINCT t.id) AS value,\n           'Solved' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.solvedate IS NOT NULL\n      AND $__timeFilter(t.solvedate)\n    GROUP BY time\n) AS ticket_events\nGROUP BY ticket_events.time\nORDER BY ticket_events.time;",
+          "refId": "A"
+        }
+      ],
+      "title": "Created vs Solved",
+      "type": "timeseries"
+    }
+  ],
   "schemaVersion": 41,
-  "tags": ["glpi", "service-desk"],
+  "tags": [
+    "glpi",
+    "service-desk"
+  ],
   "templating": {
     "list": []
   },
@@ -20,5 +417,5 @@
   "timezone": "browser",
   "title": "GLPI Service Desk",
   "uid": "glpi-service-desk",
-  "version": 1
+  "version": 2
 }

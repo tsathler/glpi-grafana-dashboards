@@ -2,7 +2,7 @@
 
 ## Current state
 
-Milestone 1 provisions the **GLPI MySQL** datasource using environment variables. It connects to database `glpi` over the local MariaDB service using MySQL proxy access and a read-only account. Datasource health and direct read-only MariaDB connectivity have been validated in the test environment. MariaDB remains bound to `127.0.0.1:3306`; its port is not exposed to the network. Milestone 2 discovered and validated the Service Desk schema relationships documented below. No production metric SQL has been added. Do not generalize these findings to other GLPI installations without validating their schemas.
+Milestone 1 provisions the **GLPI MySQL** datasource using environment variables. It connects to database `glpi` over the local MariaDB service using MySQL proxy access and a read-only account. Datasource health and direct read-only MariaDB connectivity have been validated in the test environment. MariaDB remains bound to `127.0.0.1:3306`; its port is not exposed to the network. Milestone 2 discovered and validated the Service Desk schema relationships documented below. Milestone 3 dashboard queries are read-only and versioned under `sql/queries/`; no database-side SQL objects were created. Do not generalize these findings to other GLPI installations without validating their schemas.
 
 ## Access
 
