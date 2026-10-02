@@ -15,7 +15,7 @@
       "description": "Snapshot atual: status New, não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 0,
+          "decimals": 1,
           "mappings": [],
           "unit": "short"
         },
@@ -68,7 +68,7 @@
       "description": "Snapshot atual: status Processing (assigned), não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 0,
+          "decimals": 1,
           "mappings": [],
           "unit": "short"
         },
@@ -121,7 +121,7 @@
       "description": "Tickets abertos e não deletados cujo deadline TTR calculado pelo GLPI já passou. Sem deadline, não conta como atrasado.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 0,
+          "decimals": 1,
           "mappings": [],
           "unit": "short"
         },
@@ -174,7 +174,7 @@
       "description": "Snapshot atual: status Solved, não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 0,
+          "decimals": 1,
           "mappings": [],
           "unit": "short"
         },
@@ -227,7 +227,7 @@
       "description": "Snapshot atual: status Pending, não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 0,
+          "decimals": 1,
           "mappings": [],
           "unit": "short"
         },
@@ -280,7 +280,7 @@
       "description": "Snapshot atual: total de tickets não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 0,
+          "decimals": 1,
           "mappings": [],
           "unit": "short"
         },
@@ -368,7 +368,32 @@
           "mappings": [],
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Created"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Criados"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Solved"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Solucionados"
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "x": 0,
@@ -404,7 +429,7 @@
           "refId": "A"
         }
       ],
-      "title": "Created vs Solved",
+      "title": "Criados vs Solucionados",
       "type": "timeseries"
     }
   ],
