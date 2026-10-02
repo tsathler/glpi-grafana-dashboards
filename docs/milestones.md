@@ -65,25 +65,26 @@ All discovery SQL is limited to `SELECT`, `SHOW`, and `DESCRIBE`. Do not investi
 
 Status: In Progress
 
-Scope: Seven core ticket metrics and their dashboard panels, based on the verified findings from Milestone 2. SLA/TTO/TTR, categories, technicians, entities, and backlog aging are excluded.
+Scope: Six current-state ticket cards and the Created vs Solved time series, based on the verified findings from Milestone 2. The overdue card uses GLPI's precomputed TTR deadline only; SLA calculations/analysis, TTO/TTR performance metrics, categories, technicians, entities, and backlog aging are excluded.
 
 ### Implemented
 
-- [x] Open Tickets current snapshot.
-- [x] New Tickets in the selected time range.
-- [x] Solved Tickets in the selected time range.
-- [x] Closed Tickets in the selected time range.
-- [x] Pending Tickets current snapshot.
-- [x] Unassigned open Tickets current snapshot using `NOT EXISTS` for technician relationships.
+- [x] Chamados novos current snapshot (`status = 1`).
+- [x] Chamados atribuídos current snapshot (`status = 2`).
+- [x] Chamados atrasados current snapshot using GLPI's non-null, passed `time_to_resolve` deadline on tickets not solved or closed.
+- [x] Chamados solucionados current snapshot (`status = 5`).
+- [x] Chamados pendentes current snapshot (`status = 4`).
+- [x] Chamados total current snapshot (`is_deleted = 0`).
 - [x] Created vs Solved time series using Grafana time macros and ordering by time.
 - [x] Provisioned six stat cards and one time-series panel.
-- [x] Versioned SQL under `sql/queries/`; all metrics exclude logically deleted tickets.
+- [x] Versioned SQL under `sql/queries/`; every query excludes logically deleted tickets and the six snapshots are independent of the time picker.
 
 ### Pending test-environment validation
 
 - [ ] Run all dashboard queries through the provisioned datasource in the test environment.
 - [ ] Compare each card and time-series result with the corresponding GLPI UI view for matching filters and time ranges.
-- [ ] Confirm time-picker changes affect period metrics while current-state snapshots remain unchanged by the selected range.
+- [ ] Confirm time-picker changes affect Created vs Solved while all six current-state cards remain unchanged by the selected range.
+- [ ] Confirm overdue classification against GLPI for open tickets with and without a populated TTR deadline.
 - [ ] Review query execution and returned values for the current GLPI installation.
 
 Static SQL/JSON validation does not establish semantic correctness. Do not mark this milestone complete until the test-environment results have been compared with GLPI. No database, schema, or index changes are part of this milestone.

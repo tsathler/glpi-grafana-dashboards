@@ -12,6 +12,7 @@
         "type": "mysql",
         "uid": "glpi-mysql"
       },
+      "description": "Snapshot atual: status New, não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
@@ -52,11 +53,11 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: intentionally independent of the Grafana time picker.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status NOT IN (5, 6);",
+          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is New.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 1\n  AND t.is_deleted = 0;",
           "refId": "A"
         }
       ],
-      "title": "Open Tickets",
+      "title": "Chamados novos",
       "type": "stat"
     },
     {
@@ -64,6 +65,7 @@
         "type": "mysql",
         "uid": "glpi-mysql"
       },
+      "description": "Snapshot atual: status Processing (assigned), não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
@@ -104,11 +106,11 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Tickets created during the selected Grafana time range.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.date IS NOT NULL\n  AND $__timeFilter(t.date);",
+          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Processing (assigned).\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 2\n  AND t.is_deleted = 0;",
           "refId": "A"
         }
       ],
-      "title": "New Tickets",
+      "title": "Chamados atribuídos",
       "type": "stat"
     },
     {
@@ -116,6 +118,7 @@
         "type": "mysql",
         "uid": "glpi-mysql"
       },
+      "description": "Tickets abertos e não deletados cujo deadline TTR calculado pelo GLPI já passou. Sem deadline, não conta como atrasado.",
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
@@ -156,11 +159,11 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Tickets solved during the selected Grafana time range.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.solvedate IS NOT NULL\n  AND $__timeFilter(t.solvedate);",
+          "rawSql": "-- Current snapshot: open tickets past the GLPI-calculated TTR deadline.\n-- A missing deadline is not counted as overdue; no SLA deadline is reconstructed here.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status NOT IN (5, 6)\n  AND t.time_to_resolve IS NOT NULL\n  AND t.time_to_resolve < NOW();",
           "refId": "A"
         }
       ],
-      "title": "Solved Tickets",
+      "title": "Chamados atrasados",
       "type": "stat"
     },
     {
@@ -168,6 +171,7 @@
         "type": "mysql",
         "uid": "glpi-mysql"
       },
+      "description": "Snapshot atual: status Solved, não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
@@ -208,11 +212,11 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Tickets closed during the selected Grafana time range.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.closedate IS NOT NULL\n  AND $__timeFilter(t.closedate);",
+          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Solved.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 5\n  AND t.is_deleted = 0;",
           "refId": "A"
         }
       ],
-      "title": "Closed Tickets",
+      "title": "Chamados solucionados",
       "type": "stat"
     },
     {
@@ -220,6 +224,7 @@
         "type": "mysql",
         "uid": "glpi-mysql"
       },
+      "description": "Snapshot atual: status Pending, não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
@@ -260,11 +265,11 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: intentionally independent of the Grafana time picker.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status = 4;",
+          "rawSql": "-- Current snapshot: intentionally independent of the Grafana time picker.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status = 4;",
           "refId": "A"
         }
       ],
-      "title": "Pending Tickets",
+      "title": "Chamados pendentes",
       "type": "stat"
     },
     {
@@ -272,6 +277,7 @@
         "type": "mysql",
         "uid": "glpi-mysql"
       },
+      "description": "Snapshot atual: total de tickets não deletados. Independente do time picker.",
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
@@ -312,11 +318,11 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current open-ticket snapshot with no assigned/technician relation.\n-- NOT EXISTS avoids multiplying tickets if multiple user relations are present.\nSELECT COUNT(DISTINCT t.id) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status NOT IN (5, 6)\n  AND NOT EXISTS (\n      SELECT 1\n      FROM glpi_tickets_users AS tu\n      WHERE tu.tickets_id = t.id\n        AND tu.type = 2\n  );",
+          "rawSql": "-- Current snapshot: all tickets not logically deleted.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0;",
           "refId": "A"
         }
       ],
-      "title": "Unassigned Tickets",
+      "title": "Chamados",
       "type": "stat"
     },
     {
@@ -324,6 +330,7 @@
         "type": "mysql",
         "uid": "glpi-mysql"
       },
+      "description": "Tickets criados versus solucionados por intervalo no período selecionado.",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -393,7 +400,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "-- Event series follow the selected Grafana time range and adaptive bucket interval.\n-- Return one timestamp and one numeric column per series, ordered by time.\nSELECT ticket_events.time,\n       SUM(CASE WHEN ticket_events.metric = 'Created' THEN ticket_events.value ELSE 0 END) AS Created,\n       SUM(CASE WHEN ticket_events.metric = 'Solved' THEN ticket_events.value ELSE 0 END) AS Solved\nFROM (\n    SELECT $__timeGroupAlias(t.date, '$__interval'),\n           COUNT(DISTINCT t.id) AS value,\n           'Created' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.date IS NOT NULL\n      AND $__timeFilter(t.date)\n    GROUP BY time\n\n    UNION ALL\n\n    SELECT $__timeGroupAlias(t.solvedate, '$__interval'),\n           COUNT(DISTINCT t.id) AS value,\n           'Solved' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.solvedate IS NOT NULL\n      AND $__timeFilter(t.solvedate)\n    GROUP BY time\n) AS ticket_events\nGROUP BY ticket_events.time\nORDER BY ticket_events.time;",
+          "rawSql": "-- Event series follow the selected Grafana time range and adaptive bucket interval.\n-- Return one timestamp and one numeric column per series, ordered by time.\nSELECT ticket_events.time,\n       SUM(CASE WHEN ticket_events.metric = 'Created' THEN ticket_events.value ELSE 0 END) AS Created,\n       SUM(CASE WHEN ticket_events.metric = 'Solved' THEN ticket_events.value ELSE 0 END) AS Solved\nFROM (\n    SELECT $__timeGroupAlias(t.date, '$__interval'),\n           COUNT(*) AS value,\n           'Created' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.date IS NOT NULL\n      AND $__timeFilter(t.date)\n    GROUP BY time\n\n    UNION ALL\n\n    SELECT $__timeGroupAlias(t.solvedate, '$__interval'),\n           COUNT(*) AS value,\n           'Solved' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.solvedate IS NOT NULL\n      AND $__timeFilter(t.solvedate)\n    GROUP BY time\n) AS ticket_events\nGROUP BY ticket_events.time\nORDER BY ticket_events.time;",
           "refId": "A"
         }
       ],
@@ -417,5 +424,5 @@
   "timezone": "browser",
   "title": "GLPI Service Desk",
   "uid": "glpi-service-desk",
-  "version": 2
+  "version": 3
 }
