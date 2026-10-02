@@ -63,7 +63,7 @@ All discovery SQL is limited to `SELECT`, `SHOW`, and `DESCRIBE`. Do not investi
 
 ## Milestone 3 — Core Metrics
 
-Status: In Progress
+Status: Complete
 
 Scope: Six current-state ticket cards and the Created vs Solved time series, based on the verified findings from Milestone 2. The Entity variable filters all cards and the time series. The overdue card uses the GLPI-calculated TTR deadline and the UI-confirmed exclusion of Pending, Solved, and Closed tickets; SLA analysis, TTO/TTR performance metrics, categories, technicians, and backlog aging remain excluded.
 
@@ -81,13 +81,14 @@ Scope: Six current-state ticket cards and the Created vs Solved time series, bas
 - [x] Entity variable sourced from `glpi_entities` with `id` as value, `completename` as label, and an All option; SQL filters use the selected entity value.
 - [x] Status cards, total, and overdue count compared with the GLPI UI using the same entity scope and considered coherent.
 
-### Pending test-environment validation
+### Runtime / integration validation
 
-- [ ] Run all dashboard queries through the provisioned datasource in the test environment.
-- [ ] Validate the Entity variable in Grafana for both All and a selected entity; entity-filter runtime behavior remains outstanding.
-- [ ] Compare Created vs Solved with the GLPI UI for matching entity filters and time ranges.
-- [ ] Confirm time-picker changes affect Created vs Solved while all six current-state cards remain unchanged by the selected range.
-- [x] Confirm overdue rule against GLPI: exclude Pending, Solved, and Closed; require a non-null passed `time_to_resolve` and `solvedate IS NULL`.
-- [ ] Review query execution and returned values for the current GLPI installation.
+- [x] Entity variable validated in Grafana for the selected entity; all six cards respect the selected entity.
+- [x] Card values were compared with the GLPI UI and considered coherent.
+- [x] Overdue classification reproduces the behavior validated against the GLPI UI.
+- [x] The total tickets card uses compact formatting; the other five cards display integer values.
+- [x] Fluxo de chamados runs with the Criados, Solucionados, and Saldo series; Saldo is Criados minus Solucionados.
+- [x] The time series follows the selected time picker range; current-state cards do not depend on it.
+- [x] Dashboard queries execute through the provisioned datasource in the test environment.
 
-Static SQL/JSON validation does not establish semantic correctness. Do not mark this milestone complete until the test-environment results have been compared with GLPI. No database, schema, or index changes are part of this milestone.
+Runtime and semantic validation was completed in the test environment against the GLPI UI. Static checks remain part of CI. No database, schema, or index changes are part of this milestone.

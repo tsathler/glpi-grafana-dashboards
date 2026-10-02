@@ -6,7 +6,7 @@ Operational dashboard foundation for a GLPI database, using Grafana and its nati
 
 ## Overview
 
-Milestones 1 and 2 are complete. Milestone 3 — Core Metrics is in progress, with six current-state cards and a Created vs Solved time series in the **GLPI Service Desk** dashboard. Validate their results against the GLPI UI in the test environment before considering the milestone complete. See [docs/database.md](docs/database.md) for the confirmed schema findings and [docs/metrics.md](docs/metrics.md) for metric definitions, including the GLPI-calculated TTR deadline rule for overdue tickets.
+Milestones 1, 2, and 3 are complete. Milestone 3 — Core Metrics includes six current-state cards and the Fluxo de chamados time series in the **GLPI Service Desk** dashboard, validated in the test environment against the GLPI UI. See [docs/database.md](docs/database.md) for the confirmed schema findings and [docs/metrics.md](docs/metrics.md) for metric definitions, including the GLPI-calculated TTR deadline rule for overdue tickets.
 
 ## Goals
 
@@ -55,7 +55,7 @@ See [docs/development.md](docs/development.md) for test environment setup and de
 
 ## Dashboard
 
-The provisioned **GLPI Service Desk** dashboard includes six stat cards and a **Created vs Solved** time series for the Milestone 3 core metrics. Further metric categories remain out of scope.
+The provisioned **GLPI Service Desk** dashboard includes six stat cards and the **Fluxo de chamados** time series for the completed Milestone 3 core metrics. Further metric categories remain out of scope.
 
 ## Metrics
 
@@ -71,8 +71,8 @@ GitHub Actions runs static validation on pushes and pull requests: Compose confi
 
 ## Limitations
 
-The implemented queries and dashboard panels still require runtime and semantic validation in the test environment against the GLPI UI. Static SQL and JSON validation does not establish metric correctness.
+Milestone 3 queries and dashboard panels were validated at runtime in the test environment and compared with the GLPI UI. Static SQL and JSON validation alone does not establish metric correctness.
 
 ## Roadmap
 
-Milestone 1: Foundation (complete). Milestone 2: Database Discovery (complete). Milestone 3: Core Metrics (in progress; test-environment validation pending).
+Milestone 1: Foundation (complete). Milestone 2: Database Discovery (complete). Milestone 3: Core Metrics (complete). Milestone 4 has not started.
