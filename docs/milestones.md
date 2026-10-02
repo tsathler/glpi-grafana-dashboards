@@ -65,26 +65,29 @@ All discovery SQL is limited to `SELECT`, `SHOW`, and `DESCRIBE`. Do not investi
 
 Status: In Progress
 
-Scope: Six current-state ticket cards and the Created vs Solved time series, based on the verified findings from Milestone 2. The overdue card uses GLPI's precomputed TTR deadline only; SLA calculations/analysis, TTO/TTR performance metrics, categories, technicians, entities, and backlog aging are excluded.
+Scope: Six current-state ticket cards and the Created vs Solved time series, based on the verified findings from Milestone 2. The Entity variable filters all cards and the time series. The overdue card uses the GLPI-calculated TTR deadline and the UI-confirmed exclusion of Pending, Solved, and Closed tickets; SLA analysis, TTO/TTR performance metrics, categories, technicians, and backlog aging remain excluded.
 
 ### Implemented
 
 - [x] Chamados novos current snapshot (`status = 1`).
 - [x] Chamados atribuídos current snapshot (`status = 2`).
-- [x] Chamados atrasados current snapshot using GLPI's non-null, passed `time_to_resolve` deadline on tickets not solved or closed.
+- [x] Chamados atrasados current snapshot using non-null, passed GLPI `time_to_resolve`, `solvedate IS NULL`, and `status NOT IN (4, 5, 6)`.
 - [x] Chamados solucionados current snapshot (`status = 5`).
 - [x] Chamados pendentes current snapshot (`status = 4`).
 - [x] Chamados total current snapshot (`is_deleted = 0`).
 - [x] Created vs Solved time series using Grafana time macros and ordering by time.
 - [x] Provisioned six stat cards and one time-series panel.
 - [x] Versioned SQL under `sql/queries/`; every query excludes logically deleted tickets and the six snapshots are independent of the time picker.
+- [x] Entity variable sourced from `glpi_entities` with `id` as value, `completename` as label, and an All option; SQL filters use the selected entity value.
+- [x] Status cards, total, and overdue count compared with the GLPI UI using the same entity scope and considered coherent.
 
 ### Pending test-environment validation
 
 - [ ] Run all dashboard queries through the provisioned datasource in the test environment.
-- [ ] Compare each card and time-series result with the corresponding GLPI UI view for matching filters and time ranges.
+- [ ] Validate the Entity variable in Grafana for both All and a selected entity; entity-filter runtime behavior remains outstanding.
+- [ ] Compare Created vs Solved with the GLPI UI for matching entity filters and time ranges.
 - [ ] Confirm time-picker changes affect Created vs Solved while all six current-state cards remain unchanged by the selected range.
-- [ ] Confirm overdue classification against GLPI for open tickets with and without a populated TTR deadline.
+- [x] Confirm overdue rule against GLPI: exclude Pending, Solved, and Closed; require a non-null passed `time_to_resolve` and `solvedate IS NULL`.
 - [ ] Review query execution and returned values for the current GLPI installation.
 
 Static SQL/JSON validation does not establish semantic correctness. Do not mark this milestone complete until the test-environment results have been compared with GLPI. No database, schema, or index changes are part of this milestone.
