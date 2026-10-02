@@ -34,29 +34,29 @@ CI runs Compose configuration, dashboard JSON, YAML and Markdown parsing/linting
 
 The dashboard intentionally contains no functional metrics or queries in this milestone. Its empty state is expected and does not indicate a Milestone 1 failure: it validates the Grafana foundation, provisioning, datasource connectivity, runtime, and persistence only.
 
-### Deferred to Database Discovery and subsequent milestones
+### Deferred to subsequent milestones
 
-Metric and query work depends on verified schema findings from Database Discovery. Later milestones will implement metrics and validate results against GLPI, documenting mappings, filters, and limitations. Do not modify the GLPI database, schema, or application.
+Metric and query work depends on the verified schema findings from Milestone 2. Later milestones will implement metrics and validate results against GLPI, documenting mappings, filters, and limitations. Do not modify the GLPI database, schema, or application.
 
 ## Milestone 2 — Database Discovery
 
-Status: In Progress
+Status: Complete
 
-Scope: Read-only discovery of the GLPI/MariaDB environment and only the Service Desk structures needed for future metrics. The scripts under `sql/discovery/` are prepared for execution with the dedicated read-only account in the test environment. They have not been run against the database by this documentation/workspace task; no schema conclusions are recorded here.
+Scope: Read-only discovery of the GLPI/MariaDB environment and only the Service Desk structures needed for future metrics. The scripts under `sql/discovery/` were used in the test environment with read-only access. Findings were compared with the GLPI UI; no raw ticket, person, category, entity, or environment-specific values are included here.
 
 ### Completion criteria
 
-- [ ] GLPI/MariaDB environment identified.
-- [ ] `glpi_tickets` schema documented.
-- [ ] Actual ticket domain values discovered.
-- [ ] User/technician relationship verified.
-- [ ] Group relationship verified.
-- [ ] Category relationship verified.
-- [ ] Entity relationship verified.
-- [ ] Lifecycle date semantics investigated.
-- [ ] SLA/TTO/TTR fields investigated.
-- [ ] Join cardinality risks documented.
-- [ ] Representative SQL results compared with GLPI UI.
+- [x] GLPI/MariaDB environment identified.
+- [x] `glpi_tickets` schema documented.
+- [x] Actual ticket domain values discovered.
+- [x] User/technician relationship verified.
+- [x] Group relationship verified; the relation has no rows in the current environment.
+- [x] Category relationship verified.
+- [x] Entity relationship verified.
+- [x] Lifecycle date semantics investigated.
+- [x] SLA/TTO/TTR fields investigated.
+- [x] Join cardinality risks documented.
+- [x] Representative SQL results compared with GLPI UI and considered coherent.
 - [x] No database mutation performed; this task only added documentation and read-only query files.
 
-All SQL prepared for this milestone is limited to `SELECT`, `SHOW`, and `DESCRIBE`. Do not infer meanings for stored values or relationships until observed schema and GLPI UI evidence support them. Do not investigate unrelated inventory modules. Milestone 3 has not started.
+All discovery SQL is limited to `SELECT`, `SHOW`, and `DESCRIBE`. Metric implementation and production queries are deferred to later milestones. Do not investigate unrelated inventory modules. Milestone 3 has not started.

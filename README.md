@@ -6,7 +6,7 @@ Operational dashboard foundation for a GLPI database, using Grafana and its nati
 
 ## Overview
 
-Milestone 1 — Foundation is complete: Grafana, the read-only MySQL datasource, dashboard provisioning, runtime, and persistence were validated in the test environment. The **GLPI Service Desk** dashboard is intentionally empty in this phase; metrics and functional queries belong to Database Discovery and subsequent milestones.
+Milestone 1 — Foundation and Milestone 2 — Database Discovery are complete. The **GLPI Service Desk** dashboard remains intentionally empty: metric and query implementation belongs to a later milestone. See [docs/database.md](docs/database.md) for the confirmed discovery findings.
 
 ## Goals
 
@@ -71,8 +71,8 @@ GitHub Actions runs static validation on pushes and pull requests: Compose confi
 
 ## Limitations
 
-The database schema, GLPI version, ticket statuses, and metric semantics have not been discovered or validated. The dashboard therefore displays no ticket data.
+Production metrics and functional queries have not been implemented. The dashboard therefore displays no ticket data; the confirmed Service Desk schema findings are documented in [docs/database.md](docs/database.md).
 
 ## Roadmap
 
-Milestone 1: foundation. Next, review the foundation, then perform database discovery as a separate milestone.
+Milestone 1: foundation (complete). Milestone 2: Database Discovery (complete). Metric implementation is deferred to a later milestone.
