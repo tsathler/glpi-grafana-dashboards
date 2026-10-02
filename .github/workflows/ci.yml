@@ -1,0 +1,91 @@
+name: CI
+
+on:
+  push:
+  pull_request:
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v6
+        with:
+          persist-credentials: false
+
+      - name: Prepare validation environment
+        run: |
+          cp .env.example .env
+          python -m pip install PyYAML
+
+      - name: Validate Docker Compose
+        run: docker compose config
+
+      - name: Validate dashboard JSON
+        run: |
+          python - <<'PY'
+          import json
+          from pathlib import Path
+
+          files = list(Path("grafana/dashboards").rglob("*.json"))
+          if not files:
+              raise SystemExit("No dashboard JSON files found")
+
+          for path in files:
+              with path.open(encoding="utf-8") as file:
+                  json.load(file)
+              print(f"OK: {path}")
+          PY
+
+      - name: Validate YAML files
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import yaml
+
+          files = [Path("compose.yaml")]
+          for root in (Path("grafana/provisioning"), Path(".github/workflows")):
+              if root.exists():
+                  files.extend(path for pattern in ("*.yaml", "*.yml")
+                               for path in root.rglob(pattern))
+
+          if not files:
+              raise SystemExit("No YAML files found")
+
+          for path in sorted(set(files)):
+              with path.open(encoding="utf-8") as file:
+                  yaml.safe_load(file)
+              print(f"OK: {path}")
+          PY
+
+      - name: Validate Markdown
+        uses: DavidAnson/markdownlint-cli2-action@v24
+        with:
+          globs: |
+            README.md
+            AGENTS.md
+            docs/**/*.md
+            sql/**/*.md
+
+      - name: Validate Git whitespace
+        run: |
+          if git rev-parse --verify HEAD^ >/dev/null 2>&1; then
+            git diff --check HEAD^ HEAD
+          else
+            git diff-tree --check --root -r HEAD
+          fi
+
+      - name: Verify environment files
+        run: |
+          if git ls-files --error-unmatch .env >/dev/null 2>&1; then
+            echo "::error::.env must not be tracked"
+            exit 1
+          fi
+          test -f .env.example || {
+            echo "::error::.env.example is required"
+            exit 1
+          }
