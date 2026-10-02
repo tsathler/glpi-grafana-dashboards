@@ -1,5 +1,7 @@
 # GLPI Service Desk Dashboard
 
+[![CI](https://github.com/tsathler/glpi-service-desk-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/tsathler/glpi-service-desk-dashboard/actions/workflows/ci.yml)
+
 Operational dashboard foundation for a GLPI database, using Grafana and its native MySQL data source. The GLPI database is external; this repository runs Grafana only.
 
 ## Overview
@@ -49,6 +51,8 @@ docker compose up -d
 
 Open `http://localhost:3000` and sign in with the configured Grafana admin credentials. See [docs/development.md](docs/development.md) for operations and validation.
 
+See [docs/development.md](docs/development.md) for test environment setup and deployment instructions.
+
 ## Dashboard
 
 The provisioned **GLPI Service Desk** dashboard is a minimal placeholder; no metrics are implemented in Milestone 1.
@@ -63,7 +67,7 @@ See [docs/security.md](docs/security.md). Protect Grafana access and restrict da
 
 ## Validation
 
-Static validation is performed on the development machine with `docker compose config`, syntax/JSON/YAML checks, and `git diff --check`. Runtime and integration validation happens on the test environment after `git pull`. See [docs/development.md](docs/development.md) and [docs/milestones.md](docs/milestones.md) for the procedures and current status.
+GitHub Actions runs static validation on pushes and pull requests: Compose configuration, dashboard JSON, YAML syntax, Markdown, Git whitespace, and checks that `.env` is not tracked and `.env.example` exists. This does not validate runtime or database integration. The test environment remains responsible for those checks after `git pull`; see [docs/development.md](docs/development.md) and [docs/milestones.md](docs/milestones.md).
 
 ## Limitations
 
