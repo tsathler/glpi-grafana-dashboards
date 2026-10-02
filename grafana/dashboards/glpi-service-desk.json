@@ -53,7 +53,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is New.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 1\n  AND t.is_deleted = 0;",
+          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is New.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 1\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);",
           "refId": "A"
         }
       ],
@@ -106,7 +106,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Processing (assigned).\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 2\n  AND t.is_deleted = 0;",
+          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Processing (assigned).\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 2\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);",
           "refId": "A"
         }
       ],
@@ -159,7 +159,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: open tickets past the GLPI-calculated TTR deadline.\n-- A missing deadline is not counted as overdue; no SLA deadline is reconstructed here.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status NOT IN (5, 6)\n  AND t.time_to_resolve IS NOT NULL\n  AND t.time_to_resolve < NOW();",
+          "rawSql": "-- Current snapshot: open tickets past the GLPI-calculated TTR deadline.\n-- A missing deadline is not counted as overdue; no SLA deadline is reconstructed here.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status NOT IN (4, 5, 6)\n  AND t.time_to_resolve IS NOT NULL\n  AND t.solvedate IS NULL\n  AND t.entities_id IN ($entity)\n  AND t.time_to_resolve < NOW();",
           "refId": "A"
         }
       ],
@@ -212,7 +212,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Solved.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 5\n  AND t.is_deleted = 0;",
+          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Solved.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 5\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);",
           "refId": "A"
         }
       ],
@@ -265,7 +265,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: intentionally independent of the Grafana time picker.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status = 4;",
+          "rawSql": "-- Current snapshot: intentionally independent of the Grafana time picker.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status = 4\n  AND t.entities_id IN ($entity);",
           "refId": "A"
         }
       ],
@@ -318,7 +318,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: all tickets not logically deleted.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0;",
+          "rawSql": "-- Current snapshot: all tickets not logically deleted.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.entities_id IN ($entity);",
           "refId": "A"
         }
       ],
@@ -400,7 +400,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "-- Event series follow the selected Grafana time range and adaptive bucket interval.\n-- Return one timestamp and one numeric column per series, ordered by time.\nSELECT ticket_events.time,\n       SUM(CASE WHEN ticket_events.metric = 'Created' THEN ticket_events.value ELSE 0 END) AS Created,\n       SUM(CASE WHEN ticket_events.metric = 'Solved' THEN ticket_events.value ELSE 0 END) AS Solved\nFROM (\n    SELECT $__timeGroupAlias(t.date, '$__interval'),\n           COUNT(*) AS value,\n           'Created' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.date IS NOT NULL\n      AND $__timeFilter(t.date)\n    GROUP BY time\n\n    UNION ALL\n\n    SELECT $__timeGroupAlias(t.solvedate, '$__interval'),\n           COUNT(*) AS value,\n           'Solved' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.solvedate IS NOT NULL\n      AND $__timeFilter(t.solvedate)\n    GROUP BY time\n) AS ticket_events\nGROUP BY ticket_events.time\nORDER BY ticket_events.time;",
+          "rawSql": "-- Event series follow the selected Grafana time range and adaptive bucket interval.\n-- Return one timestamp and one numeric column per series, ordered by time.\nSELECT ticket_events.time,\n       SUM(CASE WHEN ticket_events.metric = 'Created' THEN ticket_events.value ELSE 0 END) AS Created,\n       SUM(CASE WHEN ticket_events.metric = 'Solved' THEN ticket_events.value ELSE 0 END) AS Solved\nFROM (\n    SELECT $__timeGroupAlias(t.date, '$__interval'),\n           COUNT(*) AS value,\n           'Created' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.entities_id IN ($entity)\n      AND t.date IS NOT NULL\n      AND $__timeFilter(t.date)\n    GROUP BY time\n\n    UNION ALL\n\n    SELECT $__timeGroupAlias(t.solvedate, '$__interval'),\n           COUNT(*) AS value,\n           'Solved' AS metric\n    FROM glpi_tickets AS t\n    WHERE t.is_deleted = 0\n      AND t.entities_id IN ($entity)\n      AND t.solvedate IS NOT NULL\n      AND $__timeFilter(t.solvedate)\n    GROUP BY time\n) AS ticket_events\nGROUP BY ticket_events.time\nORDER BY ticket_events.time;",
           "refId": "A"
         }
       ],
@@ -414,7 +414,33 @@
     "service-desk"
   ],
   "templating": {
-    "list": []
+    "list": [
+      {
+        "name": "entity",
+        "label": "Entity",
+        "type": "query",
+        "datasource": {
+          "type": "mysql",
+          "uid": "glpi-mysql"
+        },
+        "query": "SELECT completename AS __text, id AS __value FROM glpi_entities ORDER BY completename",
+        "definition": "SELECT completename AS __text, id AS __value FROM glpi_entities ORDER BY completename",
+        "refresh": 1,
+        "hide": 0,
+        "includeAll": true,
+        "allValue": null,
+        "multi": false,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "sort": 1,
+        "skipUrlSync": false
+      }
+    ]
   },
   "time": {
     "from": "now-7d",

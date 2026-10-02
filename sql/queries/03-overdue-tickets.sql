@@ -3,6 +3,8 @@
 SELECT COUNT(*) AS value
 FROM glpi_tickets AS t
 WHERE t.is_deleted = 0
-  AND t.status NOT IN (5, 6)
+  AND t.status NOT IN (4, 5, 6)
   AND t.time_to_resolve IS NOT NULL
+  AND t.solvedate IS NULL
+  AND t.entities_id IN ($entity)
   AND t.time_to_resolve < NOW();
