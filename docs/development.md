@@ -12,6 +12,8 @@ The test environment receives changes through Git. This repository deploys Grafa
 
 The test environment currently used by this project is **Ubuntu Server 24.04 LTS**, with Git, Docker Engine, and the Docker Compose plugin. Other Linux distributions may work, but Ubuntu Server 24.04 LTS is the environment documented here.
 
+The current test host runs Grafana and MariaDB together. MariaDB listens only on `127.0.0.1:3306`; it is not exposed on the network. Docker was installed from Docker's official APT repository. The `docker-ce has no installation candidate` issue was resolved by configuring that repository; see the troubleshooting section below for the diagnostic steps.
+
 ### Install Docker Engine and Compose plugin
 
 These commands require administrative privileges. Run them as `root`, or open a root shell with `sudo -i` first. If running commands individually as a non-root user, prefix administrative commands with `sudo`.
@@ -69,7 +71,7 @@ The first command checks the Docker CLI, the second checks the Compose plugin, `
 
 ### Troubleshooting: `docker-ce` has no installation candidate
 
-This usually means Docker's official repository was not configured or APT has not loaded it. Refresh package metadata:
+This occurred because Docker's official repository was not configured in APT. The test host was fixed by adding Docker's official repository and refreshing package metadata as shown above. If it recurs, refresh package metadata:
 
 ```bash
 apt update
@@ -124,14 +126,22 @@ docker compose logs --tail=100 grafana
 
 `config` validates and renders the Compose configuration; `up -d` starts the services in the background; `ps` shows their state; and `logs` helps inspect Grafana startup, provisioning, and errors.
 
-If Compose publishes the port as:
+The current Compose service uses `network_mode: host`, so it does not use a `ports` mapping. This was chosen for the current test setup: Grafana and MariaDB share a Linux host, and MariaDB remains bound to localhost. Container-to-`localhost:3306` reachability has been validated. Grafana's web interface listens on TCP/3000 on the host; the host firewall restricts access to trusted networks. MariaDB port 3306 is not exposed to the network. Host networking is specific to this test-host arrangement, not a universal requirement; any future change must be reflected in Compose and documented.
 
-```yaml
-ports:
-  - "3000:3000"
+The test environment's local `.env` uses the following variable names; values stay local and must not be copied into Git or this document:
+
+```env
+GRAFANA_ADMIN_USER=...
+GRAFANA_ADMIN_PASSWORD=...
+
+GLPI_DB_HOST=127.0.0.1
+GLPI_DB_PORT=3306
+GLPI_DB_NAME=glpi
+GLPI_DB_USER=grafana_reader
+GLPI_DB_PASSWORD=...
 ```
 
-open `http://IP_DO_SERVIDOR:3000` from a machine with network access to the test server. Replace the placeholder with the server address locally; do not record a real environment IP in the repository.
+Grafana admin credentials and MariaDB credentials are independent. `GRAFANA_ADMIN_USER` identifies the Grafana application administrator; `GLPI_DB_USER` is the database reader account. Do not reuse either account's credentials for the other.
 
 ### Security notes
 
@@ -163,6 +173,26 @@ After review, push the intended commit to GitHub. The tracked deployment inputs 
 
 ## Test environment: runtime and integration validation
 
+The deployment path is:
+
+```text
+Development Machine
+        │
+        │ git push
+        ▼
+      GitHub
+        │
+        │ CI (static validation)
+        ▼
+Test Environment
+        │
+        │ git pull
+        ▼
+Runtime / integration validation
+```
+
+There is no manual transfer of project files between development and test. CI does not access the test environment, MariaDB, or GLPI; it does not run real queries, use environment credentials, or deploy automatically.
+
 After `git pull` and local `.env` configuration, run the Compose commands above. Confirm all of the following in the test environment:
 
 - Grafana starts without provisioning errors.
@@ -171,7 +201,30 @@ After `git pull` and local `.env` configuration, run the Compose commands above.
 - Dashboard queries execute and the displayed metrics match the corresponding GLPI views and records.
 - Restarting Grafana preserves the expected state.
 
+Runtime checks in the current test environment confirmed Grafana is running, its HTTP service and web interface work on port 3000, provisioning loaded, and the MySQL datasource plugin is available. The provisioned datasource has these non-secret settings:
+
+```text
+Datasource: GLPI MySQL
+Type: MySQL
+Database: glpi
+Access: proxy
+Database privileges: SELECT only
+Connection health: OK
+```
+
+The datasource is managed in `grafana/provisioning/datasources/`; `secureJsonData` holds the password. Its environment variables are `GLPI_DB_HOST`, `GLPI_DB_PORT`, `GLPI_DB_NAME`, `GLPI_DB_USER`, and `GLPI_DB_PASSWORD`. The datasource authenticates with the MariaDB account that has `SELECT` permission only. Versioned provisioning is the source of truth for persistent datasource changes. Dashboard files in `grafana/dashboards/` and the provider in `grafana/provisioning/dashboards/` are likewise the source of truth; durable edits must be committed through Git rather than made only in the Grafana UI.
+
+Direct MariaDB authentication and read-only database access were confirmed with the MariaDB client, including successful `SELECT` permission. Credentials and query results are not recorded. These checks and the healthy Grafana datasource confirm database connectivity. Dashboard presence after restart and persistence behavior remain pending.
+
+For a repeatable direct connection check, use the following command in the test environment and enter the password interactively:
+
+```bash
+mariadb -h 127.0.0.1 -u grafana_reader -p glpi
+```
+
 If there is no verified metric SQL yet, record query execution and metric comparison as pending; do not imply they passed. Compare metrics against GLPI using the actual installed version and document status mappings, filters, and limitations. Never change the GLPI database, schema, or application as part of this project.
+
+The test environment does not receive project files manually: changes are pushed to GitHub and reach the host through `git pull`. Its `.env` remains local to that environment.
 
 ## Validation status in reports
 
