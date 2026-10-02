@@ -92,3 +92,7 @@ Scope: Six current-state ticket cards and the Created vs Solved time series, bas
 - [x] Dashboard queries execute through the provisioned datasource in the test environment.
 
 Runtime and semantic validation was completed in the test environment against the GLPI UI. Static checks remain part of CI. No database, schema, or index changes are part of this milestone.
+
+### Post-Milestone 3 improvement: Eficiência de resolução (SLA)
+
+This improvement was validated at runtime after Milestone 3 was completed. The Gauge percentage matched a direct SQL calculation in the test environment. Milestone 3 remains Complete; Milestone 4 has not started.
