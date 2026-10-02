@@ -2,15 +2,15 @@
 
 [![CI](https://github.com/tsathler/glpi-service-desk-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/tsathler/glpi-service-desk-dashboard/actions/workflows/ci.yml)
 
-Operational dashboard foundation for a GLPI database, using Grafana and its native MySQL data source. The GLPI database is external; this repository runs Grafana only.
+A Grafana dashboard for GLPI Service Desk data stored in an external MariaDB database. This repository runs Grafana only; metric SQL is versioned alongside the dashboard.
 
 ## Overview
 
-Milestones 1, 2, and 3 are complete. Milestone 3 — Core Metrics includes six current-state cards and the Fluxo de chamados time series in the **GLPI Service Desk** dashboard, validated in the test environment against the GLPI UI. See [docs/database.md](docs/database.md) for the confirmed schema findings and [docs/metrics.md](docs/metrics.md) for metric definitions, including the GLPI-calculated TTR deadline rule for overdue tickets.
+Milestones 1, 2, and 3 are complete. The **GLPI Service Desk** dashboard and the later **Eficiência de resolução (SLA)** Gauge were validated in the test environment against GLPI and direct SQL. See [database findings](docs/database.md), [metric definitions](docs/metrics.md), and [milestone status](docs/milestones.md).
 
 ## Goals
 
-Provide a simple, reproducible base for future operational ticket metrics while keeping credentials out of Git and database access read-only.
+Provide a reproducible view of ticket status, flow, and TTR compliance with read-only database access.
 
 ## Architecture
 
@@ -18,22 +18,22 @@ See [docs/architecture.md](docs/architecture.md).
 
 ## Features
 
-- Pinned Grafana OSS image (`13.2.2`)
-- Persistent Grafana data volume
-- Provisioned MySQL data source and dashboard
-- Environment-based configuration
+- Six current-state ticket cards filtered by the **Entity** selector.
+- **Fluxo de chamados** time series with Criados, Solucionados, and Saldo.
+- **Eficiência de resolução (SLA)** Gauge based on GLPI's calculated TTR deadline.
+- Provisioned MySQL datasource and dashboard, persistent Grafana volume, and versioned read-only SQL.
 
 ## Stack
 
-Docker Compose, Grafana, MySQL/MariaDB data source, SQL.
+Grafana 13, MariaDB, SQL, Docker Compose, Linux, and GitHub Actions.
 
 ## Repository Structure
 
-See the repository tree and [docs/development.md](docs/development.md).
+Dashboard JSON and provisioning live under `grafana/`. Metric queries are in `sql/queries/`; schema discovery scripts are in `sql/discovery/`. See [development instructions](docs/development.md).
 
 ## Requirements
 
-Docker Engine and Docker Compose plugin. A reachable MySQL/MariaDB GLPI database is needed for data queries, but not for Grafana to start.
+A Linux host with Docker Engine and Docker Compose, plus a reachable GLPI MariaDB database for data queries. Grafana can start without database connectivity.
 
 ## Configuration
 
@@ -51,15 +51,19 @@ docker compose up -d
 
 Open `http://localhost:3000` and sign in with the configured Grafana admin credentials. See [docs/development.md](docs/development.md) for operations and validation.
 
-See [docs/development.md](docs/development.md) for test environment setup and deployment instructions.
-
 ## Dashboard
 
-The provisioned **GLPI Service Desk** dashboard includes six stat cards and the **Fluxo de chamados** time series for the completed Milestone 3 core metrics. Further metric categories remain out of scope.
+The provisioned **GLPI Service Desk** dashboard has six status cards, an entity selector, **Fluxo de chamados**, and **Eficiência de resolução (SLA)**. The cards show current snapshots; the time series and Gauge follow the selected time range. The Gauge measures TTR compliance among solved tickets with an applicable deadline.
+
+## Screenshot
+
+The dashboard screenshot is not included yet. Add it manually at `docs/images/dashboard-overview.png` when available.
+
+<!-- ![GLPI Service Desk dashboard](docs/images/dashboard-overview.png) -->
 
 ## Metrics
 
-Metric definitions and planned scope are documented in [docs/metrics.md](docs/metrics.md). No SQL metric queries are included until schema discovery.
+Metric definitions and validation status are in [docs/metrics.md](docs/metrics.md). The dashboard's read-only queries are versioned in `sql/queries/`.
 
 ## Security
 
@@ -67,12 +71,16 @@ See [docs/security.md](docs/security.md). The current test setup keeps MariaDB b
 
 ## Validation
 
-GitHub Actions runs static validation on pushes and pull requests: Compose configuration, dashboard JSON, YAML syntax, Markdown, Git whitespace, and checks that `.env` is not tracked and `.env.example` exists. This does not validate runtime or database integration. The test environment remains responsible for those checks after `git pull`; see [docs/development.md](docs/development.md) and [docs/milestones.md](docs/milestones.md).
+GitHub Actions checks Compose, JSON, YAML, Markdown, read-only SQL, query/dashboard parity, Git whitespace, and environment file tracking. CI does not connect to GLPI or deploy. Runtime checks belong in the test environment after `git pull`; see [docs/development.md](docs/development.md).
+
+## AI-assisted development
+
+AI tools supported research, implementation, and documentation. Architecture, SQL, security, runtime behavior, and metric results were reviewed and validated manually against the test environment and GLPI interface.
 
 ## Limitations
 
-Milestone 3 queries and dashboard panels were validated at runtime in the test environment and compared with the GLPI UI. Static SQL and JSON validation alone does not establish metric correctness.
+Direct SQL depends on the installed GLPI schema. Validate schema mappings and metric results again when deploying to another GLPI installation.
 
 ## Roadmap
 
-Milestone 1: Foundation (complete). Milestone 2: Database Discovery (complete). Milestone 3: Core Metrics (complete). Milestone 4 has not started.
+Milestone 1: Foundation (complete). Milestone 2: Database Discovery (complete). Milestone 3: Core Metrics (complete). Milestone 4: Backlog Dashboard (planned).

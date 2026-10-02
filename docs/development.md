@@ -151,12 +151,13 @@ Grafana admin credentials and MariaDB credentials are independent. `GRAFANA_ADMI
 
 ## Development machine: static validation
 
-GitHub Actions runs these static checks on pushes and pull requests: `docker compose config` with values copied from `.env.example`, dashboard JSON parsing, YAML parsing, Markdown lint, Git whitespace, and checks that `.env` is untracked and `.env.example` exists. It does not start containers, use test-environment secrets, or connect to MySQL/GLPI. Credentials must stay outside Git; `.env` must not be versioned. A dedicated secret-scanning tool may be considered separately in the future.
+GitHub Actions runs these static checks on pushes and pull requests: `docker compose config` with values copied from `.env.example`, dashboard JSON parsing, YAML parsing, Markdown lint, read-only SQL inspection, versioned query/dashboard parity, Git whitespace, and checks that `.env` is untracked and `.env.example` exists. It does not start containers, use test-environment secrets, or connect to MySQL/GLPI. Credentials must stay outside Git; `.env` must not be versioned. A dedicated secret-scanning tool may be considered separately in the future.
 
 Validate what does not require the integrated environment:
 
 ```sh
 docker compose config
+node scripts/validate-sql.mjs
 ```
 
 Also parse changed JSON and YAML files with suitable local parsers and review the change:
@@ -168,6 +169,8 @@ git diff
 ```
 
 Use `.env.example` placeholders locally only as needed to render Compose configuration. Do not commit local `.env`, credentials, or real environment details. Database connectivity is not a prerequisite for these checks. SQL may be added only after the actual GLPI schema and version have been verified and documented; static review cannot establish that a query matches a particular installation.
+
+The SQL validator accepts only read-only statements in `sql/`, rejects `SELECT *`, and compares each dashboard panel's embedded query with the `sql/queries/` file whose two-digit prefix matches the panel ID. These checks do not replace query execution or metric comparison in the test environment.
 
 After review, push the intended commit to GitHub. The tracked deployment inputs are Compose, Grafana provisioning/dashboard files, documentation, and any verified SQL. `.env` stays local.
 
@@ -214,7 +217,7 @@ Connection health: OK
 
 The datasource is managed in `grafana/provisioning/datasources/`; `secureJsonData` holds the password. Its environment variables are `GLPI_DB_HOST`, `GLPI_DB_PORT`, `GLPI_DB_NAME`, `GLPI_DB_USER`, and `GLPI_DB_PASSWORD`. The datasource authenticates with the MariaDB account that has `SELECT` permission only. Versioned provisioning is the source of truth for persistent datasource changes. Dashboard files in `grafana/dashboards/` and the provider in `grafana/provisioning/dashboards/` are likewise the source of truth; durable edits must be committed through Git rather than made only in the Grafana UI.
 
-Direct MariaDB authentication and read-only database access were confirmed with the MariaDB client, including successful `SELECT` permission. Credentials and query results are not recorded. These checks and the healthy Grafana datasource confirm database connectivity. Dashboard presence after restart and persistence behavior remain pending.
+Direct MariaDB authentication and read-only database access were confirmed with the MariaDB client, including successful `SELECT` permission. Credentials and query results are not recorded. The datasource and dashboard remained provisioned after Grafana restarted; the dashboard metrics were subsequently validated against GLPI and direct SQL.
 
 For a repeatable direct connection check, use the following command in the test environment and enter the password interactively:
 
@@ -222,7 +225,7 @@ For a repeatable direct connection check, use the following command in the test 
 mariadb -h 127.0.0.1 -u grafana_reader -p glpi
 ```
 
-If there is no verified metric SQL yet, record query execution and metric comparison as pending; do not imply they passed. Compare metrics against GLPI using the actual installed version and document status mappings, filters, and limitations. Never change the GLPI database, schema, or application as part of this project.
+The current metric SQL is versioned in `sql/queries/` and has been compared with the installed GLPI version. For future metrics or deployments to another installation, compare results against GLPI and document status mappings, filters, and limitations. Never change the GLPI database, schema, or application as part of this project.
 
 The test environment does not receive project files manually: changes are pushed to GitHub and reach the host through `git pull`. Its `.env` remains local to that environment.
 

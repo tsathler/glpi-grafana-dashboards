@@ -65,7 +65,7 @@ All discovery SQL is limited to `SELECT`, `SHOW`, and `DESCRIBE`. Do not investi
 
 Status: Complete
 
-Scope: Six current-state ticket cards and the Created vs Solved time series, based on the verified findings from Milestone 2. The Entity variable filters all cards and the time series. The overdue card uses the GLPI-calculated TTR deadline and the UI-confirmed exclusion of Pending, Solved, and Closed tickets; SLA analysis, TTO/TTR performance metrics, categories, technicians, and backlog aging remain excluded.
+Scope: Six current-state ticket cards and the Fluxo de chamados time series, based on the verified findings from Milestone 2. The Entity variable filters all cards and the time series. The overdue card uses the GLPI-calculated TTR deadline and the UI-confirmed exclusion of Pending, Solved, and Closed tickets; SLA analysis, TTO/TTR performance metrics, categories, technicians, and backlog aging remain excluded.
 
 ### Implemented
 
@@ -75,7 +75,7 @@ Scope: Six current-state ticket cards and the Created vs Solved time series, bas
 - [x] Chamados solucionados current snapshot (`status = 5`).
 - [x] Chamados pendentes current snapshot (`status = 4`).
 - [x] Chamados total current snapshot (`is_deleted = 0`).
-- [x] Created vs Solved time series using Grafana time macros and ordering by time.
+- [x] Fluxo de chamados time series using Grafana time macros and ordering by time.
 - [x] Provisioned six stat cards and one time-series panel.
 - [x] Versioned SQL under `sql/queries/`; every query excludes logically deleted tickets and the six snapshots are independent of the time picker.
 - [x] Entity variable sourced from `glpi_entities` with `id` as value, `completename` as label, and an All option; SQL filters use the selected entity value.
@@ -96,3 +96,41 @@ Runtime and semantic validation was completed in the test environment against th
 ### Post-Milestone 3 improvement: Eficiência de resolução (SLA)
 
 This improvement was validated at runtime after Milestone 3 was completed. The Gauge percentage matched a direct SQL calculation in the test environment. Milestone 3 remains Complete; Milestone 4 has not started.
+
+
+## Milestone 4 — Backlog Dashboard
+
+Status: Planned
+
+### Objective
+
+Create a second, independent dashboard dedicated to the health and evolution of the ticket backlog. The existing **GLPI Service Desk** dashboard remains the primary Service Desk view. The new dashboard should help answer how many tickets are currently in the backlog, how long they have been open, whether the queue is growing or shrinking, and where backlog concentration is highest.
+
+The milestone will provision a separate dashboard file, independent of the current dashboard. File name, UID, and final layout are intentionally undecided.
+
+### Initial scope
+
+1. **Current backlog:** count tickets that are not yet solved or closed, with `is_deleted = 0` and the **Entity** variable. The exact SQL definition must be validated before implementation.
+2. **Backlog aging:** distribute open tickets into proposed age bands: < 1 day, 1–3 days, 3–7 days, 7–30 days, and > 30 days. Review these bands before implementation.
+3. **Backlog trend:** show whether pending work is increasing, decreasing, or stable. Research and validate historical semantics before writing the definitive query.
+4. **Backlog by priority:** show the current backlog distribution by priority and avoid unnecessary joins in the initial version.
+
+### Out of scope
+
+- Individual technician productivity or rankings.
+- Detailed category metrics.
+- Detailed TTO or SLA/TTR analysis.
+- Forecasting or composite scores.
+- Changes to GLPI.
+
+### Required validation before implementation
+
+Before implementing the dashboard:
+
+1. Confirm semantically what constitutes backlog.
+2. Validate the relevant status and filters.
+3. Define and validate the historical calculation correctly.
+4. Test read-only queries in the test environment.
+5. Only then implement and provision the separate dashboard.
+
+No SQL, dashboard, GLPI database, schema, or application changes are included while this milestone is Planned.

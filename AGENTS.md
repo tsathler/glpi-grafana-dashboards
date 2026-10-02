@@ -8,6 +8,10 @@
 - Keep test environment changes reproducible from versioned files and promote them through Git; keep `.env` local to each environment.
 - Treat versioned provisioning files as the source of truth for Grafana datasources and dashboards.
 - Verify the actual GLPI schema and version before writing metric SQL; document validation and limitations.
+- Respect verified join cardinality; do not assume one row per ticket after joins.
+- Treat `time_to_own` and `time_to_resolve` as SLA deadlines, not durations.
+- Avoid `SELECT *` on tables that may contain sensitive data.
+- Do not assume a single entity; metrics must respect the selected entity scope.
 - Do not modify the GLPI database, its schema, or GLPI application code.
 - Update documentation whenever behavior or configuration changes.
 - Prefer straightforward queries and avoid premature abstractions.
