@@ -6,7 +6,7 @@ Operational dashboard foundation for a GLPI database, using Grafana and its nati
 
 ## Overview
 
-Milestone 1 provisions Grafana, a read-only MySQL data source, and a minimal dashboard. The dashboard intentionally has no GLPI queries until the actual database schema and GLPI version are inspected.
+Milestone 1 — Foundation is complete: Grafana, the read-only MySQL datasource, dashboard provisioning, runtime, and persistence were validated in the test environment. The **GLPI Service Desk** dashboard is intentionally empty in this phase; metrics and functional queries belong to Database Discovery and subsequent milestones.
 
 ## Goals
 
@@ -63,7 +63,7 @@ Metric definitions and planned scope are documented in [docs/metrics.md](docs/me
 
 ## Security
 
-See [docs/security.md](docs/security.md). Protect Grafana access and restrict database network access to the Grafana host.
+See [docs/security.md](docs/security.md). The current test setup keeps MariaDB bound to localhost and uses a dedicated read-only account.
 
 ## Validation
 
