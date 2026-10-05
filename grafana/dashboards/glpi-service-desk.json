@@ -501,34 +501,6 @@
       "type": "gauge"
     },
     {
-      "description": "Cabeçalho visual do painel Fluxo de chamados.",
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
-      "gridPos": {
-        "x": 0,
-        "y": 10,
-        "w": 18,
-        "h": 3
-      },
-      "id": 10,
-      "options": {
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
-        },
-        "content": "## Fluxo de chamados\n\nCriados x solucionados no período selecionado",
-        "disableSanitizeHtml": false,
-        "mode": "markdown"
-      },
-      "pluginVersion": "13.2.2",
-      "title": "",
-      "transparent": false,
-      "type": "text"
-    },
-    {
       "datasource": {
         "type": "mysql",
         "uid": "glpi-mysql"
@@ -676,7 +648,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 13,
+        "y": 10,
         "w": 18,
         "h": 10
       },
@@ -708,7 +680,7 @@
           "refId": "A"
         }
       ],
-      "title": "",
+      "title": "Fluxo de chamados",
       "description": "Criados x solucionados no período selecionado",
       "transparent": false,
       "type": "timeseries",
