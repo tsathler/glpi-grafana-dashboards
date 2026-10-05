@@ -20,7 +20,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#356FA8"
+            "fixedColor": "#3A86E9"
           },
           "displayName": "Chamados novos"
         },
@@ -78,8 +78,9 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#347985"
-          }
+            "fixedColor": "#2F96A8"
+          },
+          "displayName": "Chamados atribu?dos"
         },
         "overrides": []
       },
@@ -102,8 +103,8 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto",
-        "wideLayout": true
+        "textMode": "value_and_name",
+        "wideLayout": false
       },
       "pluginVersion": "13.2.2",
       "targets": [
@@ -119,7 +120,7 @@
           "refId": "A"
         }
       ],
-      "title": "Chamados atribuídos",
+      "title": "",
       "type": "stat"
     },
     {
@@ -135,8 +136,9 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#6D5489"
-          }
+            "fixedColor": "#7C5CC8"
+          },
+          "displayName": "Chamados planejados"
         },
         "overrides": []
       },
@@ -159,8 +161,8 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto",
-        "wideLayout": true
+        "textMode": "value_and_name",
+        "wideLayout": false
       },
       "pluginVersion": "13.2.2",
       "targets": [
@@ -176,7 +178,7 @@
           "refId": "A"
         }
       ],
-      "title": "Chamados planejados",
+      "title": "",
       "type": "stat"
     },
     {
@@ -192,8 +194,9 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#934652"
-          }
+            "fixedColor": "#B44C5A"
+          },
+          "displayName": "Chamados atrasados"
         },
         "overrides": []
       },
@@ -216,8 +219,8 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto",
-        "wideLayout": true
+        "textMode": "value_and_name",
+        "wideLayout": false
       },
       "pluginVersion": "13.2.2",
       "targets": [
@@ -233,7 +236,7 @@
           "refId": "A"
         }
       ],
-      "title": "Chamados atrasados",
+      "title": "",
       "type": "stat"
     },
     {
@@ -249,8 +252,9 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#4B7752"
-          }
+            "fixedColor": "#4F8E5D"
+          },
+          "displayName": "Chamados solucionados"
         },
         "overrides": []
       },
@@ -273,8 +277,8 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto",
-        "wideLayout": true
+        "textMode": "value_and_name",
+        "wideLayout": false
       },
       "pluginVersion": "13.2.2",
       "targets": [
@@ -290,7 +294,7 @@
           "refId": "A"
         }
       ],
-      "title": "Chamados solucionados",
+      "title": "",
       "type": "stat"
     },
     {
@@ -306,8 +310,9 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#92642F"
-          }
+            "fixedColor": "#B9782F"
+          },
+          "displayName": "Chamados pendentes"
         },
         "overrides": []
       },
@@ -330,8 +335,8 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto",
-        "wideLayout": true
+        "textMode": "value_and_name",
+        "wideLayout": false
       },
       "pluginVersion": "13.2.2",
       "targets": [
@@ -347,7 +352,7 @@
           "refId": "A"
         }
       ],
-      "title": "Chamados pendentes",
+      "title": "",
       "type": "stat"
     },
     {
@@ -363,8 +368,9 @@
           "unit": "short",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#66798A"
-          }
+            "fixedColor": "#70859A"
+          },
+          "displayName": "Chamados"
         },
         "overrides": []
       },
@@ -387,8 +393,8 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto",
-        "wideLayout": true
+        "textMode": "value_and_name",
+        "wideLayout": false
       },
       "pluginVersion": "13.2.2",
       "targets": [
@@ -404,7 +410,7 @@
           "refId": "A"
         }
       ],
-      "title": "Chamados",
+      "title": "",
       "type": "stat"
     },
     {
