@@ -691,7 +691,8 @@
       ],
       "title": "Fluxo de chamados",
       "type": "timeseries",
-      "interval": "1d"
+      "interval": "1d",
+      "maxDataPoints": 52
     }
   ],
   "schemaVersion": 41,
