@@ -618,38 +618,12 @@
             },
             "properties": [
               {
-                "id": "color",
+                "id": "custom.hideFrom",
                 "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#5B9CFF"
+                  "viz": true,
+                  "tooltip": true,
+                  "legend": true
                 }
-              },
-              {
-                "id": "custom.drawStyle",
-                "value": "bars"
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 2
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 60
-              },
-              {
-                "id": "custom.showPoints",
-                "value": "never"
-              },
-              {
-                "id": "custom.stacking",
-                "value": {
-                  "mode": "none",
-                  "group": "A"
-                }
-              },
-              {
-                "id": "custom.axisCenteredZero",
-                "value": true
               }
             ]
           }
@@ -692,7 +666,7 @@
       "title": "Fluxo de chamados",
       "type": "timeseries",
       "interval": "1d",
-      "maxDataPoints": 52
+      "maxDataPoints": 120
     }
   ],
   "schemaVersion": 41,
