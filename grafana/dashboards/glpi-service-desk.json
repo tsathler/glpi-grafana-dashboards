@@ -480,7 +480,7 @@
         "endpointMarker": "glow",
         "textMode": "value_and_name",
         "text": {
-          "titleSize": 20
+          "titleSize": 24
         }
       },
       "pluginVersion": "13.2.2",
