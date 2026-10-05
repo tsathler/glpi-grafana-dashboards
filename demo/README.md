@@ -1,10 +1,10 @@
-# Synthetic demo
+# Demonstração sintética
 
-This optional mode runs the existing Grafana dashboard against a containerized MariaDB database with **100% fictional data**. It does not use, copy, anonymize, or derive records from a real GLPI installation.
+Este modo opcional executa o dashboard Grafana existente contra um banco MariaDB em container com dados **100% fictícios**. Ele não usa, copia, anonimiza nem deriva registros de uma instalação real do GLPI.
 
-## Generate and start
+## Gerar e iniciar
 
-Requirements: Docker Compose and Python 3.12. From the repository root:
+Requisitos: Docker Compose e Python 3.12. Na raiz do repositório:
 
 ```sh
 cp .env.demo.example .env.demo
@@ -12,19 +12,19 @@ python3 demo/generate.py
 docker compose -f compose.demo.yaml up -d
 ```
 
-If Python is not installed on the host, generate the file with an isolated Python container instead:
+Se Python não estiver instalado no host, gere o arquivo usando um container Python isolado:
 
 ```sh
 docker run --rm -v "$PWD:/work" -w /work python:3.12-alpine python demo/generate.py
 ```
 
-Open `http://127.0.0.1:3001` and sign in with the fictional Grafana credentials in the local `.env.demo`. The MariaDB port is not published. Keep `MARIADB_PASSWORD` and `GLPI_DB_PASSWORD` equal if you customize the demo credentials; Grafana uses a dedicated `SELECT`-only database account.
+Abra `http://127.0.0.1:3001` e entre com as credenciais fictícias do Grafana no `.env.demo` local. A porta do MariaDB não é publicada. Mantenha `MARIADB_PASSWORD` e `GLPI_DB_PASSWORD` iguais se personalizar as credenciais da demonstração; o Grafana usa uma conta dedicada no banco com somente `SELECT`.
 
-The generator uses seed `20261002` by default and writes the ignored `demo/generated/seed.sql`. It emits 5,000 tickets across 90 days and three fictional entities: **Service Desk**, **Infrastructure**, and **Corporate**. The generated SQL is byte-for-byte repeatable for the same seed. On first database initialization, `@demo_now = NOW()` anchors its relative timestamps to that start time, keeping the default Grafana time range useful. To choose another deterministic seed, run `python3 demo/generate.py --seed NUMBER` before starting the stack.
+Por padrão, o gerador usa a seed `20261002` e grava `demo/generated/seed.sql`, ignorado pelo Git. Ele gera 5.000 chamados ao longo de 90 dias e três entidades fictícias: **Service Desk**, **Infrastructure** e **Corporate**. O SQL gerado é idêntico byte a byte para a mesma seed. Na primeira inicialização do banco, `@demo_now = NOW()` ancora os timestamps relativos a esse horário, mantendo útil o intervalo padrão do Grafana. Para escolher outra seed determinística, execute `python3 demo/generate.py --seed NUMBER` antes de iniciar a stack.
 
-MariaDB loads the minimal schema, generated rows, and reader grants only when its data volume is empty. Changing `seed.sql` does not update an existing volume.
+O MariaDB carrega o schema mínimo, as linhas geradas e as permissões do leitor somente quando o volume de dados está vazio. Alterar `seed.sql` não atualiza um volume existente.
 
-## Reset
+## Redefinir
 
 ```sh
 docker compose -f compose.demo.yaml down -v
@@ -32,10 +32,10 @@ python3 demo/generate.py
 docker compose -f compose.demo.yaml up -d
 ```
 
-`down -v` removes only the demo project's containers and named volumes. It does not affect the main Compose stack or any GLPI database.
+`down -v` remove somente os containers e volumes nomeados do projeto de demonstração. Não afeta a stack Compose principal nem qualquer banco GLPI.
 
-## Scope and limits
+## Escopo e limitações
 
-The demo mounts the **same** Grafana provisioning and dashboard JSON as the integrated environment. All panels run the **same** SQL in `sql/queries/`; there are no demo-specific metric queries. The database contains only `glpi_tickets` and `glpi_entities` with the columns currently used by those queries and the Entity selector. It does not model the full GLPI schema, application workflows, users, or SLA calendar engine. TTR deadlines are synthetic stored timestamps chosen to exercise the existing metric logic.
+A demonstração monta o **mesmo** provisioning do Grafana e o mesmo JSON do dashboard usados no ambiente integrado. Todos os painéis executam o **mesmo** SQL em `sql/queries/`; não existem queries de métricas específicas da demonstração. O banco contém somente `glpi_tickets` e `glpi_entities`, com as colunas atualmente usadas por essas queries e pelo seletor Entity. Ele não representa o schema completo do GLPI, os fluxos da aplicação, usuários ou o mecanismo de calendário do SLA. Os prazos TTR são timestamps sintéticos armazenados, escolhidos para exercitar a lógica de métricas existente.
 
-The example passwords are fictional and intended only for a local demo. The generated seed is ignored by Git; do not replace it with real GLPI data.
+As senhas de exemplo são fictícias e destinadas somente à demonstração local. A seed gerada é ignorada pelo Git; não a substitua por dados reais do GLPI.

@@ -1,24 +1,24 @@
-# Development and deployment
+# Desenvolvimento e implantação
 
-## Environment separation
+## Separação entre ambientes
 
-The development machine prepares and validates repository files. It is not assumed to have access to the GLPI database or the integrated test environment. Development and test each keep a separate local `.env`, created from `.env.example`; `.env` is not versioned, and credentials must never be copied through Git or written into documentation.
+A máquina de desenvolvimento prepara e valida os arquivos do repositório. Não se presume que ela tenha acesso ao banco do GLPI ou ao ambiente integrado de testes. Desenvolvimento e testes mantêm arquivos `.env` locais e separados, criados a partir de `.env.example`; `.env` não é versionado, e credenciais nunca devem ser copiadas pelo Git nem registradas na documentação.
 
-The test environment receives changes through Git. This repository deploys Grafana only; the GLPI database remains external, and Grafana must use a read-only database account.
+O ambiente de testes recebe as alterações pelo Git. Este repositório implanta somente o Grafana; o banco do GLPI permanece externo, e o Grafana deve usar uma conta read-only no banco.
 
-## Test environment setup
+## Configuração do ambiente de testes
 
-### Prerequisites
+### Pré-requisitos
 
-The test environment currently used by this project is **Ubuntu Server 24.04 LTS**, with Git, Docker Engine, and the Docker Compose plugin. Other Linux distributions may work, but Ubuntu Server 24.04 LTS is the environment documented here.
+O ambiente de testes usado atualmente pelo projeto é **Ubuntu Server 24.04 LTS**, com Git, Docker Engine e o plugin do Docker Compose. Outras distribuições Linux podem funcionar, mas este documento descreve o Ubuntu Server 24.04 LTS.
 
-The current test host runs Grafana and MariaDB together. MariaDB listens only on `127.0.0.1:3306`; it is not exposed on the network. Docker was installed from Docker's official APT repository. The `docker-ce has no installation candidate` issue was resolved by configuring that repository; see the troubleshooting section below for the diagnostic steps.
+O host de testes atual executa Grafana e MariaDB juntos. O MariaDB escuta somente em `127.0.0.1:3306`; não está exposto na rede. O Docker foi instalado pelo repositório APT oficial do Docker. O problema `docker-ce has no installation candidate` foi resolvido configurando esse repositório; consulte a seção de solução de problemas abaixo para ver as etapas de diagnóstico.
 
-### Install Docker Engine and Compose plugin
+### Instalar Docker Engine e o plugin Compose
 
-These commands require administrative privileges. Run them as `root`, or open a root shell with `sudo -i` first. If running commands individually as a non-root user, prefix administrative commands with `sudo`.
+Estes comandos exigem privilégios administrativos. Execute-os como `root` ou primeiro abra um shell root com `sudo -i`. Se executar os comandos individualmente como um usuário sem privilégios, prefixe os comandos administrativos com `sudo`.
 
-Install the prerequisites and add Docker's official Ubuntu APT repository and signing key:
+Instale os pré-requisitos e adicione a chave de assinatura e o repositório APT oficial do Docker para Ubuntu:
 
 ```bash
 apt update
@@ -43,7 +43,7 @@ EOF
 apt update
 ```
 
-Install Docker Engine, CLI, containerd, Buildx, and the modern Compose plugin:
+Instale o Docker Engine, CLI, containerd, Buildx e o plugin Compose atual:
 
 ```bash
 apt install -y \
@@ -54,11 +54,11 @@ apt install -y \
   docker-compose-plugin
 ```
 
-Use Compose as `docker compose`. These instructions do not use `snap install docker` or the legacy `docker-compose` package.
+Use o Compose como `docker compose`. Estas instruções não usam `snap install docker` nem o pacote legado `docker-compose`.
 
-### Verify the installation
+### Verificar a instalação
 
-Run:
+Execute:
 
 ```bash
 docker --version
@@ -67,27 +67,27 @@ systemctl status docker --no-pager
 docker run --rm hello-world
 ```
 
-The first command checks the Docker CLI, the second checks the Compose plugin, `systemctl` reports the Docker daemon status, and `hello-world` verifies that the daemon can run a container. The last command may require `sudo` if the current user does not have permission to access Docker.
+O primeiro comando verifica o Docker CLI; o segundo verifica o plugin Compose; `systemctl` informa o status do daemon Docker; e `hello-world` confirma que o daemon consegue executar um container. O último comando pode exigir `sudo` se o usuário atual não tiver permissão para acessar o Docker.
 
-### Troubleshooting: `docker-ce` has no installation candidate
+### Solução de problemas: `docker-ce` has no installation candidate
 
-This occurred because Docker's official repository was not configured in APT. The test host was fixed by adding Docker's official repository and refreshing package metadata as shown above. If it recurs, refresh package metadata:
+Isso ocorreu porque o repositório oficial do Docker não estava configurado no APT. O host de testes foi corrigido adicionando o repositório oficial do Docker e atualizando os metadados dos pacotes, como mostrado acima. Se ocorrer novamente, atualize os metadados:
 
 ```bash
 apt update
 ```
 
-Confirm the output includes `https://download.docker.com/linux/ubuntu`, then inspect the available package candidate:
+Confirme que a saída inclui `https://download.docker.com/linux/ubuntu` e, em seguida, verifique a versão candidata disponível do pacote:
 
 ```bash
 apt-cache policy docker-ce
 ```
 
-If there is no `Candidate`, review `/etc/apt/sources.list.d/docker.sources` and repeat `apt update` after correcting the repository configuration.
+Se não houver `Candidate`, revise `/etc/apt/sources.list.d/docker.sources` e execute `apt update` novamente após corrigir a configuração do repositório.
 
-### Clone or update the project
+### Clonar ou atualizar o projeto
 
-For this test environment, `/opt` is the chosen installation location; it is not required. For the first clone:
+Neste ambiente de testes, `/opt` foi escolhido como local de instalação, mas não é obrigatório. Para clonar pela primeira vez:
 
 ```bash
 cd /opt
@@ -95,27 +95,27 @@ git clone https://github.com/tsathler/glpi-service-desk-dashboard.git
 cd glpi-service-desk-dashboard
 ```
 
-For later updates, pull the new revision:
+Para atualizações posteriores, obtenha a nova revisão:
 
 ```bash
 cd /opt/glpi-service-desk-dashboard
 git pull
 ```
 
-### Configure the local environment
+### Configurar o ambiente local
 
-On the test environment, create its local configuration and edit it:
+No ambiente de testes, crie e edite a configuração local:
 
 ```bash
 cp .env.example .env
 nano .env
 ```
 
-Set values appropriate to that environment. Never commit `.env`: development and test have separate local copies, credentials are not transferred through Git, and real credentials or host details must not be added to documentation.
+Defina valores apropriados para esse ambiente. Nunca faça commit de `.env`: desenvolvimento e testes têm cópias locais separadas, as credenciais não são transferidas pelo Git e credenciais reais ou detalhes do host não devem ser incluídos na documentação.
 
-### Start the project
+### Iniciar o projeto
 
-From the project directory, run:
+No diretório do projeto, execute:
 
 ```bash
 docker compose config
@@ -124,11 +124,11 @@ docker compose ps
 docker compose logs --tail=100 grafana
 ```
 
-`config` validates and renders the Compose configuration; `up -d` starts the services in the background; `ps` shows their state; and `logs` helps inspect Grafana startup, provisioning, and errors.
+`config` valida e renderiza a configuração Compose; `up -d` inicia os serviços em segundo plano; `ps` mostra o estado deles; e `logs` ajuda a inspecionar a inicialização do Grafana, o provisioning e os erros.
 
-The current Compose service uses `network_mode: host`, so it does not use a `ports` mapping. This was chosen for the current test setup: Grafana and MariaDB share a Linux host, and MariaDB remains bound to localhost. Container-to-`localhost:3306` reachability has been validated. Grafana's web interface listens on TCP/3000 on the host; the host firewall restricts access to trusted networks. MariaDB port 3306 is not exposed to the network. Host networking is specific to this test-host arrangement, not a universal requirement; any future change must be reflected in Compose and documented.
+O serviço Compose atual usa `network_mode: host`, portanto não usa um mapeamento `ports`. Essa configuração foi escolhida para o ambiente de testes atual: Grafana e MariaDB compartilham um host Linux, e o MariaDB permanece vinculado ao localhost. O acesso do container a `localhost:3306` foi validado. A interface web do Grafana escuta em TCP/3000 no host; o firewall do host restringe o acesso a redes confiáveis. A porta 3306 do MariaDB não é exposta à rede. O uso da rede do host é específico desta configuração de testes, não um requisito universal; qualquer alteração futura deve ser refletida no Compose e documentada.
 
-The test environment's local `.env` uses the following variable names; values stay local and must not be copied into Git or this document:
+O `.env` local do ambiente de testes usa os nomes de variáveis abaixo; os valores permanecem locais e não devem ser copiados para o Git nem para este documento:
 
 ```env
 GRAFANA_ADMIN_USER=...
@@ -141,26 +141,26 @@ GLPI_DB_USER=grafana_reader
 GLPI_DB_PASSWORD=...
 ```
 
-Grafana admin credentials and MariaDB credentials are independent. `GRAFANA_ADMIN_USER` identifies the Grafana application administrator; `GLPI_DB_USER` is the database reader account. Do not reuse either account's credentials for the other.
+As credenciais administrativas do Grafana e as credenciais do MariaDB são independentes. `GRAFANA_ADMIN_USER` identifica o administrador da aplicação Grafana; `GLPI_DB_USER` é a conta leitora do banco. Não reutilize as credenciais de uma conta na outra.
 
-### Security notes
+### Observações de segurança
 
-- Do not add users to the `docker` group without a specific operational need; membership grants elevated privileges, effectively root-level control of the host.
-- Do not expose port 3000 publicly without need. Restrict access to the internal network or authorized clients.
-- Keep credentials in each environment's untracked `.env`; never put them in Git.
+- Não adicione usuários ao grupo `docker` sem uma necessidade operacional específica; a associação concede privilégios elevados, equivalentes ao controle do host em nível de root.
+- Não exponha publicamente a porta 3000 sem necessidade. Restrinja o acesso à rede interna ou a clientes autorizados.
+- Mantenha as credenciais no `.env` não versionado de cada ambiente; nunca as coloque no Git.
 
-## Development machine: static validation
+## Máquina de desenvolvimento: validação estática
 
-GitHub Actions runs these static checks on pushes and pull requests: `docker compose config` with values copied from `.env.example`, dashboard JSON parsing, YAML parsing, Markdown lint, read-only SQL inspection, versioned query/dashboard parity, synthetic demo generation/schema checks, Git whitespace, and checks that local environment files are untracked. It does not start containers, use test-environment secrets, or connect to MySQL/GLPI. Credentials must stay outside Git; `.env` and `.env.demo` must not be versioned. A dedicated secret-scanning tool may be considered separately in the future.
+O GitHub Actions executa estas verificações estáticas em pushes e pull requests: `docker compose config` com valores copiados de `.env.example`, análise do JSON do dashboard, análise de YAML, lint de Markdown, inspeção de SQL read-only, paridade entre queries versionadas e o dashboard, geração da demonstração sintética e verificações de schema, espaços em branco do Git e confirmação de que arquivos locais de ambiente não são versionados. Não inicia containers, não usa secrets do ambiente de testes e não se conecta ao MySQL/GLPI. As credenciais devem permanecer fora do Git; `.env` e `.env.demo` não devem ser versionados. Uma ferramenta dedicada para detectar secrets poderá ser considerada separadamente no futuro.
 
-Validate what does not require the integrated environment:
+Valide o que não depende do ambiente integrado:
 
 ```sh
 docker compose config
 node scripts/validate-sql.mjs
 ```
 
-Also parse changed JSON and YAML files with suitable local parsers and review the change:
+Analise também os arquivos JSON e YAML alterados com parsers locais adequados e revise a alteração:
 
 ```sh
 git diff --check
@@ -168,15 +168,15 @@ git status --short
 git diff
 ```
 
-Use `.env.example` placeholders locally only as needed to render Compose configuration. Do not commit local `.env`, credentials, or real environment details. Database connectivity is not a prerequisite for these checks. SQL may be added only after the actual GLPI schema and version have been verified and documented; static review cannot establish that a query matches a particular installation.
+Use localmente os valores de exemplo de `.env.example` somente quando necessário para renderizar a configuração Compose. Não faça commit do `.env` local, de credenciais nem de detalhes reais do ambiente. A conectividade com o banco não é pré-requisito para essas verificações. SQL só pode ser adicionado depois que o schema e a versão reais do GLPI forem verificados e documentados; uma revisão estática não confirma que uma query corresponde a uma instalação específica.
 
-The SQL validator accepts only read-only statements in `sql/`, rejects `SELECT *`, and compares each dashboard panel's embedded query with the `sql/queries/` file whose two-digit prefix matches the panel ID. These checks do not replace query execution or metric comparison in the test environment.
+O validador SQL aceita somente instruções read-only em `sql/`, rejeita `SELECT *` e compara a query embutida de cada painel do dashboard com o arquivo em `sql/queries/` cujo prefixo de dois dígitos corresponde ao ID do painel. Essas verificações não substituem a execução das queries nem a comparação das métricas no ambiente de testes.
 
-After review, push the intended commit to GitHub. The tracked deployment inputs are Compose, Grafana provisioning/dashboard files, documentation, and any verified SQL. `.env` stays local.
+Após a revisão, envie o commit planejado ao GitHub. Os arquivos de implantação versionados são Compose, arquivos de provisioning/dashboard do Grafana, documentação e qualquer SQL verificado. `.env` permanece local.
 
-## Test environment: runtime and integration validation
+## Ambiente de testes: validação de runtime e integração
 
-The deployment path is:
+O fluxo de implantação é:
 
 ```text
 Development Machine
@@ -194,17 +194,17 @@ Test Environment
 Runtime / integration validation
 ```
 
-There is no manual transfer of project files between development and test. CI does not access the test environment, MariaDB, or GLPI; it does not run real queries, use environment credentials, or deploy automatically.
+Não há transferência manual de arquivos do projeto entre desenvolvimento e testes. A CI não acessa o ambiente de testes, MariaDB ou GLPI; não executa queries reais, não usa credenciais do ambiente e não faz deploy automático.
 
-After `git pull` and local `.env` configuration, run the Compose commands above. Confirm all of the following in the test environment:
+Após `git pull` e a configuração do `.env` local, execute os comandos Compose acima. Confirme os itens a seguir no ambiente de testes:
 
-- Grafana starts without provisioning errors.
-- The **GLPI MySQL** data source is provisioned and can connect to the external database.
-- The **GLPI** dashboard is provisioned and persists as expected.
-- Dashboard queries execute and the displayed metrics match the corresponding GLPI views and records.
-- Restarting Grafana preserves the expected state.
+- O Grafana inicia sem erros de provisioning.
+- O datasource **GLPI MySQL** é provisionado e consegue se conectar ao banco externo.
+- O dashboard **GLPI** é provisionado e persiste conforme esperado.
+- As queries do dashboard executam, e as métricas exibidas correspondem às visualizações e aos registros equivalentes no GLPI.
+- Reiniciar o Grafana preserva o estado esperado.
 
-Runtime checks in the current test environment confirmed Grafana is running, its HTTP service and web interface work on port 3000, provisioning loaded, and the MySQL datasource plugin is available. The provisioned datasource has these non-secret settings:
+As verificações de runtime no ambiente de testes atual confirmaram que o Grafana está em execução, que o serviço HTTP e a interface web funcionam na porta 3000, que o provisioning foi carregado e que o plugin datasource MySQL está disponível. O datasource provisionado tem estas configurações não secretas:
 
 ```text
 Datasource: GLPI MySQL
@@ -215,31 +215,31 @@ Database privileges: SELECT only
 Connection health: OK
 ```
 
-The datasource is managed in `grafana/provisioning/datasources/`; `secureJsonData` holds the password. Its environment variables are `GLPI_DB_HOST`, `GLPI_DB_PORT`, `GLPI_DB_NAME`, `GLPI_DB_USER`, and `GLPI_DB_PASSWORD`. The datasource authenticates with the MariaDB account that has `SELECT` permission only. Versioned provisioning is the source of truth for persistent datasource changes. Dashboard files in `grafana/dashboards/` and the provider in `grafana/provisioning/dashboards/` are likewise the source of truth; durable edits must be committed through Git rather than made only in the Grafana UI.
+O datasource é gerenciado em `grafana/provisioning/datasources/`; `secureJsonData` armazena a senha. Suas variáveis de ambiente são `GLPI_DB_HOST`, `GLPI_DB_PORT`, `GLPI_DB_NAME`, `GLPI_DB_USER` e `GLPI_DB_PASSWORD`. O datasource autentica com a conta MariaDB que tem somente permissão `SELECT`. O provisioning versionado é a fonte de verdade para alterações persistentes no datasource. Os arquivos do dashboard em `grafana/dashboards/` e o provider em `grafana/provisioning/dashboards/` também são fontes de verdade; alterações duráveis devem ser feitas pelo Git em vez de somente pela interface do Grafana.
 
-Direct MariaDB authentication and read-only database access were confirmed with the MariaDB client, including successful `SELECT` permission. Credentials and query results are not recorded. The datasource and dashboard remained provisioned after Grafana restarted; the dashboard metrics were subsequently validated against GLPI and direct SQL.
+A autenticação direta no MariaDB e o acesso read-only ao banco foram confirmados com o cliente MariaDB, incluindo a permissão `SELECT` funcional. Credenciais e resultados de queries não são registrados. O datasource e o dashboard continuaram provisionados após a reinicialização do Grafana; posteriormente, as métricas do dashboard foram validadas com o GLPI e SQL direto.
 
-For a repeatable direct connection check, use the following command in the test environment and enter the password interactively:
+Para repetir a verificação de conexão direta, use o comando a seguir no ambiente de testes e informe a senha de forma interativa:
 
 ```bash
 mariadb -h 127.0.0.1 -u grafana_reader -p glpi
 ```
 
-The current metric SQL is versioned in `sql/queries/` and has been compared with the installed GLPI version. For future metrics or deployments to another installation, compare results against GLPI and document status mappings, filters, and limitations. Never change the GLPI database, schema, or application as part of this project.
+O SQL atual das métricas está versionado em `sql/queries/` e foi comparado com a versão instalada do GLPI. Para métricas futuras ou implantações em outra instalação, compare os resultados com o GLPI e documente os mapeamentos de status, filtros e limitações. Nunca altere o banco, o schema ou a aplicação GLPI como parte deste projeto.
 
-The test environment does not receive project files manually: changes are pushed to GitHub and reach the host through `git pull`. Its `.env` remains local to that environment.
+O ambiente de testes não recebe arquivos do projeto manualmente: as alterações são enviadas ao GitHub e chegam ao host por `git pull`. O `.env` permanece local nesse ambiente.
 
-## Validation status in reports
+## Status da validação nos relatórios
 
-Reports must separate **Static validation** from **Runtime / integration validation**. Static success on the development machine does not imply the test deployment, database connection, dashboard queries, or metric correctness have been validated. Record the environment, date, commands, outcomes, and unresolved checks for each milestone in [milestones.md](milestones.md).
+Os relatórios devem separar **Validação estática** de **Validação de runtime / integração**. O sucesso estático na máquina de desenvolvimento não significa que a implantação de testes, a conexão com o banco, as queries do dashboard ou a correção das métricas tenham sido validadas. Registre o ambiente, a data, os comandos, os resultados e as verificações pendentes de cada marco em [milestones.md](milestones.md).
 
-## Provisioning changes
+## Alterações de provisioning
 
-Provisioned files are mounted read-only. Edit the tracked JSON/YAML and restart Grafana or allow its file watcher to load updates. Export from Grafana only when intentionally updating the versioned dashboard, and remove environment-specific or sensitive values before committing.
+Os arquivos provisionados são montados como read-only. Edite os JSON/YAML versionados e reinicie o Grafana ou aguarde o file watcher carregar as atualizações. Exporte do Grafana somente quando quiser atualizar intencionalmente o dashboard versionado e remova valores específicos do ambiente ou sensíveis antes do commit.
 
-## Official references
+## Referências oficiais
 
-- [Install Docker Engine on Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
-- [Install the Docker Compose plugin](https://docs.docker.com/compose/install/linux/)
-- [Linux post-installation steps for Docker Engine](https://docs.docker.com/engine/install/linux-postinstall/)
-- [Port publishing and mapping](https://docs.docker.com/engine/network/port-publishing/)
+- [Instalar Docker Engine no Ubuntu](https://docs.docker.com/engine/install/ubuntu/)
+- [Instalar o plugin Docker Compose](https://docs.docker.com/compose/install/linux/)
+- [Etapas pós-instalação do Docker Engine no Linux](https://docs.docker.com/engine/install/linux-postinstall/)
+- [Publicação e mapeamento de portas](https://docs.docker.com/engine/network/port-publishing/)

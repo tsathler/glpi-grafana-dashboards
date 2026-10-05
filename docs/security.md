@@ -1,20 +1,20 @@
-# Security
+# Segurança
 
-- The current test host keeps MariaDB bound to `127.0.0.1:3306`; it is not exposed on the network. Grafana uses host networking in this same-host setup to connect locally. Do not expose MariaDB without a documented need.
-- MariaDB access for Grafana uses the dedicated `grafana_reader@localhost` account with only `SELECT` on `glpi.*`. It must not have `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER`, or `DROP` privileges. The connection was validated directly and through the provisioned **GLPI MySQL** datasource.
-- With the current host networking configuration, Grafana listens on port 3000 on the test host. Restrict access at the host/network boundary; use an appropriate TLS-enabled reverse proxy when exposing it beyond a trusted local network.
-- Change the initial Grafana admin password and protect the admin account. User sign-up is disabled.
-- Ticket data can contain personal or confidential information. Limit dashboard access and avoid publishing real ticket data, usernames, entity names, or internal host details.
-- The database account follows least privilege: read-only access only. The firewall restricts Grafana's port 3000 to trusted networks; port 3306 is not exposed for application access.
+- O host de testes atual mantém o MariaDB vinculado a `127.0.0.1:3306`; ele não é exposto à rede. Nesta configuração em que ambos estão no mesmo host, o Grafana usa a rede do host para se conectar localmente. Não exponha o MariaDB sem uma necessidade documentada.
+- O acesso do Grafana ao MariaDB usa a conta dedicada `grafana_reader@localhost`, com somente `SELECT` em `glpi.*`. Ela não deve ter privilégios `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER` ou `DROP`. A conexão foi validada diretamente e pelo datasource provisionado **GLPI MySQL**.
+- Com a configuração atual de rede do host, o Grafana escuta na porta 3000 do host de testes. Restrinja o acesso no limite do host/rede; use um proxy reverso adequado com TLS ao disponibilizá-lo além de uma rede local confiável.
+- Altere a senha inicial de administrador do Grafana e proteja essa conta. O cadastro de usuários está desabilitado.
+- Os dados dos chamados podem conter informações pessoais ou confidenciais. Limite o acesso ao dashboard e evite publicar dados reais de chamados, nomes de usuário, nomes de entidades ou detalhes internos do host.
+- A conta do banco segue o princípio do menor privilégio: somente acesso read-only. O firewall restringe a porta 3000 do Grafana às redes confiáveis; a porta 3306 não é exposta para acesso da aplicação.
 
-## Secret management
+## Gerenciamento de secrets
 
-- Never commit `.env`. Each environment keeps its own local configuration; `.env.example` contains placeholders only.
-- Keep Grafana administrator and MariaDB credentials independent. Never reuse the Grafana admin account as the database account or vice versa.
-- The versioned datasource configuration uses `secureJsonData` for its password. Do not put credentials in dashboards, logs, documentation, or Git.
-- GitHub Actions CI requires no secrets. It uses placeholder configuration for static checks and does not connect to test services or deploy.
-- Rotate any credential suspected or confirmed to have been exposed. Removing a value from the current file does not remove it from Git history; treat committed credentials as compromised and rotate them. Historical cleanup requires a separate, controlled history-rewrite task.
+- Nunca faça commit de `.env`. Cada ambiente mantém sua própria configuração local; `.env.example` contém somente valores de exemplo.
+- Mantenha separadas as credenciais do administrador do Grafana e do MariaDB. Nunca reutilize a conta administrativa do Grafana como conta do banco, nem o contrário.
+- A configuração versionada do datasource usa `secureJsonData` para a senha. Não inclua credenciais em dashboards, logs, documentação ou no Git.
+- A CI do GitHub Actions não exige secrets. Ela usa configuração com valores de exemplo para as verificações estáticas e não se conecta aos serviços de testes nem faz deploy.
+- Troque qualquer credencial suspeita ou confirmadamente exposta. Remover um valor do arquivo atual não o remove do histórico do Git; considere credenciais commitadas comprometidas e troque-as. A limpeza do histórico exige uma tarefa separada e controlada de reescrita do histórico.
 
-## Repository review
+## Revisão do repositório
 
-The current review scanned the working tree and all reachable Git commits for credential patterns, private keys, common token formats, authorization/cookie headers, private network addresses, common internal hostname suffixes, and sensitive artifact filenames. It found no tracked credentials, private keys, matching secret patterns, private network addresses, internal hostname matches, or sensitive artifact files. A local `.env` file exists in the working tree and is ignored by Git; it was not displayed or added. These checks reduce risk but cannot prove that every possible secret format is absent.
+A revisão atual analisou a árvore de trabalho e todos os commits alcançáveis do Git em busca de padrões de credenciais, chaves privadas, formatos comuns de tokens, cabeçalhos de autorização/cookie, endereços de rede privados, sufixos comuns de hostname interno e nomes de arquivos de artefatos sensíveis. Não encontrou credenciais versionadas, chaves privadas, padrões de secrets, endereços de rede privados, correspondências de hostnames internos nem arquivos de artefatos sensíveis. Há um arquivo `.env` local na árvore de trabalho, ignorado pelo Git; ele não foi exibido nem adicionado. Essas verificações reduzem riscos, mas não provam a ausência de todos os formatos possíveis de secrets.
