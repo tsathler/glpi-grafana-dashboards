@@ -21,7 +21,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#356FA8"
-          }
+          },
+          "displayName": "Chamados novos"
         },
         "overrides": []
       },
@@ -44,8 +45,8 @@
           "fields": "",
           "values": false
         },
-        "textMode": "auto",
-        "wideLayout": true
+        "textMode": "value_and_name",
+        "wideLayout": false
       },
       "pluginVersion": "13.2.2",
       "targets": [
@@ -61,7 +62,7 @@
           "refId": "A"
         }
       ],
-      "title": "Chamados novos",
+      "title": "",
       "type": "stat"
     },
     {
