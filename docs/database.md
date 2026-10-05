@@ -56,3 +56,11 @@ The validated ticket lifecycle sequence is `date` → `takeintoaccountdate` → 
 User and technician, group, category, and entity relations can change row counts when joined. Do not assume a joined result has one row per ticket. Use `COUNT(DISTINCT t.id)` or pre-aggregate each one-to-many relation before combining it with ticket rows, as appropriate to the metric. The exploratory queries in `sql/discovery/10-cardinality.sql` document the discovered cardinality checks.
 
 The test-environment SQL results were compared with the GLPI UI and considered coherent. These findings complete discovery only; they do not implement or validate production dashboard metrics. Exploratory scripts remain in `sql/discovery/` for reproducibility and must be run with read-only access.
+
+## Verified Projects discovery findings
+
+The Projects discovery is ongoing for the test environment. `glpi_projects` is the central project table, and `glpi_projecttasks.projects_id` relates tasks to `glpi_projects.id`. Project state completion is represented by `glpi_projectstates.is_finished`. The value `projectstates_id = 0` occurs and means **Sem estado**; it must not be interpreted as an active state.
+
+Projects exist across multiple entities, so all project metrics must respect the selected `$entity` scope. Task metrics must apply that scope through the parent project entity. The project-to-task relationship is one-to-many; future joins must account for that cardinality.
+
+Project types and milestones have no relevant use in the current environment. Planned and actual dates have low coverage. `percent_done` and responsible-user fields are used. Group fields have no relevant use in the current environment. No internal entity, project, or user names or raw environment data are recorded here.

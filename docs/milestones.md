@@ -113,7 +113,7 @@ Create a second, independent dashboard dedicated to the health and evolution of 
 
 The milestone will provision a separate dashboard file, independent of the current dashboard. File name, UID, and final layout are intentionally undecided.
 
-### Initial scope
+### Backlog dashboard scope
 
 1. **Current backlog:** count tickets that are not yet solved or closed, with `is_deleted = 0` and the **Entity** variable. The exact SQL definition must be validated before implementation.
 2. **Backlog aging:** distribute open tickets into proposed age bands: < 1 day, 1–3 days, 3–7 days, 7–30 days, and > 30 days. Review these bands before implementation.
@@ -146,7 +146,7 @@ Status: Planned
 
 The initial discovery is complete and versioned in [11-projects-schema.sql](../sql/discovery/11-projects-schema.sql), [12-projects-domains.sql](../sql/discovery/12-projects-domains.sql), [13-project-tasks.sql](../sql/discovery/13-project-tasks.sql), and [14-projects-cardinality.sql](../sql/discovery/14-projects-cardinality.sql). No production metric queries have been created, and no Projects dashboard has been implemented. Work will resume in the future from this discovery.
 
-### Initial scope
+### Projects dashboard scope
 
 - An independent dashboard for GLPI projects.
 - An `Entity` filter consistent with the current dashboard.
