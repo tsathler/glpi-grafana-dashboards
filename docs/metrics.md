@@ -2,10 +2,11 @@
 
 ## Implemented
 
-The provisioned **GLPI Service Desk** dashboard contains six current-state snapshots and a time series from Milestone 3, plus a Gauge added afterward. Its read-only queries are versioned in `sql/queries/`:
+The provisioned **GLPI Service Desk** dashboard contains seven current-state snapshots and a time series from Milestone 3, plus a Gauge added afterward. Its read-only queries are versioned in `sql/queries/`:
 
 - **Chamados novos:** current tickets with status `1` and `is_deleted = 0`.
 - **Chamados atribuídos:** current tickets with status `2` and `is_deleted = 0`.
+- **Chamados planejados:** current tickets in Processing (planned), with status `3` and `is_deleted = 0`.
 - **Chamados atrasados:** current non-deleted tickets with `status NOT IN (4, 5, 6)`, `solvedate IS NULL`, and a non-null GLPI-calculated TTR deadline `time_to_resolve` earlier than `NOW()`.
 - **Chamados solucionados:** current tickets with status `5` and `is_deleted = 0`.
 - **Chamados pendentes:** current tickets with status `4` and `is_deleted = 0`.

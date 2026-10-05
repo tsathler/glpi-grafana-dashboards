@@ -24,7 +24,7 @@
       "gridPos": {
         "x": 0,
         "y": 0,
-        "w": 8,
+        "w": 6,
         "h": 5
       },
       "id": 1,
@@ -75,9 +75,9 @@
         "overrides": []
       },
       "gridPos": {
-        "x": 8,
+        "x": 6,
         "y": 0,
-        "w": 8,
+        "w": 6,
         "h": 5
       },
       "id": 2,
@@ -118,6 +118,59 @@
         "type": "mysql",
         "uid": "glpi-mysql"
       },
+      "description": "Snapshot atual: status Processing (planned), não deletados. Independente do time picker.",
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "mappings": [],
+          "unit": "none"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 12,
+        "y": 0,
+        "w": 6,
+        "h": 5
+      },
+      "id": 9,
+      "options": {
+        "colorMode": "none",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "auto",
+        "wideLayout": true
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Processing (planned).\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 3\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);",
+          "refId": "A"
+        }
+      ],
+      "title": "Chamados planejados",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
       "description": "Tickets abertos e não deletados cujo deadline TTR calculado pelo GLPI já passou. Sem deadline, não conta como atrasado.",
       "fieldConfig": {
         "defaults": {
@@ -128,9 +181,9 @@
         "overrides": []
       },
       "gridPos": {
-        "x": 16,
+        "x": 18,
         "y": 0,
-        "w": 8,
+        "w": 6,
         "h": 5
       },
       "id": 3,
@@ -183,7 +236,7 @@
       "gridPos": {
         "x": 0,
         "y": 5,
-        "w": 8,
+        "w": 6,
         "h": 5
       },
       "id": 4,
@@ -234,9 +287,9 @@
         "overrides": []
       },
       "gridPos": {
-        "x": 8,
+        "x": 6,
         "y": 5,
-        "w": 8,
+        "w": 6,
         "h": 5
       },
       "id": 5,
@@ -287,9 +340,9 @@
         "overrides": []
       },
       "gridPos": {
-        "x": 16,
+        "x": 12,
         "y": 5,
-        "w": 8,
+        "w": 6,
         "h": 5
       },
       "id": 6,
@@ -324,6 +377,72 @@
       ],
       "title": "Chamados",
       "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "description": "Percentual de chamados solucionados dentro do prazo TTR entre os chamados solucionados com TTR aplicável.",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "decimals": 1,
+          "max": 100,
+          "min": 0,
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "blue",
+                "value": null
+              }
+            ]
+          },
+          "unit": "percent"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 18,
+        "y": 5,
+        "w": 6,
+        "h": 5
+      },
+      "id": 8,
+      "options": {
+        "minVizHeight": 75,
+        "minVizWidth": 75,
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "-- Resolution compliance for solved tickets with a GLPI-calculated TTR deadline.\n-- Uses the stored deadline; SLA calendars are not reconstructed.\nSELECT 100.0 * SUM(CASE WHEN t.solvedate <= t.time_to_resolve THEN 1 ELSE 0 END)\n       / NULLIF(COUNT(*), 0) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.solvedate IS NOT NULL\n  AND t.time_to_resolve IS NOT NULL\n  AND t.entities_id IN ($entity)\n  AND $__timeFilter(t.solvedate);",
+          "refId": "A"
+        }
+      ],
+      "title": "Eficiência de resolução (SLA)",
+      "type": "gauge"
     },
     {
       "datasource": {
@@ -406,72 +525,6 @@
       ],
       "title": "Fluxo de chamados",
       "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "mysql",
-        "uid": "glpi-mysql"
-      },
-      "description": "Percentual de chamados solucionados dentro do prazo TTR entre os chamados solucionados com TTR aplicável.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "decimals": 1,
-          "max": 100,
-          "min": 0,
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "blue",
-                "value": null
-              }
-            ]
-          },
-          "unit": "percent"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "x": 16,
-        "y": 10,
-        "w": 8,
-        "h": 10
-      },
-      "id": 8,
-      "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": false
-      },
-      "pluginVersion": "13.2.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "mysql",
-            "uid": "glpi-mysql"
-          },
-          "editorMode": "code",
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "-- Resolution compliance for solved tickets with a GLPI-calculated TTR deadline.\n-- Uses the stored deadline; SLA calendars are not reconstructed.\nSELECT 100.0 * SUM(CASE WHEN t.solvedate <= t.time_to_resolve THEN 1 ELSE 0 END)\n       / NULLIF(COUNT(*), 0) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.solvedate IS NOT NULL\n  AND t.time_to_resolve IS NOT NULL\n  AND t.entities_id IN ($entity)\n  AND $__timeFilter(t.solvedate);",
-          "refId": "A"
-        }
-      ],
-      "title": "Eficiência de resolução (SLA)",
-      "type": "gauge"
     }
   ],
   "schemaVersion": 41,
