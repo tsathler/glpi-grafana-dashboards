@@ -20,7 +20,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "blue"
+            "fixedColor": "#5794F2"
           }
         },
         "overrides": []
@@ -77,7 +77,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "cyan"
+            "fixedColor": "#6ED0E0"
           }
         },
         "overrides": []
@@ -134,7 +134,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "purple"
+            "fixedColor": "#B877D9"
           }
         },
         "overrides": []
@@ -191,7 +191,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "red"
+            "fixedColor": "#F2495C"
           }
         },
         "overrides": []
@@ -248,7 +248,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "green"
+            "fixedColor": "#73BF69"
           }
         },
         "overrides": []
@@ -305,7 +305,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "yellow"
+            "fixedColor": "#FF9830"
           }
         },
         "overrides": []
@@ -362,7 +362,7 @@
           "unit": "short",
           "color": {
             "mode": "fixed",
-            "fixedColor": "semi-dark-blue"
+            "fixedColor": "#8A9AAE"
           }
         },
         "overrides": []
@@ -425,8 +425,16 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "blue",
+                "color": "red",
                 "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 80
+              },
+              {
+                "color": "green",
+                "value": 95
               }
             ]
           },
