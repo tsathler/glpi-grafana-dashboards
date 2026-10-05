@@ -471,8 +471,8 @@
         "showThresholdMarkers": false,
         "effects": {
           "gradient": false,
-          "barGlow": true,
-          "centerGlow": true
+          "barGlow": false,
+          "centerGlow": false
         },
         "barShape": "rounded",
         "barWidthFactor": 0.65,
