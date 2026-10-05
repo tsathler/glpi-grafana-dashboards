@@ -17,7 +17,11 @@
         "defaults": {
           "decimals": 0,
           "mappings": [],
-          "unit": "none"
+          "unit": "none",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "blue"
+          }
         },
         "overrides": []
       },
@@ -29,7 +33,7 @@
       },
       "id": 1,
       "options": {
-        "colorMode": "none",
+        "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -70,7 +74,11 @@
         "defaults": {
           "decimals": 0,
           "mappings": [],
-          "unit": "none"
+          "unit": "none",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "cyan"
+          }
         },
         "overrides": []
       },
@@ -82,7 +90,7 @@
       },
       "id": 2,
       "options": {
-        "colorMode": "none",
+        "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -123,7 +131,11 @@
         "defaults": {
           "decimals": 0,
           "mappings": [],
-          "unit": "none"
+          "unit": "none",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "purple"
+          }
         },
         "overrides": []
       },
@@ -135,7 +147,7 @@
       },
       "id": 9,
       "options": {
-        "colorMode": "none",
+        "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -176,7 +188,11 @@
         "defaults": {
           "decimals": 0,
           "mappings": [],
-          "unit": "none"
+          "unit": "none",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "red"
+          }
         },
         "overrides": []
       },
@@ -188,7 +204,7 @@
       },
       "id": 3,
       "options": {
-        "colorMode": "none",
+        "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -229,7 +245,11 @@
         "defaults": {
           "decimals": 0,
           "mappings": [],
-          "unit": "none"
+          "unit": "none",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "green"
+          }
         },
         "overrides": []
       },
@@ -241,7 +261,7 @@
       },
       "id": 4,
       "options": {
-        "colorMode": "none",
+        "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -282,7 +302,11 @@
         "defaults": {
           "decimals": 0,
           "mappings": [],
-          "unit": "none"
+          "unit": "none",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "yellow"
+          }
         },
         "overrides": []
       },
@@ -294,7 +318,7 @@
       },
       "id": 5,
       "options": {
-        "colorMode": "none",
+        "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -335,7 +359,11 @@
         "defaults": {
           "decimals": 1,
           "mappings": [],
-          "unit": "short"
+          "unit": "short",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "semi-dark-blue"
+          }
         },
         "overrides": []
       },
@@ -347,7 +375,7 @@
       },
       "id": 6,
       "options": {
-        "colorMode": "none",
+        "colorMode": "value",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
