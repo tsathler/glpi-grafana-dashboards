@@ -97,6 +97,12 @@ Runtime and semantic validation was completed in the test environment against th
 
 This improvement was validated at runtime after Milestone 3 was completed. The Gauge percentage matched a direct SQL calculation in the test environment. Milestone 3 remains Complete; Milestone 4 has not started.
 
+## Current stable state
+
+The current **GLPI Service Desk** dashboard is functional and runtime validated. Milestones 1, 2, and 3 remain Complete. The post-Milestone 3 SLA improvement and subsequent visual refinements are incorporated. The current state is considered stable; new functionality is outside the immediate scope.
+
+The current Service Desk dashboard is considered stable. Further feature work is deferred; changes should be limited to bug fixes, security, compatibility, or explicitly resumed roadmap work.
+
 ## Milestone 4 — Backlog Dashboard
 
 Status: Planned
@@ -133,3 +139,20 @@ Before implementing the dashboard:
 5. Only then implement and provision the separate dashboard.
 
 No SQL, dashboard, GLPI database, schema, or application changes are included while this milestone is Planned.
+
+## Milestone 5 — Projects Dashboard
+
+Status: Planned
+
+The initial discovery is complete and versioned in [11-projects-schema.sql](../sql/discovery/11-projects-schema.sql), [12-projects-domains.sql](../sql/discovery/12-projects-domains.sql), [13-project-tasks.sql](../sql/discovery/13-project-tasks.sql), and [14-projects-cardinality.sql](../sql/discovery/14-projects-cardinality.sql). No production metric queries have been created, and no Projects dashboard has been implemented. Work will resume in the future from this discovery.
+
+### Initial scope
+
+- An independent dashboard for GLPI projects.
+- An `Entity` filter consistent with the current dashboard.
+- Project and task views, including states and progress.
+- Explicit handling of projects and tasks without a state.
+- Possible identification of overdue projects, only after its semantics are validated.
+- An operational projects table.
+
+Task metrics must use the parent project's entity scope. Project state value `0` means Sem estado, not active. Complete discovery and validate semantics before creating production queries or implementing the dashboard.

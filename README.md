@@ -6,7 +6,7 @@ A Grafana dashboard for GLPI Service Desk data stored in an external MariaDB dat
 
 ## Overview
 
-Milestones 1, 2, and 3 are complete. The **GLPI Service Desk** dashboard and the later **Eficiência de resolução (SLA)** Gauge were validated in the test environment against GLPI and direct SQL. See [database findings](docs/database.md), [metric definitions](docs/metrics.md), and [milestone status](docs/milestones.md).
+Milestones 1, 2, and 3 are complete. The functional **GLPI Service Desk** dashboard and the later **Eficiência de resolução (SLA)** Gauge were validated in the test environment against GLPI and direct SQL. Its post-milestone improvements and visual refinements are incorporated, and the current state is considered stable; further feature work is deferred. See [database findings](docs/database.md), [metric definitions](docs/metrics.md), and [milestone status](docs/milestones.md).
 
 ## Goals
 
@@ -87,4 +87,4 @@ Direct SQL depends on the installed GLPI schema. Validate schema mappings and me
 
 ## Roadmap
 
-Milestone 1: Foundation (complete). Milestone 2: Database Discovery (complete). Milestone 3: Core Metrics (complete). Milestone 4: Backlog Dashboard (planned).
+Milestone 1: Foundation (Complete). Milestone 2: Database Discovery (Complete). Milestone 3: Core Metrics (Complete). Milestone 4: Backlog Dashboard (Planned). Milestone 5: Projects Dashboard (Planned/Future; initial discovery complete, implementation deferred).

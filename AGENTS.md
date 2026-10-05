@@ -12,6 +12,7 @@
 - Treat `time_to_own` and `time_to_resolve` as SLA deadlines, not durations.
 - Avoid `SELECT *` on tables that may contain sensitive data.
 - Do not assume a single entity; metrics must respect the selected entity scope.
+- Project metrics must filter tasks through the parent project's entity scope and must not treat `projectstates_id = 0` as an active state.
 - Do not modify the GLPI database, its schema, or GLPI application code.
 - Update documentation whenever behavior or configuration changes.
 - Prefer straightforward queries and avoid premature abstractions.
