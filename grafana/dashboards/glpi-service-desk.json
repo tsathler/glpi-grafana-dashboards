@@ -20,7 +20,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#2F5D8C"
+            "fixedColor": "#356FA8"
           }
         },
         "overrides": []
@@ -77,7 +77,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#2E6670"
+            "fixedColor": "#347985"
           }
         },
         "overrides": []
@@ -134,7 +134,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#5B4773"
+            "fixedColor": "#6D5489"
           }
         },
         "overrides": []
@@ -191,7 +191,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#7F3B46"
+            "fixedColor": "#934652"
           }
         },
         "overrides": []
@@ -248,7 +248,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#3F6645"
+            "fixedColor": "#4B7752"
           }
         },
         "overrides": []
@@ -305,7 +305,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#7A5529"
+            "fixedColor": "#92642F"
           }
         },
         "overrides": []
@@ -362,7 +362,7 @@
           "unit": "short",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#566574"
+            "fixedColor": "#66798A"
           }
         },
         "overrides": []
