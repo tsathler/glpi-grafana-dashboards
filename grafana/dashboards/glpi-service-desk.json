@@ -20,7 +20,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#347ED4"
+            "fixedColor": "#3A86E9"
           },
           "displayName": "Chamados novos"
         },
@@ -78,7 +78,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#2B8F98"
+            "fixedColor": "#22A6B3"
           },
           "displayName": "Chamados atribuídos"
         },
@@ -136,7 +136,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#8058BE"
+            "fixedColor": "#8B5CF6"
           },
           "displayName": "Chamados planejados"
         },
@@ -194,7 +194,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#B54D5A"
+            "fixedColor": "#D94B57"
           },
           "displayName": "Chamados atrasados"
         },
@@ -252,7 +252,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#4C8A58"
+            "fixedColor": "#4CAF50"
           },
           "displayName": "Chamados solucionados"
         },
@@ -310,7 +310,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#B8782E"
+            "fixedColor": "#F59E0B"
           },
           "displayName": "Chamados pendentes"
         },
@@ -368,7 +368,7 @@
           "unit": "short",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#6E859A"
+            "fixedColor": "#7890A4"
           },
           "displayName": "Chamados"
         },
@@ -436,16 +436,17 @@
                 "value": null
               },
               {
-                "color": "#F59E32",
+                "color": "#F59E0B",
                 "value": 90
               },
               {
-                "color": "#65B867",
+                "color": "#4CAF50",
                 "value": 95
               }
             ]
           },
-          "unit": "percent"
+          "unit": "percent",
+          "displayName": "Eficiência de resolução (SLA)"
         },
         "overrides": []
       },
@@ -453,12 +454,13 @@
         "x": 18,
         "y": 5,
         "w": 6,
-        "h": 15
+        "h": 5
       },
       "id": 8,
       "options": {
-        "minVizHeight": 75,
-        "minVizWidth": 75,
+        "colorMode": "background",
+        "graphMode": "none",
+        "justifyMode": "auto",
         "orientation": "auto",
         "reduceOptions": {
           "calcs": [
@@ -467,11 +469,8 @@
           "fields": "",
           "values": false
         },
-        "showThresholdLabels": false,
-        "showThresholdMarkers": false,
-        "effects": {
-          "gradient": false
-        }
+        "textMode": "value_and_name",
+        "wideLayout": false
       },
       "pluginVersion": "13.2.2",
       "targets": [
@@ -487,8 +486,8 @@
           "refId": "A"
         }
       ],
-      "title": "Eficiência de resolução (SLA)",
-      "type": "gauge"
+      "title": "",
+      "type": "stat"
     },
     {
       "datasource": {
@@ -507,7 +506,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 18,
+            "fillOpacity": 20,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -583,9 +582,9 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 10,
+        "y": 12,
         "w": 18,
-        "h": 10
+        "h": 8
       },
       "id": 7,
       "options": {
@@ -615,8 +614,29 @@
           "refId": "A"
         }
       ],
-      "title": "Fluxo de chamados",
-      "type": "timeseries"
+      "title": "",
+      "type": "timeseries",
+      "transparent": false
+    },
+    {
+      "type": "text",
+      "title": "",
+      "id": 10,
+      "gridPos": {
+        "x": 0,
+        "y": 10,
+        "w": 18,
+        "h": 2
+      },
+      "options": {
+        "mode": "markdown",
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false
+        },
+        "content": "### Fluxo de chamados"
+      },
+      "transparent": false
     }
   ],
   "schemaVersion": 41,
