@@ -33,7 +33,7 @@
       },
       "id": 1,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -90,7 +90,7 @@
       },
       "id": 2,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -147,7 +147,7 @@
       },
       "id": 9,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -204,7 +204,7 @@
       },
       "id": 3,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -261,7 +261,7 @@
       },
       "id": 4,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -318,7 +318,7 @@
       },
       "id": 5,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -375,7 +375,7 @@
       },
       "id": 6,
       "options": {
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -429,8 +429,8 @@
                 "value": null
               },
               {
-                "color": "yellow",
-                "value": 80
+                "color": "orange",
+                "value": 90
               },
               {
                 "color": "green",
@@ -461,7 +461,10 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": false
+        "showThresholdMarkers": false,
+        "effects": {
+          "gradient": false
+        }
       },
       "pluginVersion": "13.2.2",
       "targets": [
