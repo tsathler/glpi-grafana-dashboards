@@ -20,7 +20,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#3A86E9"
+            "fixedColor": "#2F7ED8"
           },
           "displayName": "Chamados novos"
         },
@@ -78,9 +78,9 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#2F96A8"
+            "fixedColor": "#238A95"
           },
-          "displayName": "Chamados atribu?dos"
+          "displayName": "Chamados atribuídos"
         },
         "overrides": []
       },
@@ -136,7 +136,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#7C5CC8"
+            "fixedColor": "#744DB7"
           },
           "displayName": "Chamados planejados"
         },
@@ -194,7 +194,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#B44C5A"
+            "fixedColor": "#A94452"
           },
           "displayName": "Chamados atrasados"
         },
@@ -252,7 +252,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#4F8E5D"
+            "fixedColor": "#3F7F4C"
           },
           "displayName": "Chamados solucionados"
         },
@@ -310,7 +310,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#B9782F"
+            "fixedColor": "#A96B26"
           },
           "displayName": "Chamados pendentes"
         },
@@ -368,7 +368,7 @@
           "unit": "short",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#70859A"
+            "fixedColor": "#60788F"
           },
           "displayName": "Chamados"
         },
