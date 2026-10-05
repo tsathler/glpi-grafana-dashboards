@@ -681,6 +681,8 @@
         }
       ],
       "title": "Fluxo de chamados",
+      "description": "Criados x solucionados no período selecionado",
+      "transparent": false,
       "type": "timeseries",
       "interval": "1d",
       "maxDataPoints": 120
