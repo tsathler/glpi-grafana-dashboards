@@ -2,89 +2,89 @@
 
 [![CI](https://github.com/tsathler/glpi-service-desk-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/tsathler/glpi-service-desk-dashboard/actions/workflows/ci.yml)
 
-A Grafana dashboard for GLPI Service Desk data stored in an external MariaDB database. The main Compose stack runs Grafana only; the optional demo adds an isolated MariaDB with synthetic tickets. Metric SQL is versioned alongside the dashboard.
+Um dashboard do Grafana para dados do GLPI Service Desk armazenados em um banco MariaDB externo. A stack principal do Compose executa somente o Grafana; a demonstração opcional adiciona um MariaDB isolado com chamados sintéticos. O SQL das métricas é versionado junto com o dashboard.
 
-## Overview
+## Visão geral
 
-Milestones 1, 2, and 3 are complete. The functional **GLPI Service Desk** dashboard and the later **Eficiência de resolução (SLA)** Gauge were validated in the test environment against GLPI and direct SQL. Its post-milestone improvements and visual refinements are incorporated, and the current state is considered stable; further feature work is deferred. See [database findings](docs/database.md), [metric definitions](docs/metrics.md), and [milestone status](docs/milestones.md).
+Os marcos 1, 2 e 3 estão concluídos. O dashboard funcional **GLPI Service Desk** e o Gauge **Eficiência de resolução (SLA)**, adicionado posteriormente, foram validados no ambiente de testes com o GLPI e SQL direto. As melhorias e os refinamentos visuais posteriores aos marcos já estão incorporados, e o estado atual é considerado estável; novas funcionalidades estão adiadas. Consulte [os achados do banco de dados](docs/database.md), [as definições das métricas](docs/metrics.md) e [o status dos marcos](docs/milestones.md).
 
-## Goals
+## Objetivos
 
-Provide a reproducible view of ticket status, flow, and TTR compliance with read-only database access.
+Oferecer uma visão reproduzível do status e fluxo dos chamados e do cumprimento do TTR, com acesso read-only ao banco de dados.
 
-## Architecture
+## Arquitetura
 
-See [docs/architecture.md](docs/architecture.md).
+Consulte [docs/architecture.md](docs/architecture.md).
 
-## Features
+## Funcionalidades
 
-- Six current-state ticket cards filtered by the **Entity** selector.
-- **Fluxo de chamados** time series with Criados, Solucionados, and Saldo.
-- **Eficiência de resolução (SLA)** Gauge based on GLPI's calculated TTR deadline.
-- Provisioned MySQL datasource and dashboard, persistent Grafana volume, and versioned read-only SQL.
+- Seis cards com o estado atual dos chamados, filtrados pelo seletor **Entity**.
+- Série temporal **Fluxo de chamados** com Criados, Solucionados e Saldo.
+- Gauge **Eficiência de resolução (SLA)** baseado no prazo TTR calculado pelo GLPI.
+- Datasource MySQL e dashboard provisionados, volume persistente do Grafana e SQL read-only versionado.
 
-## Stack
+## Tecnologias
 
-Grafana 13, MariaDB, SQL, Docker Compose, Linux, and GitHub Actions.
+Grafana 13, MariaDB, SQL, Docker Compose, Linux e GitHub Actions.
 
-## Repository Structure
+## Estrutura do repositório
 
-Dashboard JSON and provisioning live under `grafana/`. Metric queries are in `sql/queries/`; schema discovery scripts are in `sql/discovery/`. See [development instructions](docs/development.md).
+O JSON do dashboard e os arquivos de provisioning ficam em `grafana/`. As queries das métricas estão em `sql/queries/`; os scripts de discovery do schema estão em `sql/discovery/`. Consulte as [instruções de desenvolvimento](docs/development.md).
 
-## Requirements
+## Requisitos
 
-A Linux host with Docker Engine and Docker Compose. Integrated mode needs a reachable GLPI MariaDB database; the optional demo does not. Grafana can start without database connectivity.
+Um host Linux com Docker Engine e Docker Compose. O modo integrado requer acesso a um banco MariaDB do GLPI; a demonstração opcional não. O Grafana pode iniciar sem conectividade com o banco de dados.
 
-## Configuration
+## Configuração
 
-Each integrated environment keeps its own local `.env`. Copy `.env.example` to `.env` and replace every placeholder. The demo uses a separate ignored `.env.demo`, copied from `.env.demo.example`. Never commit local environment files or real credentials.
+Cada ambiente integrado mantém seu próprio `.env` local. Copie `.env.example` para `.env` e substitua todos os valores de exemplo. A demonstração usa um `.env.demo` separado e ignorado pelo Git, copiado de `.env.demo.example`. Nunca faça commit de arquivos locais de ambiente ou credenciais reais.
 
-## Database Access
+## Acesso ao banco de dados
 
-Use a dedicated database account with `SELECT` permission only. See [docs/security.md](docs/security.md) and [docs/database.md](docs/database.md).
+Use uma conta de banco de dados dedicada, com permissão somente de `SELECT`. Consulte [docs/security.md](docs/security.md) e [docs/database.md](docs/database.md).
 
-## Running
+## Execução
 
 ```sh
 docker compose up -d
 ```
 
-Open `http://localhost:3000` and sign in with the configured Grafana admin credentials. See [docs/development.md](docs/development.md) for operations and validation.
+Abra `http://localhost:3000` e entre com as credenciais administrativas configuradas para o Grafana. Consulte [docs/development.md](docs/development.md) para instruções de operação e validação.
 
 ## Dashboard
 
-The provisioned **GLPI Service Desk** dashboard has six status cards, an entity selector, **Fluxo de chamados**, and **Eficiência de resolução (SLA)**. The cards show current snapshots; the time series and Gauge follow the selected time range. The Gauge measures TTR compliance among solved tickets with an applicable deadline.
+O dashboard provisionado **GLPI Service Desk** contém seis cards de status, um seletor de entidade, **Fluxo de chamados** e **Eficiência de resolução (SLA)**. Os cards mostram snapshots atuais; a série temporal e o Gauge respeitam o período selecionado. O Gauge mede o cumprimento do TTR entre os chamados solucionados que possuem um prazo aplicável.
 
-## Demo
+## Demonstração
 
-An optional demo runs the same dashboard and queries against a separate MariaDB container with entirely synthetic tickets. Use it to evaluate the panels or capture screenshots without GLPI access. See [demo instructions](demo/README.md).
+Uma demonstração opcional executa o mesmo dashboard e as mesmas queries em um container MariaDB separado, com chamados totalmente sintéticos. Use-a para avaliar os painéis ou capturar screenshots sem acesso ao GLPI. Consulte as [instruções da demonstração](demo/README.md).
 
-## Screenshot
+## Captura de tela
 
-The dashboard screenshot is not included yet. Add it manually at `docs/images/dashboard-overview.png` when available.
+Uma captura de tela do dashboard ainda não está incluída. Quando estiver disponível, adicione-a manualmente em `docs/images/dashboard-overview.png`.
 
-<!-- ![GLPI Service Desk dashboard](docs/images/dashboard-overview.png) -->
+<!-- ![Dashboard GLPI Service Desk](docs/images/dashboard-overview.png) -->
 
-## Metrics
+## Métricas
 
-Metric definitions and validation status are in [docs/metrics.md](docs/metrics.md). The dashboard's read-only queries are versioned in `sql/queries/`.
+As definições das métricas e o status de validação estão em [docs/metrics.md](docs/metrics.md). As queries read-only do dashboard são versionadas em `sql/queries/`.
 
-## Security
+## Segurança
 
-See [docs/security.md](docs/security.md). The current test setup keeps MariaDB bound to localhost and uses a dedicated read-only account.
+Consulte [docs/security.md](docs/security.md). A configuração atual de testes mantém o MariaDB vinculado ao localhost e usa uma conta dedicada com acesso read-only.
 
-## Validation
+## Validação
 
-GitHub Actions checks Compose, JSON, YAML, Markdown, read-only SQL, query/dashboard parity, synthetic demo generation, Git whitespace, and environment file tracking. CI does not connect to GLPI or deploy. Runtime checks belong in the test environment after `git pull`; see [docs/development.md](docs/development.md).
+O GitHub Actions valida Compose, JSON, YAML, Markdown, SQL read-only, paridade entre queries e dashboard, geração da demonstração sintética, espaços em branco do Git e rastreamento de arquivos de ambiente. A CI não se conecta ao GLPI nem faz deploy. As validações de runtime devem ser feitas no ambiente de testes após `git pull`; consulte [docs/development.md](docs/development.md).
 
-## AI-assisted development
+## Desenvolvimento com apoio de IA
 
-AI tools supported research, implementation, and documentation. Architecture, SQL, security, runtime behavior, and metric results were reviewed and validated manually against the test environment and GLPI interface.
+Ferramentas de IA apoiaram a pesquisa, a implementação e a documentação. A arquitetura, o SQL, a segurança, o comportamento em runtime e os resultados das métricas foram revisados e validados manualmente no ambiente de testes e na interface do GLPI.
 
-## Limitations
+## Limitações
 
-Direct SQL depends on the installed GLPI schema. Validate schema mappings and metric results again when deploying to another GLPI installation.
+O SQL direto depende do schema GLPI instalado. Valide novamente os mapeamentos do schema e os resultados das métricas ao implantar em outra instalação do GLPI.
 
-## Roadmap
+## Roteiro
 
-Milestone 1: Foundation (Complete). Milestone 2: Database Discovery (Complete). Milestone 3: Core Metrics (Complete). Milestone 4: Backlog Dashboard (Planned). Milestone 5: Projects Dashboard (Planned/Future; initial discovery complete, implementation deferred).
+Marco 1: Fundação (Concluído). Marco 2: Discovery do banco de dados (Concluído). Marco 3: Métricas principais (Concluído). Marco 4: Dashboard de backlog (Planejado). Marco 5: Dashboard de Projetos (Planejado/Futuro; discovery inicial concluído, implementação adiada).
