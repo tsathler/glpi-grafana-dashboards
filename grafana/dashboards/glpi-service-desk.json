@@ -471,8 +471,12 @@
         "showThresholdMarkers": false,
         "effects": {
           "gradient": false,
-          "barGlow": true
-        }
+          "barGlow": true,
+          "centerGlow": true
+        },
+        "barShape": "rounded",
+        "barWidthFactor": 0.65,
+        "endpointMarker": "glow"
       },
       "pluginVersion": "13.2.2",
       "targets": [
@@ -570,6 +574,10 @@
                   "mode": "none",
                   "group": "A"
                 }
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "smooth"
               }
             ]
           },
@@ -608,6 +616,10 @@
                   "mode": "none",
                   "group": "A"
                 }
+              },
+              {
+                "id": "custom.lineInterpolation",
+                "value": "smooth"
               }
             ]
           },
