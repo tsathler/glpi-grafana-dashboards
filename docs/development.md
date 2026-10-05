@@ -151,7 +151,7 @@ Grafana admin credentials and MariaDB credentials are independent. `GRAFANA_ADMI
 
 ## Development machine: static validation
 
-GitHub Actions runs these static checks on pushes and pull requests: `docker compose config` with values copied from `.env.example`, dashboard JSON parsing, YAML parsing, Markdown lint, read-only SQL inspection, versioned query/dashboard parity, Git whitespace, and checks that `.env` is untracked and `.env.example` exists. It does not start containers, use test-environment secrets, or connect to MySQL/GLPI. Credentials must stay outside Git; `.env` must not be versioned. A dedicated secret-scanning tool may be considered separately in the future.
+GitHub Actions runs these static checks on pushes and pull requests: `docker compose config` with values copied from `.env.example`, dashboard JSON parsing, YAML parsing, Markdown lint, read-only SQL inspection, versioned query/dashboard parity, synthetic demo generation/schema checks, Git whitespace, and checks that local environment files are untracked. It does not start containers, use test-environment secrets, or connect to MySQL/GLPI. Credentials must stay outside Git; `.env` and `.env.demo` must not be versioned. A dedicated secret-scanning tool may be considered separately in the future.
 
 Validate what does not require the integrated environment:
 

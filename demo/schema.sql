@@ -1,0 +1,16 @@
+USE glpi;
+
+CREATE TABLE glpi_entities (
+    id INT UNSIGNED NOT NULL PRIMARY KEY,
+    completename VARCHAR(255) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE glpi_tickets (
+    id INT UNSIGNED NOT NULL PRIMARY KEY,
+    entities_id INT UNSIGNED NOT NULL,
+    date DATETIME NOT NULL,
+    solvedate DATETIME NULL,
+    status TINYINT UNSIGNED NOT NULL,
+    is_deleted TINYINT(1) NOT NULL DEFAULT 0,
+    time_to_resolve DATETIME NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

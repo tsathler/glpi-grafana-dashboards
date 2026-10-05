@@ -2,7 +2,7 @@
 
 [![CI](https://github.com/tsathler/glpi-service-desk-dashboard/actions/workflows/ci.yml/badge.svg)](https://github.com/tsathler/glpi-service-desk-dashboard/actions/workflows/ci.yml)
 
-A Grafana dashboard for GLPI Service Desk data stored in an external MariaDB database. This repository runs Grafana only; metric SQL is versioned alongside the dashboard.
+A Grafana dashboard for GLPI Service Desk data stored in an external MariaDB database. The main Compose stack runs Grafana only; the optional demo adds an isolated MariaDB with synthetic tickets. Metric SQL is versioned alongside the dashboard.
 
 ## Overview
 
@@ -33,11 +33,11 @@ Dashboard JSON and provisioning live under `grafana/`. Metric queries are in `sq
 
 ## Requirements
 
-A Linux host with Docker Engine and Docker Compose, plus a reachable GLPI MariaDB database for data queries. Grafana can start without database connectivity.
+A Linux host with Docker Engine and Docker Compose. Integrated mode needs a reachable GLPI MariaDB database; the optional demo does not. Grafana can start without database connectivity.
 
 ## Configuration
 
-Each environment keeps its own local `.env`. Copy `.env.example` to `.env` and replace every placeholder on the development machine and again on the test environment. Only `.env.example` is versioned; never commit `.env` or environment-specific values.
+Each integrated environment keeps its own local `.env`. Copy `.env.example` to `.env` and replace every placeholder. The demo uses a separate ignored `.env.demo`, copied from `.env.demo.example`. Never commit local environment files or real credentials.
 
 ## Database Access
 
@@ -55,6 +55,10 @@ Open `http://localhost:3000` and sign in with the configured Grafana admin crede
 
 The provisioned **GLPI Service Desk** dashboard has six status cards, an entity selector, **Fluxo de chamados**, and **Eficiência de resolução (SLA)**. The cards show current snapshots; the time series and Gauge follow the selected time range. The Gauge measures TTR compliance among solved tickets with an applicable deadline.
 
+## Demo
+
+An optional demo runs the same dashboard and queries against a separate MariaDB container with entirely synthetic tickets. Use it to evaluate the panels or capture screenshots without GLPI access. See [demo instructions](demo/README.md).
+
 ## Screenshot
 
 The dashboard screenshot is not included yet. Add it manually at `docs/images/dashboard-overview.png` when available.
@@ -71,7 +75,7 @@ See [docs/security.md](docs/security.md). The current test setup keeps MariaDB b
 
 ## Validation
 
-GitHub Actions checks Compose, JSON, YAML, Markdown, read-only SQL, query/dashboard parity, Git whitespace, and environment file tracking. CI does not connect to GLPI or deploy. Runtime checks belong in the test environment after `git pull`; see [docs/development.md](docs/development.md).
+GitHub Actions checks Compose, JSON, YAML, Markdown, read-only SQL, query/dashboard parity, synthetic demo generation, Git whitespace, and environment file tracking. CI does not connect to GLPI or deploy. Runtime checks belong in the test environment after `git pull`; see [docs/development.md](docs/development.md).
 
 ## AI-assisted development
 
