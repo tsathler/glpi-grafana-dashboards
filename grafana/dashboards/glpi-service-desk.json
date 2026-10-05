@@ -25,7 +25,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<h2>Suporte Técnico</h2>",
+        "content": "<div style=\"font-size:38px;font-weight:700;letter-spacing:0.5px;line-height:1.2;\">Suporte Técnico</div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
