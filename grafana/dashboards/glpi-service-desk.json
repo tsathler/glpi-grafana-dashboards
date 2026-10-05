@@ -470,7 +470,8 @@
         "showThresholdLabels": false,
         "showThresholdMarkers": false,
         "effects": {
-          "gradient": false
+          "gradient": false,
+          "barGlow": true
         }
       },
       "pluginVersion": "13.2.2",
@@ -557,7 +558,7 @@
               },
               {
                 "id": "custom.fillOpacity",
-                "value": 10
+                "value": 0
               },
               {
                 "id": "custom.showPoints",
@@ -595,7 +596,7 @@
               },
               {
                 "id": "custom.fillOpacity",
-                "value": 10
+                "value": 0
               },
               {
                 "id": "custom.showPoints",
@@ -633,7 +634,7 @@
               },
               {
                 "id": "custom.fillOpacity",
-                "value": 75
+                "value": 60
               },
               {
                 "id": "custom.showPoints",
