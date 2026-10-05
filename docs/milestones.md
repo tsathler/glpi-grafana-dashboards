@@ -30,7 +30,7 @@ Status: Complete
 
 CI runs Compose configuration, dashboard JSON, YAML and Markdown parsing/linting, Git whitespace checks, and checks that `.env` is not tracked and `.env.example` exists. It does not access the test environment, MariaDB, or GLPI, run real queries, use environment credentials, or deploy. A CI workflow being configured is distinct from a successful hosted workflow run; record hosted results separately. See [development.md](development.md).
 
-### Runtime / integration validation
+### Milestone 1 runtime / integration validation
 
 At the close of Milestone 1, the dashboard intentionally contained no functional metrics or queries. That empty state was expected and did not indicate a Milestone 1 failure: it validated the Grafana foundation, provisioning, datasource connectivity, runtime, and persistence only. Core metrics were added in Milestone 3.
 
@@ -81,7 +81,7 @@ Scope: Six current-state ticket cards and the Fluxo de chamados time series, bas
 - [x] Entity variable sourced from `glpi_entities` with `id` as value, `completename` as label, and an All option; SQL filters use the selected entity value.
 - [x] Status cards, total, and overdue count compared with the GLPI UI using the same entity scope and considered coherent.
 
-### Runtime / integration validation
+### Milestone 3 runtime / integration validation
 
 - [x] Entity variable validated in Grafana for the selected entity; all six cards respect the selected entity.
 - [x] Card values were compared with the GLPI UI and considered coherent.
@@ -96,7 +96,6 @@ Runtime and semantic validation was completed in the test environment against th
 ### Post-Milestone 3 improvement: Eficiência de resolução (SLA)
 
 This improvement was validated at runtime after Milestone 3 was completed. The Gauge percentage matched a direct SQL calculation in the test environment. Milestone 3 remains Complete; Milestone 4 has not started.
-
 
 ## Milestone 4 — Backlog Dashboard
 
