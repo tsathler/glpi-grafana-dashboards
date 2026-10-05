@@ -1,4 +1,4 @@
-# Architecture
+# Arquitetura
 
 ```mermaid
 flowchart LR
@@ -10,14 +10,14 @@ flowchart LR
     Grafana -->|SELECT only via localhost| DB
 ```
 
-GLPI remains an existing external application. Its database is also external; the main Compose stack contains only Grafana. Grafana queries MySQL directly through its native data source, keeping the first version small and avoiding a custom backend, ETL, and an additional metrics store. The optional [synthetic demo](../demo/README.md) uses a separate Compose stack with its own MariaDB volume and reuses the same dashboard, datasource provisioning, and metric SQL.
+O GLPI continua sendo uma aplicação externa já existente. Seu banco também é externo; a stack principal do Compose contém apenas o Grafana. O Grafana consulta o MySQL diretamente por meio de seu datasource nativo, mantendo a primeira versão simples e evitando um backend personalizado, ETL e um armazenamento adicional de métricas. A [demonstração sintética](../demo/README.md) opcional usa uma stack Compose separada, com seu próprio volume MariaDB, e reutiliza o mesmo dashboard, o provisioning do datasource e o SQL das métricas.
 
-Prometheus is not used because the initial subject is relational ticket data, not time-series infrastructure telemetry. The GLPI API is not used because read-only SQL against the reporting database is the selected initial path. Database access must use a dedicated least-privilege account. Direct SQL couples queries to the GLPI schema, so schema and version discovery must precede metric implementation.
+O Prometheus não é usado porque o foco inicial são dados relacionais de chamados, e não telemetria de infraestrutura em séries temporais. A API do GLPI não é usada porque o caminho inicial escolhido é SQL read-only no banco de relatórios. O acesso ao banco deve usar uma conta dedicada com o mínimo de privilégios. O SQL direto vincula as queries ao schema do GLPI; por isso, o discovery do schema e da versão deve preceder a implementação das métricas.
 
-In the current test environment, GLPI, MariaDB, and Grafana run on the same Linux host. MariaDB remains bound to localhost (`127.0.0.1:3306`), and Grafana uses `network_mode: host` so the container can reach the local database without exposing port 3306 to the network. Container-to-localhost connectivity has been validated. This is a decision for the current test host layout, not a universal project requirement.
+No ambiente de testes atual, GLPI, MariaDB e Grafana executam no mesmo host Linux. O MariaDB permanece vinculado ao localhost (`127.0.0.1:3306`), e o Grafana usa `network_mode: host` para que o container alcance o banco local sem expor a porta 3306 à rede. A conectividade do container com o localhost foi validada. Essa decisão atende à configuração atual do host de testes e não é um requisito universal do projeto.
 
-The previous connection attempt through the host's network IP did not work because MariaDB accepts local connections only. A dedicated account, `grafana_reader@localhost`, has only `SELECT` access to `glpi.*`. Direct MariaDB authentication, database access, and a read-only query were validated; no data values or row counts are recorded. The provisioned **GLPI MySQL** datasource reports a healthy connection to database `glpi` using MySQL proxy access.
+A tentativa anterior de conexão pelo IP de rede do host não funcionou porque o MariaDB aceita somente conexões locais. A conta dedicada `grafana_reader@localhost` tem apenas acesso `SELECT` a `glpi.*`. A autenticação direta no MariaDB, o acesso ao banco e uma query read-only foram validados; nenhum valor de dado ou contagem de linhas foi registrado. O datasource provisionado **GLPI MySQL** informa uma conexão saudável com o banco `glpi` usando acesso proxy do MySQL.
 
-Grafana is running and its web interface is accessible on TCP/3000. Access to that port is restricted by the host firewall to trusted networks. MariaDB port 3306 is not exposed to the network for Grafana access.
+O Grafana está em execução e sua interface web está disponível em TCP/3000. O firewall do host restringe o acesso a essa porta às redes confiáveis. A porta 3306 do MariaDB não é exposta à rede para acesso do Grafana.
 
-Grafana can start without MariaDB being reachable; data queries require connectivity and valid local credentials. The Grafana administrator and MariaDB reader are separate accounts with separate credentials.
+O Grafana pode iniciar sem que o MariaDB esteja acessível; as queries de dados exigem conectividade e credenciais locais válidas. O administrador do Grafana e o leitor do MariaDB são contas separadas, com credenciais distintas.

@@ -1,66 +1,66 @@
-# Database
+# Banco de dados
 
-## Current state
+## Estado atual
 
-Milestone 1 provisions the **GLPI MySQL** datasource using environment variables. It connects to database `glpi` over the local MariaDB service using MySQL proxy access and a read-only account. Datasource health and direct read-only MariaDB connectivity have been validated in the test environment. MariaDB remains bound to `127.0.0.1:3306`; its port is not exposed to the network. Milestone 2 discovered and validated the Service Desk schema relationships documented below. Milestone 3 dashboard queries are read-only and versioned under `sql/queries/`; no database-side SQL objects were created. Do not generalize these findings to other GLPI installations without validating their schemas.
+O Marco 1 provisiona o datasource **GLPI MySQL** usando variáveis de ambiente. Ele se conecta ao banco `glpi` pelo serviço MariaDB local, usando acesso proxy do MySQL e uma conta read-only. A saúde do datasource e a conectividade read-only direta com o MariaDB foram validadas no ambiente de testes. O MariaDB permanece vinculado a `127.0.0.1:3306`; sua porta não é exposta à rede. O Marco 2 descobriu e validou as relações do schema do Service Desk documentadas abaixo. As queries do dashboard do Marco 3 são read-only e estão versionadas em `sql/queries/`; nenhum objeto SQL foi criado no banco. Não generalize estes achados para outras instalações do GLPI sem validar seus schemas.
 
-## Access
+## Acesso
 
-The current test host uses the dedicated account `grafana_reader@localhost` with only `SELECT` access on `glpi.*`. It must not have `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER`, or `DROP` privileges. The grant is documented conceptually below; it was applied through the database administration process and is not run by this project:
+O host de testes atual usa a conta dedicada `grafana_reader@localhost`, com acesso somente `SELECT` em `glpi.*`. Ela não deve ter privilégios `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER` ou `DROP`. A concessão abaixo está documentada apenas conceitualmente; foi aplicada pelo processo de administração do banco e não é executada por este projeto:
 
 ```sql
 GRANT SELECT ON glpi.* TO 'grafana_reader'@'localhost';
 ```
 
-An earlier account associated with the host's network IP was not sufficient for this local connection. MariaDB is bound to `127.0.0.1:3306`, so do not document or configure it as network-exposed. Other deployments must choose an appropriately restricted account host matching their actual network layout.
+Uma conta anterior associada ao IP de rede do host não foi suficiente para esta conexão local. O MariaDB está vinculado a `127.0.0.1:3306`; portanto, não o documente nem configure como exposto à rede. Em outras implantações, escolha um host de conta com restrições adequadas à topologia de rede real.
 
-## Verified Service Desk discovery findings
+## Achados verificados do discovery do Service Desk
 
-Milestone 2 — Database Discovery is complete. Findings were checked against the test environment and compared with the GLPI UI. Only structural findings and domain meanings needed for Service Desk reporting are recorded; raw environment output and ticket data are omitted.
+O Marco 2 — Discovery do banco de dados está concluído. Os achados foram conferidos no ambiente de testes e comparados com a interface do GLPI. Aqui são registrados apenas os achados estruturais e os significados de domínio necessários aos relatórios do Service Desk; resultados brutos do ambiente e dados de chamados foram omitidos.
 
-### Tickets and domains
+### Chamados e domínios
 
-`glpi_tickets` is the central ticket table. For ordinary metrics, use `is_deleted = 0` as the default filter. Confirmed status values are:
+`glpi_tickets` é a tabela central de chamados. Para métricas comuns, use `is_deleted = 0` como filtro padrão. Os valores de status confirmados são:
 
-| Stored value | Confirmed meaning |
+| Valor armazenado | Significado confirmado |
 | --- | --- |
-| 1 | New |
-| 2 | Processing (assigned) |
-| 3 | Processing (planned) |
-| 4 | Pending |
-| 5 | Solved |
-| 6 | Closed |
+| 1 | Novo |
+| 2 | Em processamento (atribuído) |
+| 3 | Em processamento (planejado) |
+| 4 | Pendente |
+| 5 | Solucionado |
+| 6 | Fechado |
 
-Confirmed ticket types are `1 = Incident` and `2 = Request`.
+Os tipos de chamado confirmados são `1 = Incidente` e `2 = Solicitação`.
 
-### Users, technicians, and groups
+### Usuários, técnicos e grupos
 
-Ticket-user relationships use `glpi_tickets_users` → `glpi_users`. The confirmed `glpi_tickets_users.type` meanings are `1 = requester`, `2 = assigned/technician`, and `3 = observer`. A ticket can have multiple related users and multiple technicians; queries must preserve that cardinality.
+As relações entre chamados e usuários usam `glpi_tickets_users` → `glpi_users`. Os significados confirmados de `glpi_tickets_users.type` são `1 = solicitante`, `2 = atribuído/técnico` e `3 = observador`. Um chamado pode ter vários usuários relacionados e vários técnicos; as queries devem preservar essa cardinalidade.
 
-Group relationships use `glpi_groups_tickets` → `glpi_groups`. The relation tables are identified, but the current environment contains no rows for this relationship. Do not infer group assignments or treat this empty relation as evidence that groups are universally unused.
+As relações com grupos usam `glpi_groups_tickets` → `glpi_groups`. As tabelas da relação foram identificadas, mas o ambiente atual não contém linhas para essa relação. Não infira atribuições de grupos nem trate essa relação vazia como evidência de que grupos nunca são usados.
 
-### Categories and entities
+### Categorias e entidades
 
-Ticket categories relate through `glpi_tickets.itilcategories_id` → `glpi_itilcategories.id`. Categories are hierarchical; use `completename` when a full category path is needed, rather than `name` alone. Tickets may have no category.
+As categorias dos chamados se relacionam por `glpi_tickets.itilcategories_id` → `glpi_itilcategories.id`. As categorias são hierárquicas; quando for necessário o caminho completo, use `completename` em vez de apenas `name`. Chamados podem não ter categoria.
 
-Ticket entities relate through `glpi_tickets.entities_id` → `glpi_entities.id`. Multiple entities are present, so do not assume one entity for all tickets.
+As entidades dos chamados se relacionam por `glpi_tickets.entities_id` → `glpi_entities.id`. Há múltiplas entidades; portanto, não presuma uma única entidade para todos os chamados.
 
-### Lifecycle and SLA
+### Ciclo de vida e SLA
 
-The validated ticket lifecycle sequence is `date` → `takeintoaccountdate` → `solvedate` → `closedate`. Validate which lifecycle timestamp answers each future metric before using it.
+A sequência validada do ciclo de vida do chamado é `date` → `takeintoaccountdate` → `solvedate` → `closedate`. Antes de usar uma data em uma métrica futura, valide qual timestamp do ciclo de vida responde àquela métrica.
 
-`time_to_own` and `time_to_resolve` are SLA deadlines, not elapsed durations. `takeintoaccount_delay_stat` and `solve_delay_stat` are statistical/effective time fields. SLA interpretation may depend on calendars. Relevant SLA structures include `glpi_slas`, `glpi_slalevels`, `glpi_slalevels_tickets`, `glpi_slalevelactions`, and `glpi_slalevelcriterias`.
+`time_to_own` e `time_to_resolve` são prazos de SLA, não durações decorridas. `takeintoaccount_delay_stat` e `solve_delay_stat` são campos de tempo estatístico/efetivo. A interpretação do SLA pode depender de calendários. As estruturas relevantes de SLA incluem `glpi_slas`, `glpi_slalevels`, `glpi_slalevels_tickets`, `glpi_slalevelactions` e `glpi_slalevelcriterias`.
 
-### Join cardinality
+### Cardinalidade dos joins
 
-User and technician, group, category, and entity relations can change row counts when joined. Do not assume a joined result has one row per ticket. Use `COUNT(DISTINCT t.id)` or pre-aggregate each one-to-many relation before combining it with ticket rows, as appropriate to the metric. The exploratory queries in `sql/discovery/10-cardinality.sql` document the discovered cardinality checks.
+As relações com usuários/técnicos, grupos, categorias e entidades podem alterar a quantidade de linhas após joins. Não presuma que um resultado com joins tenha uma linha por chamado. Conforme a métrica, use `COUNT(DISTINCT t.id)` ou pré-agregue cada relação um-para-muitos antes de combiná-la com as linhas de chamados. As queries exploratórias em `sql/discovery/10-cardinality.sql` documentam as verificações de cardinalidade realizadas.
 
-The test-environment SQL results were compared with the GLPI UI and considered coherent. These findings complete discovery only; they do not implement or validate production dashboard metrics. Exploratory scripts remain in `sql/discovery/` for reproducibility and must be run with read-only access.
+Os resultados SQL do ambiente de testes foram comparados com a interface do GLPI e considerados coerentes. Estes achados concluem somente o discovery; não implementam nem validam métricas de produção do dashboard. Os scripts exploratórios permanecem em `sql/discovery/` para reprodutibilidade e devem ser executados com acesso read-only.
 
-## Verified Projects discovery findings
+## Achados verificados do discovery de Projetos
 
-The Projects discovery is ongoing for the test environment. `glpi_projects` is the central project table, and `glpi_projecttasks.projects_id` relates tasks to `glpi_projects.id`. Project state completion is represented by `glpi_projectstates.is_finished`. The value `projectstates_id = 0` occurs and means **Sem estado**; it must not be interpreted as an active state.
+O discovery de Projetos está em andamento para o ambiente de testes. `glpi_projects` é a tabela central de projetos, e `glpi_projecttasks.projects_id` relaciona tarefas a `glpi_projects.id`. A conclusão do estado do projeto é representada por `glpi_projectstates.is_finished`. O valor `projectstates_id = 0` ocorre e significa **Sem estado**; não deve ser interpretado como um estado ativo.
 
-Projects exist across multiple entities, so all project metrics must respect the selected `$entity` scope. Task metrics must apply that scope through the parent project entity. The project-to-task relationship is one-to-many; future joins must account for that cardinality.
+Há projetos em múltiplas entidades; portanto, todas as métricas de projetos devem respeitar o escopo `$entity` selecionado. Métricas de tarefas devem aplicar esse escopo por meio da entidade do projeto pai. A relação projeto-tarefa é um-para-muitos; joins futuros devem considerar essa cardinalidade.
 
-Project types and milestones have no relevant use in the current environment. Planned and actual dates have low coverage. `percent_done` and responsible-user fields are used. Group fields have no relevant use in the current environment. No internal entity, project, or user names or raw environment data are recorded here.
+Tipos de projeto e milestones não têm uso relevante no ambiente atual. As datas planejadas e reais têm baixa cobertura. `percent_done` e campos de usuário responsável são utilizados. Campos de grupo não têm uso relevante no ambiente atual. Nenhum nome interno de entidade, projeto ou usuário, nem dados brutos do ambiente, é registrado aqui.
