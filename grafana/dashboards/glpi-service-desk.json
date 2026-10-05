@@ -20,7 +20,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#2F7ED8"
+            "fixedColor": "#347ED4"
           },
           "displayName": "Chamados novos"
         },
@@ -78,7 +78,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#238A95"
+            "fixedColor": "#2B8F98"
           },
           "displayName": "Chamados atribuídos"
         },
@@ -136,7 +136,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#744DB7"
+            "fixedColor": "#8058BE"
           },
           "displayName": "Chamados planejados"
         },
@@ -194,7 +194,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#A94452"
+            "fixedColor": "#B54D5A"
           },
           "displayName": "Chamados atrasados"
         },
@@ -252,7 +252,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#3F7F4C"
+            "fixedColor": "#4C8A58"
           },
           "displayName": "Chamados solucionados"
         },
@@ -310,7 +310,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#A96B26"
+            "fixedColor": "#B8782E"
           },
           "displayName": "Chamados pendentes"
         },
@@ -368,7 +368,7 @@
           "unit": "short",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#60788F"
+            "fixedColor": "#6E859A"
           },
           "displayName": "Chamados"
         },
@@ -432,15 +432,15 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "red",
+                "color": "#D94B57",
                 "value": null
               },
               {
-                "color": "orange",
+                "color": "#F59E32",
                 "value": 90
               },
               {
-                "color": "green",
+                "color": "#65B867",
                 "value": 95
               }
             ]
@@ -507,7 +507,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "fillOpacity": 12,
+            "fillOpacity": 18,
             "gradientMode": "none",
             "hideFrom": {
               "legend": false,
@@ -533,7 +533,53 @@
           "mappings": [],
           "unit": "short"
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Criados"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#63C174"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Solucionados"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#F2B134"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Saldo"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#5794F2"
+                }
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "x": 0,
