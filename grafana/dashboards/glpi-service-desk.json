@@ -20,7 +20,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#8AB8F5"
+            "fixedColor": "#3B6FBA"
           }
         },
         "overrides": []
@@ -77,7 +77,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#91D9E5"
+            "fixedColor": "#3F7E89"
           }
         },
         "overrides": []
@@ -134,7 +134,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#BFA2D9"
+            "fixedColor": "#70568A"
           }
         },
         "overrides": []
@@ -191,7 +191,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#E89AA5"
+            "fixedColor": "#A14551"
           }
         },
         "overrides": []
@@ -248,7 +248,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#9BCB9A"
+            "fixedColor": "#4E7B4E"
           }
         },
         "overrides": []
@@ -305,7 +305,7 @@
           "unit": "none",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#E8B27C"
+            "fixedColor": "#A16A32"
           }
         },
         "overrides": []
@@ -362,7 +362,7 @@
           "unit": "short",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#A5B1BD"
+            "fixedColor": "#64717E"
           }
         },
         "overrides": []
