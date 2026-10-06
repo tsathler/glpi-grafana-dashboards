@@ -55,9 +55,11 @@ Abra `http://localhost:3000` e entre com as credenciais administrativas configur
 
 O dashboard atual provisionado **GLPI Service Desk** contém sete cards de status, um seletor de entidade, **Fluxo de chamados** e **Eficiência de resolução (SLA)**. Os cards mostram snapshots atuais; a série temporal e o Gauge respeitam o período selecionado. O Gauge mede o cumprimento do TTR entre os chamados solucionados que possuem um prazo aplicável.
 
-## Captura de tela
+## Captura de tela — exemplo demonstrativo
 
-![Dashboard GLPI Service Desk](docs/images/dashboard-overview.png)
+![Exemplo demonstrativo do dashboard GLPI Service Desk](docs/images/dashboard-overview.png)
+
+O projeto foi desenvolvido originalmente para uso interno. A screenshot pública usa métricas demonstrativas/sintéticas e não representa dados ou volumes reais nem informações internas da organização.
 
 ## Métricas
 
