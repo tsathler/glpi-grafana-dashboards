@@ -6,7 +6,7 @@ Um conjunto de dashboards do Grafana para dados do GLPI armazenados em um banco 
 
 ## Visão geral
 
-Os marcos 1, 2 e 3 estão concluídos. O dashboard funcional **GLPI Service Desk** e o Gauge **Eficiência de resolução (SLA)**, adicionado posteriormente, foram validados no ambiente de testes com o GLPI e SQL direto. As melhorias e os refinamentos visuais posteriores aos marcos já estão incorporados, e o estado atual é considerado estável; novas funcionalidades estão adiadas. Consulte [os achados do banco de dados](docs/database.md), [as definições das métricas](docs/metrics.md) e [o status dos marcos](docs/milestones.md).
+Os marcos 1, 2 e 3 estão concluídos. O dashboard funcional **GLPI Service Desk** e o Gauge **Eficiência de resolução (SLA)**, adicionado posteriormente, foram validados no ambiente de testes com o GLPI e SQL direto. A primeira versão estável também foi implantada e validada em produção. As melhorias e os refinamentos visuais posteriores aos marcos já estão incorporados; novas funcionalidades estão adiadas. Consulte [os achados do banco de dados](docs/database.md), [as definições das métricas](docs/metrics.md), [o status dos marcos](docs/milestones.md) e [Production Readiness](docs/production-readiness.md).
 
 ## Objetivos
 
@@ -16,7 +16,7 @@ Oferecer uma visão reproduzível do status e fluxo dos chamados e do cumpriment
 
 Consulte [docs/architecture.md](docs/architecture.md).
 
-O go-live ainda está em planejamento. Consulte [Production Readiness](docs/production-readiness.md) para os requisitos documentados antes de uma futura implantação.
+A primeira versão estável foi implantada e validada em produção. Consulte [Production Readiness](docs/production-readiness.md) para o estado atual e as melhorias futuras não bloqueadoras.
 
 ## Funcionalidades
 

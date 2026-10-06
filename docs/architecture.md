@@ -18,10 +18,8 @@ No ambiente de testes atual, GLPI, MariaDB e Grafana executam no mesmo host Linu
 
 A conta dedicada do datasource tem somente acesso read-only ao MariaDB. A autenticação, a conectividade e uma query read-only foram validadas. O datasource provisionado **GLPI MySQL** informa conexão saudável usando acesso proxy do MySQL.
 
-Na topologia atual de produção, o Grafana escuta somente em `127.0.0.1:3000`. O acesso externo passa por um reverse proxy Nginx, que publica o serviço em uma porta HTTP dedicada; o firewall permite acesso somente a redes internas autorizadas. A porta 3000 não é exposta externamente. O MariaDB permanece em `127.0.0.1:3306` com usuário read-only, sem exposição externa.
+Na topologia atual de produção, o Grafana está em execução e escuta somente em `127.0.0.1:3000`. O acesso externo passa por um reverse proxy Nginx, que publica o serviço em uma porta HTTP dedicada; o firewall permite acesso somente a origens internas/autorizadas. A porta 3000 não é exposta externamente. O MariaDB permanece em `127.0.0.1:3306`, acessado por uma conta dedicada read-only e sem exposição externa.
 
 Essa topologia é específica do ambiente atual. Ela poderá evoluir futuramente para acesso por DNS e HTTPS; essa evolução ainda não está configurada.
 
-O Grafana pode iniciar sem que o MariaDB esteja acessível; as queries de dados exigem conectividade e credenciais locais válidas. A conta administrativa do Grafana e o usuário read-only do MariaDB são separados, com credenciais distintas.
-
-A topologia de produção atual usa Nginx como reverse proxy HTTP. O uso de DNS e HTTPS poderá ser avaliado como evolução futura; consulte [Production Readiness](production-readiness.md).
+O endpoint `/api/health` respondeu com o banco interno do Grafana saudável. O `.env` de produção é local, separado dos demais ambientes e não versionado. A topologia atual é a primeira versão de produção estável; DNS e HTTPS poderão ser avaliados futuramente. Consulte [Production Readiness](production-readiness.md).

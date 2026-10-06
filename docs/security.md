@@ -16,7 +16,7 @@
 
 ## Acesso em produção
 
-A topologia atual usa Nginx como reverse proxy em uma porta HTTP dedicada, com acesso limitado pelo firewall a redes internas autorizadas. O Grafana permanece vinculado a `127.0.0.1:3000`, sem exposição externa direta, e o MariaDB a `127.0.0.1:3306` com usuário read-only. DNS e HTTPS são uma possível evolução futura, ainda não configurada. A conta admin deve permanecer separada das contas Viewer. Consulte [Production Readiness](production-readiness.md).
+A topologia de produção validada usa Nginx como reverse proxy em uma porta HTTP dedicada, com acesso limitado pelo firewall a origens internas/autorizadas. O Grafana permanece vinculado a `127.0.0.1:3000`, sem exposição externa direta, e o MariaDB a `127.0.0.1:3306` com usuário dedicado read-only. O `.env` de produção é local, separado e não versionado. DNS e HTTPS são possíveis evoluções futuras, ainda não configuradas. Consulte [Production Readiness](production-readiness.md).
 
 ## Revisão do repositório
 

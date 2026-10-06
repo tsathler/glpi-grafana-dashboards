@@ -230,7 +230,7 @@ O ambiente de testes não recebe arquivos do projeto manualmente: as alteraçõe
 
 ## Topologia de produção
 
-A promoção segue `DEV → GitHub/CI → TEST → PROD`. Na topologia atual de produção, o Grafana escuta em `127.0.0.1:3000` e o acesso externo passa pelo reverse proxy Nginx em uma porta HTTP dedicada, protegida por firewall para redes internas autorizadas. O MariaDB permanece em `127.0.0.1:3306` com usuário read-only e sem exposição externa. Esta topologia é específica do ambiente atual; DNS e HTTPS poderão ser adotados futuramente. Consulte [Production Readiness](production-readiness.md).
+A promoção segue `DEV → GitHub/CI → TEST → PROD`. A primeira implantação foi concluída e validada: Grafana em execução e vinculado a `127.0.0.1:3000`, acesso externo via reverse proxy Nginx em porta HTTP dedicada, com firewall restrito a origens internas/autorizadas, e MariaDB em `127.0.0.1:3306` com conta dedicada read-only e sem exposição externa. O `.env` de produção permanece local, separado e não versionado. Datasource, dashboard, filtro Entity e métricas foram validados em produção. O endpoint `/api/health` indicou o banco interno do Grafana saudável. Consulte [Production Readiness](production-readiness.md) para o estado da primeira versão estável e as melhorias futuras.
 
 ## Status da validação nos relatórios
 
