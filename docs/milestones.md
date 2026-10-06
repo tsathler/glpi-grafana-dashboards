@@ -152,9 +152,9 @@ Enquanto este marco estiver Planejado, não serão incluídas alterações em SQ
 
 ## Marco 5 — Dashboard de Projetos
 
-Status: Planejado
+Status: Em validação
 
-O discovery estrutural inicial foi concluído e validado o suficiente para iniciar a definição das métricas do MVP. Ele está versionado em [11-projects-schema.sql](../sql/discovery/11-projects-schema.sql), [12-projects-domains.sql](../sql/discovery/12-projects-domains.sql), [13-project-tasks.sql](../sql/discovery/13-project-tasks.sql) e [14-projects-cardinality.sql](../sql/discovery/14-projects-cardinality.sql). As oito queries read-only de produção do MVP agora estão versionadas em `sql/projects/queries/`; elas ainda aguardam validação integrada no ambiente apropriado. O Marco 5 permanece Planejado e o dashboard de Projetos ainda não foi criado.
+O discovery estrutural inicial foi concluído e validado o suficiente para iniciar a definição das métricas do MVP. Ele está versionado em [11-projects-schema.sql](../sql/discovery/11-projects-schema.sql), [12-projects-domains.sql](../sql/discovery/12-projects-domains.sql), [13-project-tasks.sql](../sql/discovery/13-project-tasks.sql) e [14-projects-cardinality.sql](../sql/discovery/14-projects-cardinality.sql). As oito queries read-only de produção do MVP estão versionadas em `sql/projects/queries/` e foram conferidas diretamente no banco em mais de um escopo de entidade. As contagens por estado fecharam com os indicadores; a tabela manteve uma linha por projeto; e a soma das tarefas pré-agregadas coincidiu com a distribuição de tarefas por estado. O Marco 5 está **Em validação**: o dashboard de Projetos foi implementado, mas ainda precisa de validação integrada no Grafana.
 
 ### Escopo do dashboard de Projetos
 
@@ -167,7 +167,7 @@ O discovery estrutural inicial foi concluído e validado o suficiente para inici
 
 Projetos e tarefas usam `projectstates_id`, relacionado a `glpi_projectstates`; o valor `0` representa ausência de estado, não um estado ativo. Use `glpi_projectstates.is_finished` para distinguir estados finalizados e não finalizados; `percent_done` não deve determinar conclusão sozinho. Métricas de projetos e tarefas válidos devem excluir deletados e templates (`is_deleted = 0` e `is_template = 0`). Métricas de tarefas devem filtrar a entidade pelo projeto pai e tratar a relação projeto-tarefa como 1:N.
 
-A cobertura das datas de projeto é insuficiente para métricas de atraso no MVP; datas de tarefas têm cobertura parcial e exigem validação específica antes do uso. O discovery estrutural está concluído o suficiente para iniciar a definição das métricas do MVP. Nenhuma query de produção ou dashboard foi criada.
+A cobertura das datas de projeto é insuficiente para métricas de atraso no MVP; datas de tarefas têm cobertura parcial e exigem validação específica antes do uso. O discovery estrutural está concluído, as queries do MVP foram verificadas diretamente no banco, e o dashboard foi implementado. A validação integrada dos painéis no Grafana ainda está pendente; não foram incluídas métricas de atraso, prazos, timeline ou Gantt.
 
 ### Melhoria futura: título principal por entidade
 

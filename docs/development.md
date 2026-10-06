@@ -170,7 +170,7 @@ git diff
 
 Use localmente os valores de exemplo de `.env.example` somente quando necessário para renderizar a configuração Compose. Não faça commit do `.env` local, de credenciais nem de detalhes reais do ambiente. A conectividade com o banco não é pré-requisito para essas verificações. SQL só pode ser adicionado depois que o schema e a versão reais do GLPI forem verificados e documentados; uma revisão estática não confirma que uma query corresponde a uma instalação específica.
 
-O validador SQL aceita somente instruções read-only em `sql/`, rejeita `SELECT *` e compara a query embutida de cada painel do dashboard com o arquivo em `sql/queries/` cujo prefixo de dois dígitos corresponde ao ID do painel. Essas verificações não substituem a execução das queries nem a comparação das métricas no ambiente de testes.
+O validador SQL aceita somente instruções read-only em `sql/`, rejeita `SELECT *` e compara as queries embutidas com seus arquivos versionados por meio de um mapeamento explícito dashboard → diretório: `glpi-service-desk.json` → `sql/queries/` e `glpi-projects.json` → `sql/projects/queries/`. O prefixo de dois dígitos de cada arquivo corresponde ao ID do painel. Discovery continua sujeito às verificações read-only, sem exigir correspondência com painéis. Essas verificações não substituem a execução das queries nem a validação integrada no Grafana.
 
 Após a revisão, envie o commit planejado ao GitHub. Os arquivos de implantação versionados são Compose, arquivos de provisioning/dashboard do Grafana, documentação e qualquer SQL verificado. `.env` permanece local.
 

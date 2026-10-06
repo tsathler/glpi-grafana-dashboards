@@ -69,4 +69,4 @@ As datas de projeto têm cobertura insuficiente no ambiente validado; métricas 
 
 ### Queries de produção do MVP de Projetos
 
-As queries read-only preparadas para o MVP estão versionadas em `sql/projects/queries/`, separadas das queries do Service Desk em `sql/queries/`. Elas usam somente campos e relações descritos pelo discovery. A definição SQL foi criada, mas as consultas ainda precisam de validação integrada antes do uso em um dashboard.
+As queries read-only preparadas para o MVP estão versionadas em `sql/projects/queries/`, separadas das queries do Service Desk em `sql/queries/`. Elas usam somente campos e relações descritos pelo discovery. As oito consultas foram conferidas diretamente no banco em mais de um escopo de entidade; ainda precisam de validação integrada no Grafana antes de serem usadas em um dashboard.
