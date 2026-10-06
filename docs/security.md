@@ -1,11 +1,10 @@
 # Segurança
 
-- O host de testes atual mantém o MariaDB vinculado a `127.0.0.1:3306`; ele não é exposto à rede. Nesta configuração em que ambos estão no mesmo host, o Grafana usa a rede do host para se conectar localmente. Não exponha o MariaDB sem uma necessidade documentada.
-- O acesso do Grafana ao MariaDB usa a conta dedicada `grafana_reader@localhost`, com somente `SELECT` em `glpi.*`. Ela não deve ter privilégios `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER` ou `DROP`. A conexão foi validada diretamente e pelo datasource provisionado **GLPI MySQL**.
-- Com a configuração atual de rede do host, o Grafana escuta na porta 3000 do host de testes. Restrinja o acesso no limite do host/rede; use um proxy reverso adequado com TLS ao disponibilizá-lo além de uma rede local confiável.
+- O MariaDB permanece vinculado a `127.0.0.1:3306` e não é exposto externamente. O datasource usa um usuário dedicado somente com acesso read-only; não conceda privilégios de escrita ou alteração.
+- O Grafana deve escutar somente em `127.0.0.1:3000`. O acesso externo passa pelo reverse proxy Nginx em uma porta HTTP dedicada, protegida por firewall que permite somente redes internas autorizadas. Não exponha a porta 3000 externamente.
 - Altere a senha inicial de administrador do Grafana e proteja essa conta. O cadastro de usuários está desabilitado.
 - Os dados dos chamados podem conter informações pessoais ou confidenciais. Limite o acesso ao dashboard e evite publicar dados reais de chamados, nomes de usuário, nomes de entidades ou detalhes internos do host.
-- A conta do banco segue o princípio do menor privilégio: somente acesso read-only. O firewall restringe a porta 3000 do Grafana às redes confiáveis; a porta 3306 não é exposta para acesso da aplicação.
+- A conta do banco segue o princípio do menor privilégio: somente acesso read-only. A porta 3306 não é exposta externamente.
 
 ## Gerenciamento de secrets
 
@@ -15,9 +14,9 @@
 - A CI do GitHub Actions não exige secrets. Ela usa configuração com valores de exemplo para as verificações estáticas e não se conecta aos serviços de testes nem faz deploy.
 - Troque qualquer credencial suspeita ou confirmadamente exposta. Remover um valor do arquivo atual não o remove do histórico do Git; considere credenciais commitadas comprometidas e troque-as. A limpeza do histórico exige uma tarefa separada e controlada de reescrita do histórico.
 
-## Planejamento de acesso em produção
+## Acesso em produção
 
-Antes do go-live, recomenda-se publicar o Grafana por Nginx com HTTPS, manter a conta admin separada e restrita e fornecer acesso cotidiano por contas Viewer individuais. Cada ambiente deve ter credenciais próprias. O datasource deve continuar read-only, e a porta 3306 do MariaDB deve permanecer inacessível pela rede pública. Esses controles estão planejados e ainda não descrevem uma implantação de produção existente; consulte [Production Readiness](production-readiness.md).
+A topologia atual usa Nginx como reverse proxy em uma porta HTTP dedicada, com acesso limitado pelo firewall a redes internas autorizadas. O Grafana permanece vinculado a `127.0.0.1:3000`, sem exposição externa direta, e o MariaDB a `127.0.0.1:3306` com usuário read-only. DNS e HTTPS são uma possível evolução futura, ainda não configurada. A conta admin deve permanecer separada das contas Viewer. Consulte [Production Readiness](production-readiness.md).
 
 ## Revisão do repositório
 

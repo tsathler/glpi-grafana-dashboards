@@ -12,7 +12,7 @@ O ambiente de testes recebe as alterações pelo Git. Este repositório implanta
 
 O ambiente de testes usado atualmente pelo projeto é **Ubuntu Server 24.04 LTS**, com Git, Docker Engine e o plugin do Docker Compose. Outras distribuições Linux podem funcionar, mas este documento descreve o Ubuntu Server 24.04 LTS.
 
-O host de testes atual executa Grafana e MariaDB juntos. O MariaDB escuta somente em `127.0.0.1:3306`; não está exposto na rede. O Docker foi instalado pelo repositório APT oficial do Docker. O problema `docker-ce has no installation candidate` foi resolvido configurando esse repositório; consulte a seção de solução de problemas abaixo para ver as etapas de diagnóstico.
+O host de testes atual executa Grafana e MariaDB juntos. O MariaDB escuta somente em `127.0.0.1:3306`; não está exposto externamente. O Docker foi instalado pelo repositório APT oficial do Docker. O problema `docker-ce has no installation candidate` foi resolvido configurando esse repositório; consulte a seção de solução de problemas abaixo para ver as etapas de diagnóstico.
 
 ### Instalar Docker Engine e o plugin Compose
 
@@ -126,7 +126,7 @@ docker compose logs --tail=100 grafana
 
 `config` valida e renderiza a configuração Compose; `up -d` inicia os serviços em segundo plano; `ps` mostra o estado deles; e `logs` ajuda a inspecionar a inicialização do Grafana, o provisioning e os erros.
 
-O serviço Compose atual usa `network_mode: host`, portanto não usa um mapeamento `ports`. Essa configuração foi escolhida para o ambiente de testes atual: Grafana e MariaDB compartilham um host Linux, e o MariaDB permanece vinculado ao localhost. O acesso do container a `localhost:3306` foi validado. A interface web do Grafana escuta em TCP/3000 no host; o firewall do host restringe o acesso a redes confiáveis. A porta 3306 do MariaDB não é exposta à rede. O uso da rede do host é específico desta configuração de testes, não um requisito universal; qualquer alteração futura deve ser refletida no Compose e documentada.
+O serviço Compose atual usa `network_mode: host`, portanto não usa um mapeamento `ports`. Essa configuração é específica do ambiente de testes: Grafana e MariaDB compartilham um host Linux. O Grafana escuta somente em `127.0.0.1:3000`, e o MariaDB em `127.0.0.1:3306`; a conectividade local foi validada e a porta 3306 não é exposta externamente.
 
 O `.env` local do ambiente de testes usa os nomes de variáveis abaixo; os valores permanecem locais e não devem ser copiados para o Git nem para este documento:
 
@@ -136,8 +136,8 @@ GRAFANA_ADMIN_PASSWORD=...
 
 GLPI_DB_HOST=127.0.0.1
 GLPI_DB_PORT=3306
-GLPI_DB_NAME=glpi
-GLPI_DB_USER=grafana_reader
+GLPI_DB_NAME=...
+GLPI_DB_USER=...
 GLPI_DB_PASSWORD=...
 ```
 
@@ -146,7 +146,7 @@ As credenciais administrativas do Grafana e as credenciais do MariaDB são indep
 ### Observações de segurança
 
 - Não adicione usuários ao grupo `docker` sem uma necessidade operacional específica; a associação concede privilégios elevados, equivalentes ao controle do host em nível de root.
-- Não exponha publicamente a porta 3000 sem necessidade. Restrinja o acesso à rede interna ou a clientes autorizados.
+- Não exponha externamente a porta 3000. Na topologia atual de produção, o acesso externo passa pelo reverse proxy Nginx em uma porta HTTP dedicada, com firewall limitado a redes internas autorizadas.
 - Mantenha as credenciais no `.env` não versionado de cada ambiente; nunca as coloque no Git.
 
 ## Máquina de desenvolvimento: validação estática
@@ -204,34 +204,33 @@ Após `git pull` e a configuração do `.env` local, execute os comandos Compose
 - As queries do dashboard executam, e as métricas exibidas correspondem às visualizações e aos registros equivalentes no GLPI.
 - Reiniciar o Grafana preserva o estado esperado.
 
-As verificações de runtime no ambiente de testes atual confirmaram que o Grafana está em execução, que o serviço HTTP e a interface web funcionam na porta 3000, que o provisioning foi carregado e que o plugin datasource MySQL está disponível. O datasource provisionado tem estas configurações não secretas:
+As verificações de runtime no ambiente de testes atual confirmaram que o Grafana está em execução, que o serviço HTTP está disponível em `127.0.0.1:3000`, que o provisioning foi carregado e que o plugin datasource MySQL está disponível. O datasource provisionado tem estas configurações não secretas:
 
 ```text
 Datasource: GLPI MySQL
 Type: MySQL
-Database: glpi
 Access: proxy
 Database privileges: SELECT only
 Connection health: OK
 ```
 
-O datasource é gerenciado em `grafana/provisioning/datasources/`; `secureJsonData` armazena a senha. Suas variáveis de ambiente são `GLPI_DB_HOST`, `GLPI_DB_PORT`, `GLPI_DB_NAME`, `GLPI_DB_USER` e `GLPI_DB_PASSWORD`. O datasource autentica com a conta MariaDB que tem somente permissão `SELECT`. O provisioning versionado é a fonte de verdade para alterações persistentes no datasource. Os arquivos do dashboard em `grafana/dashboards/` e o provider em `grafana/provisioning/dashboards/` também são fontes de verdade; alterações duráveis devem ser feitas pelo Git em vez de somente pela interface do Grafana.
+O datasource é gerenciado em `grafana/provisioning/datasources/`; `secureJsonData` armazena a senha. Suas variáveis de ambiente são `GLPI_DB_HOST`, `GLPI_DB_PORT`, `GLPI_DB_NAME`, `GLPI_DB_USER` e `GLPI_DB_PASSWORD`. O datasource autentica com um usuário MariaDB dedicado com somente permissão `SELECT`. O provisioning versionado é a fonte de verdade para alterações persistentes no datasource. Os arquivos do dashboard em `grafana/dashboards/` e o provider em `grafana/provisioning/dashboards/` também são fontes de verdade; alterações duráveis devem ser feitas pelo Git em vez de somente pela interface do Grafana.
 
 A autenticação direta no MariaDB e o acesso read-only ao banco foram confirmados com o cliente MariaDB, incluindo a permissão `SELECT` funcional. Credenciais e resultados de queries não são registrados. O datasource e o dashboard continuaram provisionados após a reinicialização do Grafana; posteriormente, as métricas do dashboard foram validadas com o GLPI e SQL direto.
 
 Para repetir a verificação de conexão direta, use o comando a seguir no ambiente de testes e informe a senha de forma interativa:
 
 ```bash
-mariadb -h 127.0.0.1 -u grafana_reader -p glpi
+mariadb -h 127.0.0.1 -P 3306 -u '<usuario-read-only>' -p '<banco>'
 ```
 
 O SQL atual das métricas está versionado em `sql/queries/` e foi comparado com a versão instalada do GLPI. Para métricas futuras ou implantações em outra instalação, compare os resultados com o GLPI e documente os mapeamentos de status, filtros e limitações. Nunca altere o banco, o schema ou a aplicação GLPI como parte deste projeto.
 
 O ambiente de testes não recebe arquivos do projeto manualmente: as alterações são enviadas ao GitHub e chegam ao host por `git pull`. O `.env` permanece local nesse ambiente.
 
-## Planejamento para produção
+## Topologia de produção
 
-A promoção planejada é `DEV → GitHub/CI → TEST → PROD`. A implantação em PROD ainda não está implementada; configuração, credenciais e volume persistente deverão ser próprios desse ambiente. Consulte [Production Readiness](production-readiness.md) para os controles e verificações previstos antes do go-live.
+A promoção segue `DEV → GitHub/CI → TEST → PROD`. Na topologia atual de produção, o Grafana escuta em `127.0.0.1:3000` e o acesso externo passa pelo reverse proxy Nginx em uma porta HTTP dedicada, protegida por firewall para redes internas autorizadas. O MariaDB permanece em `127.0.0.1:3306` com usuário read-only e sem exposição externa. Esta topologia é específica do ambiente atual; DNS e HTTPS poderão ser adotados futuramente. Consulte [Production Readiness](production-readiness.md).
 
 ## Status da validação nos relatórios
 
