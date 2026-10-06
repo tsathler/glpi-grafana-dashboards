@@ -154,7 +154,7 @@ Enquanto este marco estiver Planejado, não serão incluídas alterações em SQ
 
 Status: Planejado
 
-O discovery inicial está concluído e versionado em [11-projects-schema.sql](../sql/discovery/11-projects-schema.sql), [12-projects-domains.sql](../sql/discovery/12-projects-domains.sql), [13-project-tasks.sql](../sql/discovery/13-project-tasks.sql) e [14-projects-cardinality.sql](../sql/discovery/14-projects-cardinality.sql). Nenhuma query de métricas de produção foi criada e nenhum dashboard de Projetos foi implementado. O trabalho será retomado futuramente a partir deste discovery.
+O discovery estrutural inicial foi concluído e validado o suficiente para iniciar a definição das métricas do MVP. Ele está versionado em [11-projects-schema.sql](../sql/discovery/11-projects-schema.sql), [12-projects-domains.sql](../sql/discovery/12-projects-domains.sql), [13-project-tasks.sql](../sql/discovery/13-project-tasks.sql) e [14-projects-cardinality.sql](../sql/discovery/14-projects-cardinality.sql). As oito queries read-only de produção do MVP agora estão versionadas em `sql/projects/queries/`; elas ainda aguardam validação integrada no ambiente apropriado. O Marco 5 permanece Planejado e o dashboard de Projetos ainda não foi criado.
 
 ### Escopo do dashboard de Projetos
 
@@ -165,7 +165,9 @@ O discovery inicial está concluído e versionado em [11-projects-schema.sql](..
 - Possível identificação de projetos atrasados, somente após validar sua semântica.
 - Uma tabela operacional de projetos.
 
-Métricas de tarefas devem usar o escopo da entidade do projeto pai. O valor `0` do estado do projeto significa Sem estado, não ativo. Conclua o discovery e valide a semântica antes de criar queries de produção ou implementar o dashboard.
+Projetos e tarefas usam `projectstates_id`, relacionado a `glpi_projectstates`; o valor `0` representa ausência de estado, não um estado ativo. Use `glpi_projectstates.is_finished` para distinguir estados finalizados e não finalizados; `percent_done` não deve determinar conclusão sozinho. Métricas de projetos e tarefas válidos devem excluir deletados e templates (`is_deleted = 0` e `is_template = 0`). Métricas de tarefas devem filtrar a entidade pelo projeto pai e tratar a relação projeto-tarefa como 1:N.
+
+A cobertura das datas de projeto é insuficiente para métricas de atraso no MVP; datas de tarefas têm cobertura parcial e exigem validação específica antes do uso. O discovery estrutural está concluído o suficiente para iniciar a definição das métricas do MVP. Nenhuma query de produção ou dashboard foi criada.
 
 ### Melhoria futura: título principal por entidade
 
