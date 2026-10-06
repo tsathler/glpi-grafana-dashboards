@@ -166,3 +166,9 @@ O discovery inicial está concluído e versionado em [11-projects-schema.sql](..
 - Uma tabela operacional de projetos.
 
 Métricas de tarefas devem usar o escopo da entidade do projeto pai. O valor `0` do estado do projeto significa Sem estado, não ativo. Conclua o discovery e valide a semântica antes de criar queries de produção ou implementar o dashboard.
+
+### Melhoria futura: título principal por entidade
+
+O cabeçalho do dashboard de Service Desk poderá futuramente usar uma variável de apresentação separada, como `entity_title`, para exibir um título personalizado conforme a entidade selecionada. A variável `entity` continuará sendo a única responsável por filtrar os dados; `entity_title` será usada apenas na apresentação visual do cabeçalho. Somente entidades que precisarem de personalização terão um título mapeado explicitamente. Entidades sem mapeamento e a opção **All** usarão um título padrão. Essa melhoria não deverá alterar a lógica das métricas nem o comportamento do filtro **Entity**.
+
+A melhoria ainda não foi implementada. IDs e nomes reais de entidades, títulos personalizados e demais detalhes internos não devem ser registrados na documentação pública. O mapeamento real deverá ser definido fora desta documentação quando a funcionalidade for implementada no ambiente apropriado.
