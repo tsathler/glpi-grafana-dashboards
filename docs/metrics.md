@@ -32,3 +32,20 @@ A validação de runtime de **Eficiência de resolução (SLA)** está concluíd
 Antes do go-live, validar o plano de execução (`EXPLAIN`) e o desempenho das queries com dados e carga representativos. Esta revisão ainda está planejada; não representa validação de performance em produção.
 
 Outros indicadores de SLA, métricas de TTO, categorias, métricas de técnicos, métricas de entidade além da seleção/filtragem, envelhecimento do backlog e outras métricas estão fora do escopo do Marco 3 e permanecem como trabalho futuro. O card de atrasados é somente uma classificação do estado atual baseada no prazo; não é um cálculo de SLA reconstruído.
+
+## MVP de Projetos — queries implementadas, dashboard pendente
+
+As oito queries read-only do MVP estão versionadas separadamente em `sql/projects/queries/`, sem correspondência com painéis do Service Desk. Elas cobrem:
+
+- projetos não finalizados, incluindo projetos sem estado;
+- projetos finalizados;
+- projetos sem estado;
+- média de `percent_done` dos projetos válidos, que não representa uma taxa de conclusão;
+- projetos por estado;
+- projetos por prioridade, usando o valor armazenado;
+- tarefas por estado, filtradas pela entidade do projeto pai;
+- tabela operacional com quantidade de tarefas.
+
+Todas as consultas filtram projetos válidos por `is_deleted = 0`, `is_template = 0` e `$entity`; consultas de tarefas também filtram registros válidos e usam o escopo da entidade do projeto pai. `projectstates_id = 0` é rotulado como **Sem estado** e incluído entre os não finalizados; por isso, os indicadores de não finalizados e sem estado se sobrepõem intencionalmente. Estados finalizados são identificados por `glpi_projectstates.is_finished = 1`; `percent_done` não é usado para inferir conclusão. A tabela operacional pré-agrega tarefas por projeto para preservar a relação 1:N.
+
+Estas queries ainda não foram incorporadas a um dashboard nem validadas em runtime no Grafana. Não incluem métricas de atraso, prazos, timeline ou Gantt.

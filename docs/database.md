@@ -59,8 +59,14 @@ Os resultados SQL do ambiente de testes foram comparados com a interface do GLPI
 
 ## Achados verificados do discovery de Projetos
 
-O discovery de Projetos está em andamento para o ambiente de testes. `glpi_projects` é a tabela central de projetos, e `glpi_projecttasks.projects_id` relaciona tarefas a `glpi_projects.id`. A conclusão do estado do projeto é representada por `glpi_projectstates.is_finished`. O valor `projectstates_id = 0` ocorre e significa **Sem estado**; não deve ser interpretado como um estado ativo.
+O discovery estrutural de Projetos foi concluído e validado o suficiente para iniciar a definição das métricas do MVP. `glpi_projects` é a tabela central de projetos. `glpi_projects.projectstates_id` e `glpi_projecttasks.projectstates_id` referenciam `glpi_projectstates`; `glpi_projecttasks.projects_id` relaciona cada tarefa ao projeto pai.
 
-Há projetos em múltiplas entidades; portanto, todas as métricas de projetos devem respeitar o escopo `$entity` selecionado. Métricas de tarefas devem aplicar esse escopo por meio da entidade do projeto pai. A relação projeto-tarefa é um-para-muitos; joins futuros devem considerar essa cardinalidade.
+O valor `projectstates_id = 0` representa ausência de estado, não um estado ativo. `glpi_projectstates.is_finished` é a referência semântica para distinguir estados finalizados de não finalizados, tanto para projetos quanto para tarefas. `percent_done` não deve ser usado isoladamente para inferir conclusão.
 
-Tipos de projeto e milestones não têm uso relevante no ambiente atual. As datas planejadas e reais têm baixa cobertura. `percent_done` e campos de usuário responsável são utilizados. Campos de grupo não têm uso relevante no ambiente atual. Nenhum nome interno de entidade, projeto ou usuário, nem dados brutos do ambiente, é registrado aqui.
+Projetos e tarefas válidos devem excluir registros deletados (`is_deleted = 0`) e templates (`is_template = 0`). Todas as métricas devem respeitar o filtro `$entity`; métricas de tarefas devem aplicar esse escopo pela entidade do projeto pai. A relação projeto-tarefa é um-para-muitos, portanto joins devem considerar a cardinalidade e evitar multiplicação de linhas.
+
+As datas de projeto têm cobertura insuficiente no ambiente validado; métricas de atraso baseadas nelas ficam fora do MVP inicial. As datas de tarefas têm cobertura parcial e só devem ser usadas após validação específica. Estes achados são estruturais e não incluem nomes internos, IDs reais, quantidades ou dados brutos do ambiente.
+
+### Queries de produção do MVP de Projetos
+
+As queries read-only preparadas para o MVP estão versionadas em `sql/projects/queries/`, separadas das queries do Service Desk em `sql/queries/`. Elas usam somente campos e relações descritos pelo discovery. A definição SQL foi criada, mas as consultas ainda precisam de validação integrada antes do uso em um dashboard.
