@@ -91,8 +91,8 @@ Neste ambiente de testes, `/opt` foi escolhido como local de instalação, mas n
 
 ```bash
 cd /opt
-git clone https://github.com/tsathler/glpi-service-desk-dashboard.git
-cd glpi-service-desk-dashboard
+git clone https://github.com/tsathler/glpi-grafana-dashboards.git
+cd glpi-grafana-dashboards
 ```
 
 Para atualizações posteriores, obtenha a nova revisão:
@@ -151,7 +151,7 @@ As credenciais administrativas do Grafana e as credenciais do MariaDB são indep
 
 ## Máquina de desenvolvimento: validação estática
 
-O GitHub Actions executa estas verificações estáticas em pushes e pull requests: `docker compose config` com valores copiados de `.env.example`, análise do JSON do dashboard, análise de YAML, lint de Markdown, inspeção de SQL read-only, paridade entre queries versionadas e o dashboard, geração da demonstração sintética e verificações de schema, espaços em branco do Git e confirmação de que arquivos locais de ambiente não são versionados. Não inicia containers, não usa secrets do ambiente de testes e não se conecta ao MySQL/GLPI. As credenciais devem permanecer fora do Git; `.env` e `.env.demo` não devem ser versionados. Uma ferramenta dedicada para detectar secrets poderá ser considerada separadamente no futuro.
+O GitHub Actions executa estas verificações estáticas em pushes e pull requests: `docker compose config` com valores copiados de `.env.example`, análise do JSON do dashboard, análise de YAML, lint de Markdown, inspeção de SQL read-only, paridade entre queries versionadas e o dashboard, verificações de schema, espaços em branco do Git e confirmação de que arquivos locais de ambiente não são versionados. Não inicia containers, não usa secrets do ambiente de testes e não se conecta ao MySQL/GLPI. As credenciais devem permanecer fora do Git; `.env` não deve ser versionado. Uma ferramenta dedicada para detectar secrets poderá ser considerada separadamente no futuro.
 
 Valide o que não depende do ambiente integrado:
 

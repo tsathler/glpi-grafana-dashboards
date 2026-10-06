@@ -1,6 +1,4 @@
 .env
 .env.*
 !.env.example
-!.env.demo.example
-demo/generated/
 __pycache__/

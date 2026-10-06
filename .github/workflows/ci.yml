@@ -25,7 +25,6 @@ jobs:
       - name: Prepare validation environment
         run: |
           cp .env.example .env
-          cp .env.demo.example .env.demo
           python -m pip install PyYAML
 
       - name: Validate Docker Compose
@@ -54,16 +53,6 @@ jobs:
 
       - name: Validate read-only SQL and dashboard parity
         run: node scripts/validate-sql.mjs
-
-      - name: Validate synthetic demo files
-        run: |
-          python -m py_compile demo/generate.py
-          python demo/generate.py --output /tmp/glpi-demo-seed-a.sql
-          python demo/generate.py --output /tmp/glpi-demo-seed-b.sql
-          cmp /tmp/glpi-demo-seed-a.sql /tmp/glpi-demo-seed-b.sql
-          node scripts/validate-demo.mjs /tmp/glpi-demo-seed-a.sql
-          python demo/generate.py
-          docker compose -f compose.demo.yaml config --quiet
 
       - name: Validate YAML files
         run: |
@@ -109,15 +98,7 @@ jobs:
             echo "::error::.env must not be tracked"
             exit 1
           fi
-          if git ls-files --error-unmatch .env.demo >/dev/null 2>&1; then
-            echo "::error::.env.demo must not be tracked"
-            exit 1
-          fi
           test -f .env.example || {
             echo "::error::.env.example is required"
-            exit 1
-          }
-          test -f .env.demo.example || {
-            echo "::error::.env.demo.example is required"
             exit 1
           }
