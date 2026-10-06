@@ -14,12 +14,14 @@ O GLPI continua sendo uma aplicação externa já existente. Seu banco também �
 
 O Prometheus não é usado porque o foco inicial são dados relacionais de chamados, e não telemetria de infraestrutura em séries temporais. A API do GLPI não é usada porque o caminho inicial escolhido é SQL read-only no banco de relatórios. O acesso ao banco deve usar uma conta dedicada com o mínimo de privilégios. O SQL direto vincula as queries ao schema do GLPI; por isso, o discovery do schema e da versão deve preceder a implementação das métricas.
 
-No ambiente de testes atual, GLPI, MariaDB e Grafana executam no mesmo host Linux. O MariaDB permanece vinculado ao localhost (`127.0.0.1:3306`), e o Grafana usa `network_mode: host` para que o container alcance o banco local sem expor a porta 3306 à rede. A conectividade do container com o localhost foi validada. Essa decisão atende à configuração atual do host de testes e não é um requisito universal do projeto.
+No ambiente de testes atual, GLPI, MariaDB e Grafana executam no mesmo host Linux. O MariaDB permanece vinculado a `127.0.0.1:3306`, e o Grafana usa `network_mode: host` para alcançar o banco local sem expor a porta 3306. A conectividade foi validada. Essa decisão é específica deste ambiente.
 
-A tentativa anterior de conexão pelo IP de rede do host não funcionou porque o MariaDB aceita somente conexões locais. A conta dedicada `grafana_reader@localhost` tem apenas acesso `SELECT` a `glpi.*`. A autenticação direta no MariaDB, o acesso ao banco e uma query read-only foram validados; nenhum valor de dado ou contagem de linhas foi registrado. O datasource provisionado **GLPI MySQL** informa uma conexão saudável com o banco `glpi` usando acesso proxy do MySQL.
+A conta dedicada do datasource tem somente acesso read-only ao MariaDB. A autenticação, a conectividade e uma query read-only foram validadas. O datasource provisionado **GLPI MySQL** informa conexão saudável usando acesso proxy do MySQL.
 
-O Grafana está em execução e sua interface web está disponível em TCP/3000. O firewall do host restringe o acesso a essa porta às redes confiáveis. A porta 3306 do MariaDB não é exposta à rede para acesso do Grafana.
+Na topologia atual de produção, o Grafana escuta somente em `127.0.0.1:3000`. O acesso externo passa por um reverse proxy Nginx, que publica o serviço em uma porta HTTP dedicada; o firewall permite acesso somente a redes internas autorizadas. A porta 3000 não é exposta externamente. O MariaDB permanece em `127.0.0.1:3306` com usuário read-only, sem exposição externa.
 
-O Grafana pode iniciar sem que o MariaDB esteja acessível; as queries de dados exigem conectividade e credenciais locais válidas. O administrador do Grafana e o leitor do MariaDB são contas separadas, com credenciais distintas.
+Essa topologia é específica do ambiente atual. Ela poderá evoluir futuramente para acesso por DNS e HTTPS; essa evolução ainda não está configurada.
 
-A implantação em produção ainda está em planejamento e não foi implementada. A topologia de produção, incluindo o uso recomendado de Nginx com HTTPS, deverá ser definida antes do go-live; consulte [Production Readiness](production-readiness.md).
+O Grafana pode iniciar sem que o MariaDB esteja acessível; as queries de dados exigem conectividade e credenciais locais válidas. A conta administrativa do Grafana e o usuário read-only do MariaDB são separados, com credenciais distintas.
+
+A topologia de produção atual usa Nginx como reverse proxy HTTP. O uso de DNS e HTTPS poderá ser avaliado como evolução futura; consulte [Production Readiness](production-readiness.md).
