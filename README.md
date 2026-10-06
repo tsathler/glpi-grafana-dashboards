@@ -16,6 +16,8 @@ Oferecer uma visão reproduzível do status e fluxo dos chamados e do cumpriment
 
 Consulte [docs/architecture.md](docs/architecture.md).
 
+O go-live ainda está em planejamento. Consulte [Production Readiness](docs/production-readiness.md) para os requisitos documentados antes de uma futura implantação.
+
 ## Funcionalidades
 
 - Sete cards com o estado atual dos chamados, filtrados pelo seletor **Entity**.

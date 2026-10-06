@@ -21,3 +21,5 @@ A tentativa anterior de conexão pelo IP de rede do host não funcionou porque o
 O Grafana está em execução e sua interface web está disponível em TCP/3000. O firewall do host restringe o acesso a essa porta às redes confiáveis. A porta 3306 do MariaDB não é exposta à rede para acesso do Grafana.
 
 O Grafana pode iniciar sem que o MariaDB esteja acessível; as queries de dados exigem conectividade e credenciais locais válidas. O administrador do Grafana e o leitor do MariaDB são contas separadas, com credenciais distintas.
+
+A implantação em produção ainda está em planejamento e não foi implementada. A topologia de produção, incluindo o uso recomendado de Nginx com HTTPS, deverá ser definida antes do go-live; consulte [Production Readiness](production-readiness.md).

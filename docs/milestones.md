@@ -97,11 +97,17 @@ As validações de runtime e semântica foram concluídas no ambiente de testes 
 
 Esta melhoria foi validada em runtime após a conclusão do Marco 3. O percentual do Gauge coincidiu com um cálculo SQL direto no ambiente de testes. O Marco 3 permanece Concluído; o Marco 4 ainda não foi iniciado.
 
+### Melhoria posterior ao Marco 3: Chamados planejados
+
+O card **Chamados planejados** foi incorporado posteriormente ao dashboard como um sétimo snapshot, para tickets atuais com `status = 3` e `is_deleted = 0`. Ele respeita a variável Entity e é independente do time picker. Essa melhoria não altera o escopo histórico original do Marco 3, que foi concluído com seis cards.
+
 ## Estado estável atual
 
 O dashboard atual **GLPI Service Desk** está funcional e validado em runtime. Os Marcos 1, 2 e 3 permanecem Concluídos. A melhoria de SLA posterior ao Marco 3 e os refinamentos visuais subsequentes estão incorporados. O estado atual é considerado estável; novas funcionalidades estão fora do escopo imediato.
 
 O dashboard atual de Service Desk é considerado estável. Novas funcionalidades ficam adiadas; as alterações devem se limitar a correções de bugs, segurança, compatibilidade ou trabalho do roadmap retomado explicitamente.
+
+A preparação para produção está documentada como planejamento separado; nenhuma implantação em produção ou alteração de infraestrutura de produção está sendo declarada aqui.
 
 ## Marco 4 — Dashboard de backlog
 
