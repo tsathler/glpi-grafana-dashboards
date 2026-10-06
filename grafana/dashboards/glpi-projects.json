@@ -1,0 +1,705 @@
+{
+  "annotations": {
+    "list": []
+  },
+  "description": "Visão geral, distribuição e acompanhamento operacional dos projetos GLPI.",
+  "editable": false,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "id": null,
+  "links": [],
+  "liveNow": false,
+  "panels": [
+    {
+      "id": 10,
+      "title": "",
+      "type": "text",
+      "gridPos": {
+        "x": 0,
+        "y": 0,
+        "w": 24,
+        "h": 4
+      },
+      "pluginVersion": "13.2.2",
+      "transparent": true,
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "options": {
+        "mode": "html",
+        "content": "<div style=\"font-size:72px;font-weight:700;letter-spacing:0.5px;line-height:1.0;margin:0;padding:0;\">Painel de Projetos</div>",
+        "disableSanitizeHtml": false,
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        }
+      }
+    },
+    {
+      "id": 1,
+      "title": "Projetos não finalizados",
+      "type": "stat",
+      "description": "Inclui projetos sem estado; estes também são mostrados em Projetos sem estado.",
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 6,
+        "h": 5
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Current snapshot: valid projects whose state is not marked finished.\n-- Projects without a state (projectstates_id = 0) are included as not finished.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND (\n      p.projectstates_id = 0\n      OR (ps.id IS NOT NULL AND ps.is_finished = 0)\n  );\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 40
+        }
+      }
+    },
+    {
+      "id": 2,
+      "title": "Projetos finalizados",
+      "type": "stat",
+      "description": "Projetos válidos cujo estado está marcado como finalizado.",
+      "gridPos": {
+        "x": 6,
+        "y": 5,
+        "w": 6,
+        "h": 5
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Current snapshot: valid projects whose state is marked finished.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 1;\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 40
+        }
+      }
+    },
+    {
+      "id": 3,
+      "title": "Projetos sem estado",
+      "type": "stat",
+      "description": "Subconjunto de Projetos não finalizados.",
+      "gridPos": {
+        "x": 12,
+        "y": 5,
+        "w": 6,
+        "h": 5
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Current snapshot: valid projects with no state assigned.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND p.projectstates_id = 0;\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 40
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "Progresso médio",
+      "type": "stat",
+      "description": "Média de percent_done dos projetos válidos; não representa taxa de conclusão.",
+      "gridPos": {
+        "x": 18,
+        "y": 5,
+        "w": 6,
+        "h": 5
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Average stored progress for valid projects; this is not a completion rate.\nSELECT AVG(p.percent_done) AS average_progress\nFROM glpi_projects AS p\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity);\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "percent",
+          "decimals": 1,
+          "min": 0,
+          "max": 100
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 40
+        }
+      }
+    },
+    {
+      "id": 5,
+      "title": "Projetos por estado",
+      "type": "barchart",
+      "description": "Distribuição de projetos válidos por estado. Projetos sem estado aparecem como Sem estado.",
+      "gridPos": {
+        "x": 0,
+        "y": 10,
+        "w": 12,
+        "h": 8
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Distribution of valid projects by state; state 0 is labeled generically.\nSELECT CASE\n           WHEN p.projectstates_id = 0 THEN 'Sem estado'\n           ELSE ps.name\n       END AS state_name,\n       COUNT(DISTINCT p.id) AS project_count\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY p.projectstates_id, ps.name\nORDER BY (p.projectstates_id = 0), state_name;\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisColorMode": "text",
+            "axisBorderShow": false,
+            "axisGridShow": true,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 0
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "xField": "state_name",
+        "showValue": "auto",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.85,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "none",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "yAxis": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "axisColorMode": "text",
+          "axisBorderShow": false,
+          "axisGridShow": true,
+          "scale": {
+            "type": "linear",
+            "log": false,
+            "logBase": 2
+          },
+          "axisSoftMin": 0
+        }
+      }
+    },
+    {
+      "id": 6,
+      "title": "Projetos por prioridade",
+      "type": "barchart",
+      "description": "Distribuição dos valores de prioridade armazenados. Valores 3 e 5 recebem rótulos visuais; outros valores permanecem visíveis.",
+      "gridPos": {
+        "x": 12,
+        "y": 10,
+        "w": 12,
+        "h": 8
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Distribution of valid projects by stored priority value.\nSELECT p.priority,\n       COUNT(DISTINCT p.id) AS project_count\nFROM glpi_projects AS p\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY p.priority\nORDER BY p.priority;\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisColorMode": "text",
+            "axisBorderShow": false,
+            "axisGridShow": true,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 0
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "priority"
+            },
+            "properties": [
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": 1,
+                    "options": {
+                      "3": {
+                        "text": "Média"
+                      },
+                      "5": {
+                        "text": "Muito alta"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "orientation": "horizontal",
+        "xField": "priority",
+        "showValue": "auto",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.85,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "none",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "yAxis": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "axisColorMode": "text",
+          "axisBorderShow": false,
+          "axisGridShow": true,
+          "scale": {
+            "type": "linear",
+            "log": false,
+            "logBase": 2
+          },
+          "axisSoftMin": 0
+        }
+      }
+    },
+    {
+      "id": 7,
+      "title": "Tarefas por estado",
+      "type": "barchart",
+      "description": "Distribuição de tarefas válidas por estado. O filtro Entity é aplicado pela entidade do projeto pai.",
+      "gridPos": {
+        "x": 0,
+        "y": 18,
+        "w": 24,
+        "h": 8
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Distribution of valid tasks by state, scoped through the parent project entity.\nSELECT CASE\n           WHEN pt.projectstates_id = 0 THEN 'Sem estado'\n           ELSE ps.name\n       END AS state_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nLEFT JOIN glpi_projectstates AS ps\n       ON pt.projectstates_id = ps.id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY pt.projectstates_id, ps.name\nORDER BY (pt.projectstates_id = 0), state_name;\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisColorMode": "text",
+            "axisBorderShow": false,
+            "axisGridShow": true,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 0
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "xField": "state_name",
+        "showValue": "auto",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.85,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "none",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "yAxis": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "axisColorMode": "text",
+          "axisBorderShow": false,
+          "axisGridShow": true,
+          "scale": {
+            "type": "linear",
+            "log": false,
+            "logBase": 2
+          },
+          "axisSoftMin": 0
+        }
+      }
+    },
+    {
+      "id": 8,
+      "title": "Projetos",
+      "type": "table",
+      "description": "Uma linha por projeto válido; a quantidade de tarefas é pré-agregada por projeto.",
+      "gridPos": {
+        "x": 0,
+        "y": 26,
+        "w": 24,
+        "h": 12
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Operational project table with valid task counts pre-aggregated per project.\nSELECT p.id AS project_id,\n       p.name AS project_name,\n       CASE\n           WHEN p.projectstates_id = 0 THEN 'Sem estado'\n           ELSE ps.name\n       END AS state_name,\n       p.priority,\n       p.percent_done,\n       COALESCE(task_counts.task_count, 0) AS task_count\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nLEFT JOIN (\n    SELECT pt.projects_id,\n           COUNT(*) AS task_count\n    FROM glpi_projecttasks AS pt\n    WHERE pt.is_deleted = 0\n      AND pt.is_template = 0\n    GROUP BY pt.projects_id\n) AS task_counts\n       ON task_counts.projects_id = p.id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nORDER BY p.name, p.id;\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "project_id"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "viz": true,
+                  "legend": false,
+                  "tooltip": false
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "project_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Projeto"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "state_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Estado"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Prioridade"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": 1,
+                    "options": {
+                      "3": {
+                        "text": "Média"
+                      },
+                      "5": {
+                        "text": "Muito alta"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "percent_done"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Progresso"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "task_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tarefas"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
+      }
+    }
+  ],
+  "refresh": "",
+  "schemaVersion": 41,
+  "tags": [
+    "glpi",
+    "projects"
+  ],
+  "templating": {
+    "list": [
+      {
+        "name": "entity",
+        "label": "Entity",
+        "type": "query",
+        "datasource": {
+          "type": "mysql",
+          "uid": "glpi-mysql"
+        },
+        "query": "SELECT completename AS __text, id AS __value FROM glpi_entities ORDER BY completename",
+        "definition": "SELECT completename AS __text, id AS __value FROM glpi_entities ORDER BY completename",
+        "refresh": 1,
+        "hide": 0,
+        "includeAll": true,
+        "allValue": null,
+        "multi": false,
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "options": [],
+        "regex": "",
+        "sort": 1,
+        "skipUrlSync": false
+      }
+    ]
+  },
+  "time": {
+    "from": "now-30d",
+    "to": "now"
+  },
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "GLPI Projects",
+  "uid": "glpi-projects",
+  "version": 1,
+  "weekStart": ""
+}

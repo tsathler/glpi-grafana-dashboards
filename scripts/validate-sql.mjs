@@ -92,28 +92,40 @@ function validateSql(path) {
 }
 
 const sqlRoot = join(root, 'sql');
-const queryRoot = join(sqlRoot, 'queries');
 const discoveryRoot = join(sqlRoot, 'discovery');
 const allSql = sqlFiles(sqlRoot);
-const queries = sqlFiles(queryRoot);
 const discovery = sqlFiles(discoveryRoot);
-if (queries.length === 0 || discovery.length === 0) {
-  throw new Error('Expected versioned SQL in sql/queries/ and sql/discovery/');
+if (discovery.length === 0) {
+  throw new Error('Expected versioned SQL in sql/discovery/');
 }
 allSql.forEach(validateSql);
 
 const dashboardRoot = join(root, 'grafana', 'dashboards');
 const dashboards = readdirSync(dashboardRoot).filter((name) => name.endsWith('.json'));
 if (dashboards.length === 0) throw new Error('No dashboard JSON files found');
-const matchedQueries = new Set();
-
+const dashboardQuerySets = [
+  { dashboard: 'glpi-service-desk.json', queryDirectory: join(sqlRoot, 'queries') },
+  { dashboard: 'glpi-projects.json', queryDirectory: join(sqlRoot, 'projects', 'queries') },
+];
+const expectedDashboards = new Set(dashboardQuerySets.map(({ dashboard }) => dashboard));
+for (const { dashboard } of dashboardQuerySets) {
+  if (!dashboards.includes(dashboard)) throw new Error(`Expected dashboard ${dashboard}`);
+}
 for (const name of dashboards) {
+  if (!expectedDashboards.has(name)) throw new Error(`No query directory mapping configured for ${name}`);
+}
+
+let matchedQueryCount = 0;
+for (const { dashboard: name, queryDirectory } of dashboardQuerySets) {
+  const queries = sqlFiles(queryDirectory);
+  if (queries.length === 0) throw new Error(`${relative(root, queryDirectory)}: no SQL queries found`);
   const dashboard = JSON.parse(readFileSync(join(dashboardRoot, name), 'utf8'));
+  const matchedQueries = new Set();
   for (const panel of dashboard.panels ?? []) {
     for (const target of panel.targets ?? []) {
       if (typeof target.rawSql !== 'string') continue;
       const prefix = `${String(panel.id).padStart(2, '0')}-`;
-      const matches = queries.filter((path) => path.startsWith(join(queryRoot, prefix)));
+      const matches = queries.filter((path) => path.startsWith(join(queryDirectory, prefix)));
       if (matches.length !== 1) {
         throw new Error(`${name}: panel ${panel.id} must map to exactly one ${prefix}*.sql file`);
       }
@@ -122,13 +134,16 @@ for (const name of dashboards) {
       if (embedded !== expected) {
         throw new Error(`${name}: panel ${panel.id} SQL differs from ${relative(root, matches[0])}`);
       }
+      if (matchedQueries.has(matches[0])) {
+        throw new Error(`${relative(root, matches[0])}: mapped to more than one dashboard panel`);
+      }
       matchedQueries.add(matches[0]);
     }
   }
+  for (const path of queries) {
+    if (!matchedQueries.has(path)) throw new Error(`${relative(root, path)}: no matching dashboard panel`);
+  }
+  matchedQueryCount += matchedQueries.size;
 }
 
-for (const path of queries) {
-  if (!matchedQueries.has(path)) throw new Error(`${relative(root, path)}: no matching dashboard panel`);
-}
-
-console.log(`OK: ${allSql.length} read-only SQL files; ${matchedQueries.size} query/dashboard matches`);
+console.log(`OK: ${allSql.length} read-only SQL files; ${matchedQueryCount} query/dashboard matches`);

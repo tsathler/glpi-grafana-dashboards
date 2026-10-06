@@ -2,11 +2,11 @@
 
 [![CI](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml/badge.svg)](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml)
 
-Um conjunto de dashboards do Grafana para dados do GLPI armazenados em um banco MariaDB externo. O dashboard atual é o **GLPI Service Desk**. A stack principal do Compose executa somente o Grafana, conectado a um banco MariaDB externo do GLPI. O SQL das métricas é versionado junto com os dashboards.
+Um conjunto de dashboards do Grafana para dados do GLPI armazenados em um banco MariaDB externo. **GLPI Service Desk** é a visão estável de chamados; **GLPI Projects** é o dashboard MVP de Projetos, implementado e aguardando validação integrada no Grafana. A stack principal do Compose executa somente o Grafana, conectado a um banco MariaDB externo do GLPI. O SQL das métricas é versionado junto com os dashboards.
 
 ## Visão geral
 
-Os marcos 1, 2 e 3 estão concluídos. O dashboard funcional **GLPI Service Desk** e o Gauge **Eficiência de resolução (SLA)**, adicionado posteriormente, foram validados no ambiente de testes com o GLPI e SQL direto. A primeira versão estável também foi implantada e validada em produção. As melhorias e os refinamentos visuais posteriores aos marcos já estão incorporados; novas funcionalidades estão adiadas. Consulte [os achados do banco de dados](docs/database.md), [as definições das métricas](docs/metrics.md), [o status dos marcos](docs/milestones.md) e [Production Readiness](docs/production-readiness.md).
+Os marcos 1, 2 e 3 estão concluídos. O dashboard estável **GLPI Service Desk** e o Gauge **Eficiência de resolução (SLA)**, adicionado posteriormente, foram validados no ambiente de testes com o GLPI e SQL direto. A primeira versão estável também foi implantada e validada em produção. O Marco 5 está em validação: o dashboard MVP **GLPI Projects** e suas queries foram implementados; a validação integrada dos painéis no Grafana está pendente. Consulte [os achados do banco de dados](docs/database.md), [as definições das métricas](docs/metrics.md), [o status dos marcos](docs/milestones.md) e [Production Readiness](docs/production-readiness.md).
 
 ## Objetivos
 
@@ -23,6 +23,7 @@ A primeira versão estável foi implantada e validada em produção. Consulte [P
 - Sete cards com o estado atual dos chamados, filtrados pelo seletor **Entity**.
 - Série temporal **Fluxo de chamados** com Criados e Solucionados.
 - Gauge **Eficiência de resolução (SLA)** baseado no prazo TTR calculado pelo GLPI.
+- Dashboard **GLPI Projects** com indicadores, distribuições e tabela operacional; aguarda validação integrada no Grafana.
 - Datasource MySQL e dashboard provisionados, volume persistente do Grafana e SQL read-only versionado.
 
 ## Tecnologias
@@ -31,7 +32,7 @@ Grafana 13, MariaDB, SQL, Docker Compose, Linux e GitHub Actions.
 
 ## Estrutura do repositório
 
-Os arquivos JSON dos dashboards e os arquivos de provisioning ficam em `grafana/`. As queries das métricas estão em `sql/queries/`; os scripts de discovery do schema estão em `sql/discovery/`. Consulte as [instruções de desenvolvimento](docs/development.md).
+Os arquivos JSON dos dashboards e os arquivos de provisioning ficam em `grafana/`. As queries do Service Desk estão em `sql/queries/`; as queries do MVP de Projetos ficam em `sql/projects/queries/`; os scripts de discovery do schema estão em `sql/discovery/`. Consulte as [instruções de desenvolvimento](docs/development.md).
 
 ## Requisitos
 
@@ -55,7 +56,7 @@ Abra `http://localhost:3000` e entre com as credenciais administrativas configur
 
 ## Dashboard
 
-O dashboard atual provisionado **GLPI Service Desk** contém sete cards de status, um seletor de entidade, **Fluxo de chamados** e **Eficiência de resolução (SLA)**. Os cards mostram snapshots atuais; a série temporal e o Gauge respeitam o período selecionado. O Gauge mede o cumprimento do TTR entre os chamados solucionados que possuem um prazo aplicável.
+O dashboard provisionado **GLPI Service Desk** contém sete cards de status, um seletor de entidade, **Fluxo de chamados** e **Eficiência de resolução (SLA)**. O dashboard **GLPI Projects** apresenta o MVP de projetos por entidade, incluindo estados, progresso, prioridade, tarefas e tabela operacional. As queries do MVP foram validadas diretamente no banco em mais de um escopo de entidade; a validação integrada do dashboard no Grafana ainda está pendente. No Service Desk, os cards mostram snapshots atuais; a série temporal e o Gauge respeitam o período selecionado. O Gauge mede o cumprimento do TTR entre os chamados solucionados que possuem um prazo aplicável.
 
 ## Captura de tela — exemplo demonstrativo
 
@@ -85,4 +86,4 @@ O SQL direto depende do schema GLPI instalado. Valide novamente os mapeamentos d
 
 ## Roteiro
 
-Marco 1: Fundação (Concluído). Marco 2: Discovery do banco de dados (Concluído). Marco 3: Métricas principais (Concluído). Marco 4: Dashboard de backlog (Planejado). Marco 5: Dashboard de Projetos (Planejado/Futuro; discovery inicial concluído, implementação adiada).
+Marco 1: Fundação (Concluído). Marco 2: Discovery do banco de dados (Concluído). Marco 3: Métricas principais (Concluído). Marco 4: Dashboard de backlog (Planejado). Marco 5: Dashboard de Projetos (Em validação; queries do MVP e dashboard implementados, validação integrada no Grafana pendente).
