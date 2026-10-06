@@ -107,7 +107,11 @@ O dashboard atual **GLPI Service Desk** está funcional e validado em runtime. O
 
 O dashboard atual de Service Desk é considerado estável. Novas funcionalidades ficam adiadas; as alterações devem se limitar a correções de bugs, segurança, compatibilidade ou trabalho do roadmap retomado explicitamente.
 
-A preparação para produção está documentada como planejamento separado; nenhuma implantação em produção ou alteração de infraestrutura de produção está sendo declarada aqui.
+### Primeira implantação em produção
+
+A primeira versão de produção foi implantada e validada. O Grafana está em execução e escuta somente em `127.0.0.1:3000`; o acesso externo passa pelo reverse proxy Nginx e é limitado pelo firewall a origens internas/autorizadas. O MariaDB permanece em `127.0.0.1:3306` com usuário dedicado read-only. O `.env` de produção é local, separado e não versionado.
+
+Datasource, dashboard, filtro **Entity** e métricas foram validados em produção. O endpoint `/api/health` respondeu com o banco interno do Grafana saudável. O estado atual representa a primeira versão estável de produção. DNS/HTTPS, backup/restore automatizado e healthcheck gerenciado permanecem melhorias futuras não bloqueadoras.
 
 ## Marco 4 — Dashboard de backlog
 
