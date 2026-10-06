@@ -98,7 +98,7 @@ cd glpi-grafana-dashboards
 Para atualizações posteriores, obtenha a nova revisão:
 
 ```bash
-cd /opt/glpi-service-desk-dashboard
+cd /opt/glpi-grafana-dashboards
 git pull
 ```
 
@@ -228,6 +228,10 @@ mariadb -h 127.0.0.1 -u grafana_reader -p glpi
 O SQL atual das métricas está versionado em `sql/queries/` e foi comparado com a versão instalada do GLPI. Para métricas futuras ou implantações em outra instalação, compare os resultados com o GLPI e documente os mapeamentos de status, filtros e limitações. Nunca altere o banco, o schema ou a aplicação GLPI como parte deste projeto.
 
 O ambiente de testes não recebe arquivos do projeto manualmente: as alterações são enviadas ao GitHub e chegam ao host por `git pull`. O `.env` permanece local nesse ambiente.
+
+## Planejamento para produção
+
+A promoção planejada é `DEV → GitHub/CI → TEST → PROD`. A implantação em PROD ainda não está implementada; configuração, credenciais e volume persistente deverão ser próprios desse ambiente. Consulte [Production Readiness](production-readiness.md) para os controles e verificações previstos antes do go-live.
 
 ## Status da validação nos relatórios
 
