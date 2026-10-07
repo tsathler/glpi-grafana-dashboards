@@ -19,7 +19,7 @@ As alterações passam pela validação estática da CI e pela validação de ru
 - O datasource, o dashboard, o filtro **Entity** e as métricas foram validados em produção.
 - O endpoint `/api/health` respondeu indicando o banco interno do Grafana saudável.
 
-O estado descrito representa a primeira versão estável de produção. A topologia é específica do ambiente atual.
+O estado descrito representa a primeira versão estável de produção neste ambiente. Loopback, Nginx, HTTP e a política de firewall descrevem o cenário validado, não uma arquitetura obrigatória para outras instalações. Adapte os controles à topologia e às regras de segurança locais, sem expor o banco publicamente.
 
 ## Melhorias futuras não bloqueadoras
 

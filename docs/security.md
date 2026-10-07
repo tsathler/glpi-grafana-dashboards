@@ -1,7 +1,7 @@
 # Segurança
 
-- O MariaDB permanece acessível localmente e não é exposto externamente. O datasource usa um usuário dedicado somente com acesso read-only; não conceda privilégios de escrita ou alteração.
-- O Grafana deve escutar somente na interface de loopback. O acesso externo passa pelo reverse proxy Nginx e firewall que permite somente origens internas autorizadas. Não exponha diretamente o serviço do Grafana.
+- O datasource deve usar um usuário dedicado somente com acesso read-only; não conceda privilégios de escrita ou alteração. O banco não deve ser exposto publicamente.
+- No cenário atual, o Grafana escuta somente na interface de loopback e o acesso externo passa por Nginx e firewall restrito. Nginx e loopback são escolhas da implantação validada, não dependências universais; qualquer alternativa deve manter acesso protegido e não expor diretamente o serviço sem controles adequados.
 - Altere a senha inicial de administrador do Grafana e proteja essa conta. O cadastro de usuários está desabilitado.
 - Os dados dos chamados podem conter informações pessoais ou confidenciais. Limite o acesso ao dashboard e evite publicar dados reais de chamados, nomes de usuário, nomes de entidades ou detalhes internos do host.
 - A conta do banco segue o princípio do menor privilégio: somente acesso read-only. O serviço do banco não é exposto externamente.
@@ -16,7 +16,7 @@
 
 ## Acesso em produção
 
-A topologia de produção validada usa Nginx como reverse proxy, com acesso limitado pelo firewall a origens internas/autorizadas. O Grafana permanece vinculado somente à interface de loopback, sem exposição externa direta, e o MariaDB permanece acessível localmente com usuário dedicado read-only. O `.env` de produção é local, separado e não versionado. DNS e HTTPS são possíveis evoluções futuras, ainda não configuradas. Consulte [Production Readiness](production-readiness.md).
+A topologia de produção validada neste ambiente usa Nginx como reverse proxy, com acesso limitado pelo firewall a origens internas/autorizadas. O Grafana permanece vinculado somente à interface de loopback, sem exposição externa direta, e o MariaDB permanece acessível localmente com usuário dedicado read-only. O `.env` de produção é local, separado e não versionado. DNS e HTTPS são possíveis evoluções futuras, ainda não configuradas. Este cenário não estabelece Nginx, HTTP, DNS ou uma política de firewall específica como requisito de implantação universal. Consulte [Production Readiness](production-readiness.md).
 
 ## Revisão do repositório
 
