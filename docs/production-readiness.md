@@ -12,9 +12,9 @@ As alterações passam pela validação estática da CI e pela validação de ru
 
 ## Controles implementados
 
-- O Grafana está em execução no ambiente de produção e escuta somente em `127.0.0.1:3000`; essa porta não é exposta externamente.
+- O Grafana está em execução no ambiente de produção e escuta somente na interface de loopback; o serviço não é exposto diretamente.
 - O acesso externo passa pelo Nginx como reverse proxy, publicado em uma porta HTTP dedicada. O firewall restringe o acesso a origens internas/autorizadas.
-- O MariaDB permanece em `127.0.0.1:3306`, acessível pelo datasource com uma conta dedicada read-only e sem exposição externa.
+- O MariaDB permanece acessível localmente pelo datasource, com uma conta dedicada read-only e sem exposição externa.
 - O `.env` de produção é local, separado dos demais ambientes e não versionado.
 - O datasource, o dashboard, o filtro **Entity** e as métricas foram validados em produção.
 - O endpoint `/api/health` respondeu indicando o banco interno do Grafana saudável.

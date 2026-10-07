@@ -1,10 +1,10 @@
 # Segurança
 
-- O MariaDB permanece vinculado a `127.0.0.1:3306` e não é exposto externamente. O datasource usa um usuário dedicado somente com acesso read-only; não conceda privilégios de escrita ou alteração.
-- O Grafana deve escutar somente em `127.0.0.1:3000`. O acesso externo passa pelo reverse proxy Nginx em uma porta HTTP dedicada, protegida por firewall que permite somente redes internas autorizadas. Não exponha a porta 3000 externamente.
+- O MariaDB permanece acessível localmente e não é exposto externamente. O datasource usa um usuário dedicado somente com acesso read-only; não conceda privilégios de escrita ou alteração.
+- O Grafana deve escutar somente na interface de loopback. O acesso externo passa pelo reverse proxy Nginx e firewall que permite somente origens internas autorizadas. Não exponha diretamente o serviço do Grafana.
 - Altere a senha inicial de administrador do Grafana e proteja essa conta. O cadastro de usuários está desabilitado.
 - Os dados dos chamados podem conter informações pessoais ou confidenciais. Limite o acesso ao dashboard e evite publicar dados reais de chamados, nomes de usuário, nomes de entidades ou detalhes internos do host.
-- A conta do banco segue o princípio do menor privilégio: somente acesso read-only. A porta 3306 não é exposta externamente.
+- A conta do banco segue o princípio do menor privilégio: somente acesso read-only. O serviço do banco não é exposto externamente.
 
 ## Gerenciamento de secrets
 
@@ -16,7 +16,7 @@
 
 ## Acesso em produção
 
-A topologia de produção validada usa Nginx como reverse proxy em uma porta HTTP dedicada, com acesso limitado pelo firewall a origens internas/autorizadas. O Grafana permanece vinculado a `127.0.0.1:3000`, sem exposição externa direta, e o MariaDB a `127.0.0.1:3306` com usuário dedicado read-only. O `.env` de produção é local, separado e não versionado. DNS e HTTPS são possíveis evoluções futuras, ainda não configuradas. Consulte [Production Readiness](production-readiness.md).
+A topologia de produção validada usa Nginx como reverse proxy, com acesso limitado pelo firewall a origens internas/autorizadas. O Grafana permanece vinculado somente à interface de loopback, sem exposição externa direta, e o MariaDB permanece acessível localmente com usuário dedicado read-only. O `.env` de produção é local, separado e não versionado. DNS e HTTPS são possíveis evoluções futuras, ainda não configuradas. Consulte [Production Readiness](production-readiness.md).
 
 ## Revisão do repositório
 
