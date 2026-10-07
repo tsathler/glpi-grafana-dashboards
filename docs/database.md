@@ -2,17 +2,11 @@
 
 ## Estado atual
 
-O Marco 1 provisiona o datasource **GLPI MySQL** usando variáveis de ambiente. Ele se conecta ao banco `glpi` pelo serviço MariaDB local, usando acesso proxy do MySQL e uma conta read-only. A saúde do datasource e a conectividade read-only direta com o MariaDB foram validadas no ambiente de testes. O MariaDB permanece vinculado a `127.0.0.1:3306`; sua porta não é exposta à rede. O Marco 2 descobriu e validou as relações do schema do Service Desk documentadas abaixo. As queries do dashboard do Marco 3 são read-only e estão versionadas em `sql/queries/`; nenhum objeto SQL foi criado no banco. Não generalize estes achados para outras instalações do GLPI sem validar seus schemas.
+O Marco 1 provisiona o datasource **GLPI MySQL** usando variáveis de ambiente. Ele se conecta ao banco GLPI externo por meio do datasource MySQL nativo e usa uma conta read-only. A saúde do datasource e a conectividade read-only foram validadas no ambiente de testes. O Marco 2 descobriu e validou as relações do schema do Service Desk documentadas abaixo. As queries do dashboard do Marco 3 são read-only e estão versionadas em `sql/queries/`; nenhum objeto SQL foi criado no banco. Não generalize estes achados para outras instalações do GLPI sem validar seus schemas.
 
 ## Acesso
 
-O host de testes atual usa a conta dedicada `grafana_reader@localhost`, com acesso somente `SELECT` em `glpi.*`. Ela não deve ter privilégios `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER` ou `DROP`. A concessão abaixo está documentada apenas conceitualmente; foi aplicada pelo processo de administração do banco e não é executada por este projeto:
-
-```sql
-GRANT SELECT ON glpi.* TO 'grafana_reader'@'localhost';
-```
-
-Uma conta anterior associada ao IP de rede do host não foi suficiente para esta conexão local. O MariaDB está vinculado a `127.0.0.1:3306`; portanto, não o documente nem configure como exposto à rede. Em outras implantações, escolha um host de conta com restrições adequadas à topologia de rede real.
+Use uma conta dedicada com acesso somente `SELECT`. Ela não deve ter privilégios `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER` ou `DROP`. A concessão de privilégios é administrada fora deste projeto; o repositório não altera as permissões nem a configuração do MariaDB. Mantenha o serviço de banco inacessível externamente e adapte a conectividade à topologia autorizada de cada ambiente.
 
 ## Achados verificados do discovery do Service Desk
 

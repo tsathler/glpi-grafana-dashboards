@@ -15,14 +15,14 @@ Status: Concluído
 - [x] Configuração por variáveis de ambiente, com `.env` de cada ambiente excluído do Git.
 - [x] CI estática para `push` e `pull_request`, com somente a permissão `contents: read`.
 - [x] Fluxo de promoção de desenvolvimento para GitHub e depois para testes com `git push` e `git pull`, sem transferência manual de arquivos.
-- [x] Runtime do Grafana no ambiente de testes: container em execução, serviço HTTP e interface web disponíveis em TCP/3000 e provisioning carregado.
+- [x] Runtime do Grafana no ambiente de testes: container em execução, serviço HTTP e interface web disponíveis localmente e provisioning carregado.
 - [x] Plugin MySQL e datasource provisionado **GLPI MySQL** carregados (MySQL, `glpi`, acesso proxy, conta de banco somente com SELECT).
 - [x] Health check do datasource bem-sucedido; o datasource permanece presente após reiniciar o Grafana.
 - [x] Dashboard **GLPI Service Desk** provisionado, visível no Grafana e ainda presente após reiniciar o Grafana.
 - [x] Comportamento esperado de provisioning e persistência confirmado para a fundação do Marco 1.
 - [x] Autenticação direta no MariaDB e acesso read-only ao banco confirmados.
-- [x] Acesso do container ao MariaDB local em `localhost:3306`, usando a rede do host, confirmado.
-- [x] MariaDB mantido vinculado ao localhost; firewall restringe TCP/3000 do Grafana às redes confiáveis, e TCP/3306 do MariaDB não é exposta.
+- [x] Acesso do container ao MariaDB no ambiente autorizado, usando a rede do host, confirmado.
+- [x] MariaDB mantido sem exposição externa; firewall restringe o acesso ao Grafana às origens autorizadas.
 - [x] Documentação do projeto alinhada à arquitetura implementada e aos limites de validação.
 - [x] Revisão de secrets do repositório concluída; consulte [security.md](security.md).
 
@@ -109,7 +109,7 @@ O dashboard atual de Service Desk é considerado estável. Novas funcionalidades
 
 ### Primeira implantação em produção
 
-A primeira versão de produção foi implantada e validada. O Grafana está em execução e escuta somente em `127.0.0.1:3000`; o acesso externo passa pelo reverse proxy Nginx e é limitado pelo firewall a origens internas/autorizadas. O MariaDB permanece em `127.0.0.1:3306` com usuário dedicado read-only. O `.env` de produção é local, separado e não versionado.
+A primeira versão de produção foi implantada e validada. O Grafana está em execução e escuta somente na interface de loopback; o acesso externo passa pelo reverse proxy Nginx e é limitado pelo firewall a origens internas/autorizadas. O MariaDB permanece acessível localmente, com usuário dedicado read-only e sem exposição externa. O `.env` de produção é local, separado e não versionado.
 
 Datasource, dashboard, filtro **Entity** e métricas foram validados em produção. O endpoint `/api/health` respondeu com o banco interno do Grafana saudável. O estado atual representa a primeira versão estável de produção. DNS/HTTPS, backup/restore automatizado e healthcheck gerenciado permanecem melhorias futuras não bloqueadoras.
 

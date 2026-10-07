@@ -12,7 +12,7 @@ O ambiente de testes recebe as alterações pelo Git. Este repositório implanta
 
 O ambiente de testes usado atualmente pelo projeto é **Ubuntu Server 24.04 LTS**, com Git, Docker Engine e o plugin do Docker Compose. Outras distribuições Linux podem funcionar, mas este documento descreve o Ubuntu Server 24.04 LTS.
 
-O host de testes atual executa Grafana e MariaDB juntos. O MariaDB escuta somente em `127.0.0.1:3306`; não está exposto externamente. O Docker foi instalado pelo repositório APT oficial do Docker. O problema `docker-ce has no installation candidate` foi resolvido configurando esse repositório; consulte a seção de solução de problemas abaixo para ver as etapas de diagnóstico.
+O ambiente de testes usa Docker Engine e o plugin oficial do Docker Compose. O acesso ao banco permanece restrito ao ambiente autorizado. O Docker foi instalado pelo repositório APT oficial do Docker. O problema `docker-ce has no installation candidate` foi resolvido configurando esse repositório; consulte a seção de solução de problemas abaixo para ver as etapas de diagnóstico.
 
 ### Instalar Docker Engine e o plugin Compose
 
@@ -126,7 +126,7 @@ docker compose logs --tail=100 grafana
 
 `config` valida e renderiza a configuração Compose; `up -d` inicia os serviços em segundo plano; `ps` mostra o estado deles; e `logs` ajuda a inspecionar a inicialização do Grafana, o provisioning e os erros.
 
-O serviço Compose atual usa `network_mode: host`, portanto não usa um mapeamento `ports`. Essa configuração é específica do ambiente de testes: Grafana e MariaDB compartilham um host Linux. O Grafana escuta somente em `127.0.0.1:3000`, e o MariaDB em `127.0.0.1:3306`; a conectividade local foi validada e a porta 3306 não é exposta externamente.
+O serviço Compose atual usa `network_mode: host`, portanto não usa um mapeamento `ports`. Essa configuração é específica do ambiente de implantação atual. O Grafana é restrito à interface local; o banco permanece sem exposição externa e sua conectividade foi validada no ambiente autorizado.
 
 O `.env` local do ambiente de testes usa os nomes de variáveis abaixo; os valores permanecem locais e não devem ser copiados para o Git nem para este documento:
 
@@ -134,9 +134,9 @@ O `.env` local do ambiente de testes usa os nomes de variáveis abaixo; os valor
 GRAFANA_ADMIN_USER=...
 GRAFANA_ADMIN_PASSWORD=...
 
-GLPI_DB_HOST=127.0.0.1
-GLPI_DB_PORT=3306
-GLPI_DB_NAME=...
+GLPI_DB_HOST=<host-do-banco>
+GLPI_DB_PORT=<porta-do-banco>
+GLPI_DB_NAME=<banco-glpi>
 GLPI_DB_USER=...
 GLPI_DB_PASSWORD=...
 ```
@@ -146,12 +146,12 @@ As credenciais administrativas do Grafana e as credenciais do MariaDB são indep
 ### Observações de segurança
 
 - Não adicione usuários ao grupo `docker` sem uma necessidade operacional específica; a associação concede privilégios elevados, equivalentes ao controle do host em nível de root.
-- Não exponha externamente a porta 3000. Na topologia atual de produção, o acesso externo passa pelo reverse proxy Nginx em uma porta HTTP dedicada, com firewall limitado a redes internas autorizadas.
+- Não exponha externamente a porta local do Grafana. Na topologia atual de produção, o acesso externo passa pelo reverse proxy Nginx, com firewall limitado a origens internas autorizadas.
 - Mantenha as credenciais no `.env` não versionado de cada ambiente; nunca as coloque no Git.
 
 ## Máquina de desenvolvimento: validação estática
 
-O GitHub Actions executa estas verificações estáticas em pushes e pull requests: `docker compose config` com valores copiados de `.env.example`, análise do JSON do dashboard, análise de YAML, lint de Markdown, inspeção de SQL read-only, paridade entre queries versionadas e o dashboard, verificações de schema, espaços em branco do Git e confirmação de que arquivos locais de ambiente não são versionados. Não inicia containers, não usa secrets do ambiente de testes e não se conecta ao MySQL/GLPI. As credenciais devem permanecer fora do Git; `.env` não deve ser versionado. Uma ferramenta dedicada para detectar secrets poderá ser considerada separadamente no futuro.
+O GitHub Actions executa estas verificações estáticas em pushes e pull requests: `docker compose config` com valores copiados de `.env.example`, análise do JSON dos dashboards, análise de YAML, lint de Markdown, inspeção de SQL read-only, paridade entre queries versionadas e os dashboards, espaços em branco do Git e confirmação de que arquivos locais de ambiente não são versionados. Não inicia containers, não usa secrets do ambiente de testes e não se conecta ao MySQL/GLPI. As credenciais devem permanecer fora do Git; `.env` não deve ser versionado. Uma ferramenta dedicada para detectar secrets poderá ser considerada separadamente no futuro.
 
 Valide o que não depende do ambiente integrado:
 
@@ -204,7 +204,7 @@ Após `git pull` e a configuração do `.env` local, execute os comandos Compose
 - As queries do dashboard executam, e as métricas exibidas correspondem às visualizações e aos registros equivalentes no GLPI.
 - Reiniciar o Grafana preserva o estado esperado.
 
-As verificações de runtime no ambiente de testes atual confirmaram que o Grafana está em execução, que o serviço HTTP está disponível em `127.0.0.1:3000`, que o provisioning foi carregado e que o plugin datasource MySQL está disponível. O datasource provisionado tem estas configurações não secretas:
+As verificações de runtime no ambiente de testes confirmaram que o Grafana está em execução, que o serviço HTTP está disponível localmente, que o provisioning foi carregado e que o plugin datasource MySQL está disponível. As verificações de queries e métricas descritas a seguir aplicam-se ao dashboard **GLPI Service Desk**; o dashboard **GLPI Projects** ainda aguarda validação integrada no Grafana. O datasource provisionado tem estas configurações não secretas:
 
 ```text
 Datasource: GLPI MySQL
@@ -218,10 +218,10 @@ O datasource é gerenciado em `grafana/provisioning/datasources/`; `secureJsonDa
 
 A autenticação direta no MariaDB e o acesso read-only ao banco foram confirmados com o cliente MariaDB, incluindo a permissão `SELECT` funcional. Credenciais e resultados de queries não são registrados. O datasource e o dashboard continuaram provisionados após a reinicialização do Grafana; posteriormente, as métricas do dashboard foram validadas com o GLPI e SQL direto.
 
-Para repetir a verificação de conexão direta, use o comando a seguir no ambiente de testes e informe a senha de forma interativa:
+Para repetir a verificação de conexão direta, use o comando a seguir no ambiente de testes autorizado e informe a senha de forma interativa. Ajuste os parâmetros conforme a configuração local, sem registrar valores específicos no repositório:
 
 ```bash
-mariadb -h 127.0.0.1 -P 3306 -u '<usuario-read-only>' -p '<banco>'
+mariadb -h '<host-do-banco>' -P '<porta-do-banco>' -u '<usuario-read-only>' -p '<banco>'
 ```
 
 O SQL atual das métricas está versionado em `sql/queries/` e foi comparado com a versão instalada do GLPI. Para métricas futuras ou implantações em outra instalação, compare os resultados com o GLPI e documente os mapeamentos de status, filtros e limitações. Nunca altere o banco, o schema ou a aplicação GLPI como parte deste projeto.
@@ -230,7 +230,7 @@ O ambiente de testes não recebe arquivos do projeto manualmente: as alteraçõe
 
 ## Topologia de produção
 
-A promoção segue `DEV → GitHub/CI → TEST → PROD`. A primeira implantação foi concluída e validada: Grafana em execução e vinculado a `127.0.0.1:3000`, acesso externo via reverse proxy Nginx em porta HTTP dedicada, com firewall restrito a origens internas/autorizadas, e MariaDB em `127.0.0.1:3306` com conta dedicada read-only e sem exposição externa. O `.env` de produção permanece local, separado e não versionado. Datasource, dashboard, filtro Entity e métricas foram validados em produção. O endpoint `/api/health` indicou o banco interno do Grafana saudável. Consulte [Production Readiness](production-readiness.md) para o estado da primeira versão estável e as melhorias futuras.
+A promoção segue `DEV → GitHub/CI → TEST → PROD`. A primeira implantação foi concluída e validada: Grafana restrito à interface local, acesso externo via reverse proxy Nginx e firewall limitado a origens internas/autorizadas, e MariaDB acessível por uma conta dedicada read-only sem exposição externa. O `.env` de produção permanece local, separado e não versionado. Datasource, dashboard, filtro Entity e métricas foram validados em produção. O endpoint `/api/health` indicou o banco interno do Grafana saudável. Consulte [Production Readiness](production-readiness.md) para o estado da primeira versão estável e as melhorias futuras.
 
 ## Status da validação nos relatórios
 
