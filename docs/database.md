@@ -4,9 +4,13 @@
 
 O Marco 1 provisiona o datasource **GLPI MySQL** usando variáveis de ambiente. Ele se conecta ao banco GLPI externo por meio do datasource MySQL nativo e usa uma conta read-only. A saúde do datasource e a conectividade read-only foram validadas no ambiente de testes. O Marco 2 descobriu e validou as relações do schema do Service Desk documentadas abaixo. As queries do dashboard do Marco 3 são read-only e estão versionadas em `sql/queries/`; nenhum objeto SQL foi criado no banco. Não generalize estes achados para outras instalações do GLPI sem validar seus schemas.
 
+O discovery foi executado contra uma instalação específica e não define uma versão mínima ou uma matriz de compatibilidade do GLPI/MariaDB. `sql/discovery/01-environment.sql` consulta versão do servidor, banco atual, charset, collation e timezone para apoiar cada nova validação; os resultados específicos do ambiente não são registrados aqui.
+
 ## Acesso
 
 Use uma conta dedicada com acesso somente `SELECT`. Ela não deve ter privilégios `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER` ou `DROP`. A concessão de privilégios é administrada fora deste projeto; o repositório não altera as permissões nem a configuração do MariaDB. Mantenha o serviço de banco inacessível externamente e adapte a conectividade à topologia autorizada de cada ambiente.
+
+Os valores `glpi` e `grafana_reader` em `.env.example` são exemplos substituíveis, não nomes exigidos pelo datasource. O nome de banco, usuário e endpoint devem corresponder à instalação e à rede autorizada.
 
 ## Achados verificados do discovery do Service Desk
 

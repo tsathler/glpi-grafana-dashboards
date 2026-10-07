@@ -10,7 +10,7 @@ O ambiente de testes recebe as alterações pelo Git. Este repositório implanta
 
 ### Pré-requisitos
 
-O ambiente de testes usado atualmente pelo projeto é **Ubuntu Server 24.04 LTS**, com Git, Docker Engine e o plugin do Docker Compose. Outras distribuições Linux podem funcionar, mas este documento descreve o Ubuntu Server 24.04 LTS.
+O ambiente de testes usado atualmente pelo projeto é **Ubuntu Server 24.04 LTS**, com Git, Docker Engine e o plugin do Docker Compose. Esta é a base efetivamente documentada e testada, não uma exigência universal da arquitetura. Outras distribuições Linux podem funcionar; o `network_mode: host` do Compose atual, porém, depende de suporte do host e pode exigir adaptação fora do cenário Linux validado.
 
 O ambiente de testes usa Docker Engine e o plugin oficial do Docker Compose. O acesso ao banco permanece restrito ao ambiente autorizado. O Docker foi instalado pelo repositório APT oficial do Docker. O problema `docker-ce has no installation candidate` foi resolvido configurando esse repositório; consulte a seção de solução de problemas abaixo para ver as etapas de diagnóstico.
 
@@ -87,7 +87,7 @@ Se não houver `Candidate`, revise `/etc/apt/sources.list.d/docker.sources` e ex
 
 ### Clonar ou atualizar o projeto
 
-Neste ambiente de testes, `/opt` foi escolhido como local de instalação, mas não é obrigatório. Para clonar pela primeira vez:
+Neste ambiente de testes, `/opt` foi escolhido como local de instalação; é apenas um exemplo e pode ser substituído por outro diretório gravável. Para clonar pela primeira vez:
 
 ```bash
 cd /opt
@@ -126,7 +126,7 @@ docker compose logs --tail=100 grafana
 
 `config` valida e renderiza a configuração Compose; `up -d` inicia os serviços em segundo plano; `ps` mostra o estado deles; e `logs` ajuda a inspecionar a inicialização do Grafana, o provisioning e os erros.
 
-O serviço Compose atual usa `network_mode: host`, portanto não usa um mapeamento `ports`. Essa configuração é específica do ambiente de implantação atual. O Grafana é restrito à interface local; o banco permanece sem exposição externa e sua conectividade foi validada no ambiente autorizado.
+O serviço Compose atual usa `network_mode: host`, portanto não usa um mapeamento `ports`. Essa configuração é específica do ambiente de implantação atual e não é requisito do projeto. O Grafana é restrito à interface local; o banco permanece sem exposição externa e sua conectividade foi validada no ambiente autorizado. Ao usar bridge networking ou outro host, revise `GLPI_DB_HOST` e os controles de bind/acesso antes de iniciar.
 
 O `.env` local do ambiente de testes usa os nomes de variáveis abaixo; os valores permanecem locais e não devem ser copiados para o Git nem para este documento:
 

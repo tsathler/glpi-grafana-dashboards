@@ -25,6 +25,8 @@ O dashboard MVP e suas oito queries read-only estão implementados. As queries f
 
 ## Arquitetura
 
+O diagrama mostra o cenário atual de produção validado, não uma topologia obrigatória para todas as instalações:
+
 ```text
 Usuário autorizado
         ↓
@@ -39,6 +41,8 @@ Repositório GitHub → GitHub Actions → validações estáticas
 
 O GLPI e seu banco permanecem externos ao Compose, que executa o Grafana. Na implantação validada, o Grafana fica atrás de um reverse proxy; o banco não recebe alterações deste projeto.
 
+O Nginx e o firewall representam as escolhas do ambiente atual. Outra implantação pode usar um reverse proxy ou controle de acesso diferente, desde que mantenha acesso protegido e o banco fora de exposição pública.
+
 ## Decisões técnicas e segurança
 
 - O schema do GLPI foi investigado antes da implementação das métricas.
@@ -51,11 +55,11 @@ O GLPI e seu banco permanecem externos ao Compose, que executa o Grafana. Na imp
 
 ## Tecnologias
 
-Grafana 13, MariaDB, MySQL, SQL, Docker Compose, Nginx, Linux, Git e GitHub Actions.
+Grafana, MariaDB/MySQL, SQL, Docker Compose, Nginx, Linux, Git e GitHub Actions. O Compose fixa a imagem `grafana/grafana:13.2.2`; a compatibilidade com outras versões não foi verificada neste projeto.
 
 ## Executar
 
-Requisitos: Linux, Git, Docker Engine e Docker Compose. Para clonar e iniciar:
+Para executar o Compose como versionado, use Linux, Git, Docker Engine e Docker Compose. A configuração atual usa host networking; outros sistemas ou topologias podem exigir adaptação da rede do Compose. A validação de runtime foi feita com Ubuntu Server 24.04 LTS. Para clonar e iniciar:
 
 ```sh
 git clone https://github.com/tsathler/glpi-grafana-dashboards.git
@@ -84,7 +88,7 @@ Consulte [Desenvolvimento e implantação](docs/development.md) para configurar 
 
 ## Limitações
 
-As queries dependem do schema da instalação do GLPI. Antes de usar o projeto em outra instalação, valide a versão, as relações e os resultados no ambiente correspondente.
+As queries foram validadas contra uma instalação específica do GLPI e dependem de seu schema e valores de domínio. Status, relações, campos, seleção de Entity e comportamento temporal podem variar entre instalações ou versões. Antes de reutilizar o projeto, execute o discovery, confirme charset/collation/timezone quando relevante e compare os resultados com a interface GLPI correspondente. A versão do MariaDB não é fixada pelo repositório; compatibilidade com outras versões deve ser verificada.
 
 ## Desenvolvimento com apoio de IA
 

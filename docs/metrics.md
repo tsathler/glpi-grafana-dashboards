@@ -4,6 +4,8 @@
 
 O dashboard provisionado **GLPI Service Desk** contém sete snapshots do estado atual e uma série temporal do Marco 3, além de um Gauge adicionado posteriormente. Suas queries read-only estão versionadas em `sql/queries/`:
 
+Os IDs de status usados pelas queries correspondem aos valores descobertos e validados na instalação GLPI de referência deste projeto. Eles não formam uma garantia para outras versões ou instalações; execute novamente o discovery e compare os domínios antes da reutilização.
+
 - **Chamados novos:** chamados atuais com status `1` e `is_deleted = 0`.
 - **Chamados atribuídos:** chamados atuais com status `2` e `is_deleted = 0`.
 - **Chamados planejados:** chamados atuais em Processando (planejado), com status `3` e `is_deleted = 0`.
