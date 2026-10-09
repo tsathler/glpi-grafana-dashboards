@@ -1,0 +1,36 @@
+{
+  "id": 8,
+  "title": "Projetos — tabela operacional",
+  "type": "table",
+  "description": "Uma linha por projeto válido; a quantidade de tarefas é pré-agregada por projeto.",
+  "gridPos": { "x": 0, "y": 0, "w": 24, "h": 24 },
+  "pluginVersion": "13.2.2",
+  "datasource": { "type": "mysql", "uid": "glpi-mysql" },
+  "targets": [{ "rawSql": "", "refId": "A", "format": "table" }],
+  "fieldConfig": {
+    "defaults": {
+      "custom": { "align": "auto", "cellOptions": { "type": "auto" }, "inspect": false },
+      "mappings": []
+    },
+    "overrides": [
+      { "matcher": { "id": "byName", "options": "project_id" }, "properties": [{ "id": "custom.hideFrom", "value": { "viz": true, "legend": false, "tooltip": false } }] },
+      { "matcher": { "id": "byName", "options": "project_name" }, "properties": [{ "id": "displayName", "value": "Projeto" }] },
+      { "matcher": { "id": "byName", "options": "state_name" }, "properties": [{ "id": "displayName", "value": "Estado" }] },
+      { "matcher": { "id": "byName", "options": "priority" }, "properties": [
+        { "id": "displayName", "value": "Prioridade" },
+        { "id": "mappings", "value": [{ "type": 1, "options": { "3": { "text": "Média" }, "5": { "text": "Muito alta" } } }] }
+      ] },
+      { "matcher": { "id": "byName", "options": "percent_done" }, "properties": [
+        { "id": "displayName", "value": "Progresso" }, { "id": "unit", "value": "percent" }, { "id": "decimals", "value": 1 }
+      ] },
+      { "matcher": { "id": "byName", "options": "task_count" }, "properties": [
+        { "id": "displayName", "value": "Tarefas" }, { "id": "decimals", "value": 0 }
+      ] }
+    ]
+  },
+  "options": {
+    "showHeader": true,
+    "cellHeight": "sm",
+    "footer": { "show": false, "reducer": ["sum"], "countRows": false, "fields": "" }
+  }
+}

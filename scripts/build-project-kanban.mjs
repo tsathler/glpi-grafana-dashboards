@@ -1,4 +1,4 @@
-import { existsSync, readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -41,21 +41,18 @@ const positions = new Map([
   [5, { x: 0, y: 5, w: 8, h: 5 }],
   [6, { x: 8, y: 5, w: 8, h: 5 }],
   [7, { x: 16, y: 5, w: 8, h: 5 }],
-  [9, { x: 0, y: 10, w: 24, h: 18 }],
+  [9, { x: 0, y: 10, w: 24, h: 16 }],
   [8, { x: 0, y: 28, w: 24, h: 12 }],
 ]);
 for (const panel of dashboard.panels) {
   if (positions.has(panel.id)) panel.gridPos = positions.get(panel.id);
 }
 dashboard.panels.sort((a, b) => a.gridPos.y - b.gridPos.y || a.gridPos.x - b.gridPos.x);
-const existingDetail = existsSync(detailPath)
-  ? JSON.parse(readFileSync(detailPath, 'utf8'))
-  : null;
-const detailTable = dashboard.panels.find((panel) => panel.id === 8) ??
-  existingDetail?.panels?.find((panel) => panel.id === 8);
-if (!detailTable) {
-  throw new Error('Cannot build project detail dashboard: panel 8 is missing from both project dashboards');
-}
+const detailTable = JSON.parse(read('operational-table-panel.json'));
+detailTable.targets[0].rawSql = readFileSync(
+  join(root, 'sql', 'projects', 'queries', '08-projects-operational-table.sql'),
+  'utf8',
+).replace(/^\uFEFF/, '');
 dashboard.panels = dashboard.panels.filter((panel) => panel.id !== 8);
 dashboard.links = [{ title: 'Tabela operacional', type: 'link', url: '/d/glpi-projects-detail', targetBlank: false }];
 const detailDashboard = structuredClone(dashboard);

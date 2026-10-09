@@ -18,11 +18,157 @@
   "liveNow": false,
   "panels": [
     {
+      "id": 8,
+      "title": "Projetos — tabela operacional",
+      "type": "table",
+      "description": "Uma linha por projeto válido; a quantidade de tarefas é pré-agregada por projeto.",
       "gridPos": {
         "x": 0,
         "y": 0,
         "w": 24,
         "h": 24
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Operational project table with valid task counts pre-aggregated per project.\nSELECT p.id AS project_id,\n       p.name AS project_name,\n       CASE\n           WHEN p.projectstates_id = 0 THEN 'Sem estado'\n           ELSE ps.name\n       END AS state_name,\n       p.priority,\n       p.percent_done,\n       COALESCE(task_counts.task_count, 0) AS task_count\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nLEFT JOIN (\n    SELECT pt.projects_id,\n           COUNT(*) AS task_count\n    FROM glpi_projecttasks AS pt\n    WHERE pt.is_deleted = 0\n      AND pt.is_template = 0\n    GROUP BY pt.projects_id\n) AS task_counts\n       ON task_counts.projects_id = p.id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nORDER BY p.name, p.id;\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "project_id"
+            },
+            "properties": [
+              {
+                "id": "custom.hideFrom",
+                "value": {
+                  "viz": true,
+                  "legend": false,
+                  "tooltip": false
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "project_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Projeto"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "state_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Estado"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Prioridade"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": 1,
+                    "options": {
+                      "3": {
+                        "text": "Média"
+                      },
+                      "5": {
+                        "text": "Muito alta"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "percent_done"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Progresso"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "task_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tarefas"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
+      },
+      "options": {
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
       }
     }
   ],
