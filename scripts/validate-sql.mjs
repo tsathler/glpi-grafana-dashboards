@@ -91,6 +91,25 @@ function validateSql(path) {
   }
 }
 
+function validateProjectValueMappings(dashboard, dashboardName) {
+  const validTypes = new Set(['value', 'range', 'regex', 'special']);
+  for (const panel of dashboard.panels ?? []) {
+    const mappings = [
+      ...(panel.fieldConfig?.defaults?.mappings ?? []),
+      ...(panel.fieldConfig?.overrides ?? []).flatMap((override) =>
+        (override.properties ?? [])
+          .filter((property) => property.id === 'mappings')
+          .flatMap((property) => property.value ?? []),
+      ),
+    ];
+    for (const mapping of mappings) {
+      if (mapping.options && !validTypes.has(mapping.type)) {
+        throw new Error(`${dashboardName}: panel ${panel.id} has invalid value mapping type ${JSON.stringify(mapping.type)}`);
+      }
+    }
+  }
+}
+
 const sqlRoot = join(root, 'sql');
 const discoveryRoot = join(sqlRoot, 'discovery');
 const allSql = sqlFiles(sqlRoot);
@@ -125,6 +144,10 @@ for (const { dashboard: name, queryDirectory, panelIds } of dashboardQuerySets) 
   const dashboard = JSON.parse(readFileSync(join(dashboardRoot, name), 'utf8'));
   if (name === 'glpi-projects.json') {
     const detailDashboard = JSON.parse(readFileSync(join(dashboardRoot, 'glpi-projects-detail.json'), 'utf8'));
+    const tablePanelTemplate = JSON.parse(readFileSync(join(dashboardRoot, 'project-kanban', 'operational-table-panel.json'), 'utf8'));
+    validateProjectValueMappings(dashboard, name);
+    validateProjectValueMappings(detailDashboard, 'glpi-projects-detail.json');
+    validateProjectValueMappings({ panels: [tablePanelTemplate] }, 'operational-table-panel.json');
     const detailTable = detailDashboard.panels?.filter((panel) => panel.id === 8 && panel.type === 'table') ?? [];
     if (detailTable.length !== 1 || detailDashboard.uid !== 'glpi-projects-detail') {
       throw new Error('glpi-projects-detail.json must have UID glpi-projects-detail and exactly one operational table panel (id 8)');
