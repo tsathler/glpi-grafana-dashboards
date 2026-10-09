@@ -105,12 +105,11 @@ const dashboards = readdirSync(dashboardRoot).filter((name) => name.endsWith('.j
 if (dashboards.length === 0) throw new Error('No dashboard JSON files found');
 const dashboardQuerySets = [
   { dashboard: 'glpi-service-desk.json', queryDirectory: join(sqlRoot, 'queries') },
-  { dashboard: 'glpi-projects.json', queryDirectory: join(sqlRoot, 'projects', 'queries'), panelIds: [1, 2, 3, 4, 5, 6, 7, 9] },
-  { dashboard: 'glpi-projects-detail.json', queryDirectory: join(sqlRoot, 'projects', 'queries'), panelIds: [8] },
+  { dashboard: 'glpi-projects.json', queryDirectory: join(sqlRoot, 'projects', 'queries') },
 ];
-const expectedDashboards = new Set(dashboardQuerySets.map(({ dashboard }) => dashboard));
-for (const { dashboard } of dashboardQuerySets) {
-  if (!dashboards.includes(dashboard)) throw new Error(`Expected dashboard ${dashboard}`);
+const expectedDashboards = new Set([...dashboardQuerySets.map(({ dashboard }) => dashboard), 'glpi-projects-detail.json']);
+for (const name of expectedDashboards) {
+  if (!dashboards.includes(name)) throw new Error(`Expected dashboard ${name}`);
 }
 for (const name of dashboards) {
   if (!expectedDashboards.has(name)) throw new Error(`No query directory mapping configured for ${name}`);
@@ -124,6 +123,36 @@ for (const { dashboard: name, queryDirectory, panelIds } of dashboardQuerySets) 
     : allQueries;
   if (queries.length === 0) throw new Error(`${relative(root, queryDirectory)}: no SQL queries found`);
   const dashboard = JSON.parse(readFileSync(join(dashboardRoot, name), 'utf8'));
+  if (name === 'glpi-projects.json') {
+    const detailDashboard = JSON.parse(readFileSync(join(dashboardRoot, 'glpi-projects-detail.json'), 'utf8'));
+    dashboard.panels = [...(dashboard.panels ?? []), ...(detailDashboard.panels ?? [])];
+  }
+  if (name === 'glpi-projects.json') {
+    const kanban = dashboard.panels?.find((panel) => panel.id === 9);
+    const options = kanban?.options ?? {};
+    if (kanban?.type !== 'marcusolsson-dynamictext-panel') {
+      throw new Error(`${name}: panel 9 must use the Business Text visualization`);
+    }
+    if (options.renderMode !== 'allRows' || typeof options.helpers !== 'string' ||
+        !options.helpers.includes("registerHelper('renderKanban'")) {
+      throw new Error(`${name}: Business Text must register renderKanban in helpers and render all rows`);
+    }
+    if (options.editor?.format !== 'html' || typeof options.afterRender !== 'string') {
+      throw new Error(`${name}: invalid Business Text editor/afterRender options`);
+    }
+    if (typeof options.content !== 'string' || !options.content.includes('{{{renderKanban data}}}') ||
+        typeof options.styles !== 'string' || options.styles.trim() === '') {
+      throw new Error(`${name}: Kanban HTML content and CSS styles must be provisioned`);
+    }
+    for (const obsolete of ['mode', 'renderTemplate', 'javascript']) {
+      if (Object.hasOwn(options, obsolete)) {
+        throw new Error(`${name}: obsolete Business Text option ${obsolete}`);
+      }
+    }
+    if (options.disableSanitizeHtml === true) {
+      throw new Error(`${name}: Business Text HTML sanitization must remain enabled`);
+    }
+  }
   const matchedQueries = new Set();
   for (const panel of dashboard.panels ?? []) {
     for (const target of panel.targets ?? []) {

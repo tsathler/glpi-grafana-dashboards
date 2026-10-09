@@ -1,4 +1,4 @@
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { dirname, join, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -22,15 +22,14 @@ dashboard.panels.push({
   targets: [{ rawSql: readFileSync(join(root, 'sql', 'projects', 'queries', '09-project-kanban.sql'), 'utf8').replace(/^\uFEFF/, ''), refId: 'A', format: 'table' }],
   fieldConfig: { defaults: {}, overrides: [] },
   options: {
-    mode: 'html',
     content: read('content.html'),
     contentPartials: [],
-    renderTemplate: 'all',
+    renderMode: 'allRows',
     styles: read('styles.css'),
-    javascript: {
-      beforeContentRendering: read('before-render.js'),
-      afterContentReady: '',
-    },
+    helpers: read('before-render.js'),
+    editors: ['default', 'helpers', 'styles', 'afterRender'],
+    editor: { format: 'html', language: 'html' },
+    afterRender: '',
   },
 });
 const positions = new Map([
@@ -49,7 +48,14 @@ for (const panel of dashboard.panels) {
   if (positions.has(panel.id)) panel.gridPos = positions.get(panel.id);
 }
 dashboard.panels.sort((a, b) => a.gridPos.y - b.gridPos.y || a.gridPos.x - b.gridPos.x);
-const detailTable = dashboard.panels.find((panel) => panel.id === 8);
+const existingDetail = existsSync(detailPath)
+  ? JSON.parse(readFileSync(detailPath, 'utf8'))
+  : null;
+const detailTable = dashboard.panels.find((panel) => panel.id === 8) ??
+  existingDetail?.panels?.find((panel) => panel.id === 8);
+if (!detailTable) {
+  throw new Error('Cannot build project detail dashboard: panel 8 is missing from both project dashboards');
+}
 dashboard.panels = dashboard.panels.filter((panel) => panel.id !== 8);
 dashboard.links = [{ title: 'Tabela operacional', type: 'link', url: '/d/glpi-projects-detail', targetBlank: false }];
 const detailDashboard = structuredClone(dashboard);
