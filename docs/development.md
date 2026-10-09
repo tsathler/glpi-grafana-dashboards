@@ -1,5 +1,15 @@
 # Desenvolvimento e implantação
 
+## Kanban de projetos
+
+O Compose instala o Business Text `marcusolsson-dynamictext-panel` na versão `6.3.0`, compatível com Grafana 13.2.2 conforme o catálogo oficial do plugin (requisito mínimo Grafana 12.3.0). A consulta e os arquivos de apresentação são versionados. Após alterar HTML, CSS, JavaScript ou SQL do Kanban, incorpore novamente os arquivos no dashboard:
+
+```sh
+node scripts/build-project-kanban.mjs
+```
+
+O script substitui somente o painel 9, move a tabela operacional para baixo dele e mantém os demais painéis. Não desative a sanitização HTML do Grafana. O código escapa todos os valores textuais vindos do banco antes de gerar cartões.
+
 ## Separação entre ambientes
 
 A máquina de desenvolvimento prepara e valida os arquivos do repositório. Não se presume que ela tenha acesso ao banco do GLPI ou ao ambiente integrado de testes. Desenvolvimento e testes mantêm arquivos `.env` locais e separados, criados a partir de `.env.example`; `.env` não é versionado, e credenciais nunca devem ser copiadas pelo Git nem registradas na documentação.

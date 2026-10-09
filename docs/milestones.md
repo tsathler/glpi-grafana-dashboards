@@ -1,5 +1,9 @@
 # Status de validação dos marcos
 
+## Retomada do Marco 5 — Kanban (implementação local)
+
+Foi adicionado o painel Kanban com estados dinâmicos, projetos sem estado, cartões e contagens. O painel usa Business Text 6.3.0, instalado pelo Compose. Os indicadores e a tabela existente permanecem. A query 09 é uma nova consulta read-only ainda não validada contra o banco real. A validação na interface, assim como a execução da query em testes, permanece pendente e deverá ser registrada após a integração manual.
+
 ## Marco 1 — Fundação
 
 Escopo: serviço Grafana no Compose, configuração do ambiente, provisioning do datasource e do dashboard, volume de dados persistente, CI estática e validação da fundação do ambiente de testes. Nenhum SQL de métricas do GLPI é incluído antes do discovery do schema e da versão.
