@@ -106,7 +106,7 @@
                 "id": "mappings",
                 "value": [
                   {
-                    "type": 1,
+                    "type": "value",
                     "options": {
                       "3": {
                         "text": "Média"
