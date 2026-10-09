@@ -7,7 +7,14 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "links": [],
+  "links": [
+    {
+      "title": "Tabela operacional",
+      "type": "link",
+      "url": "/d/glpi-projects-detail",
+      "targetBlank": false
+    }
+  ],
   "liveNow": false,
   "panels": [
     {
@@ -18,7 +25,7 @@
         "x": 0,
         "y": 0,
         "w": 24,
-        "h": 4
+        "h": 2
       },
       "pluginVersion": "13.2.2",
       "transparent": true,
@@ -28,7 +35,7 @@
       },
       "options": {
         "mode": "html",
-        "content": "<div style=\"font-size:72px;font-weight:700;letter-spacing:0.5px;line-height:1.0;margin:0;padding:0;\">Painel de Projetos</div>",
+        "content": "<div style=\"font-size:24px;font-weight:700;letter-spacing:0.2px;line-height:1.1;margin:0;padding:0;\">Painel de Projetos</div>",
         "disableSanitizeHtml": false,
         "code": {
           "language": "plaintext",
@@ -44,9 +51,9 @@
       "description": "Inclui projetos sem estado; estes também são mostrados em Projetos sem estado.",
       "gridPos": {
         "x": 0,
-        "y": 5,
+        "y": 2,
         "w": 6,
-        "h": 5
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -95,9 +102,9 @@
       "description": "Projetos válidos cujo estado está marcado como finalizado.",
       "gridPos": {
         "x": 6,
-        "y": 5,
+        "y": 2,
         "w": 6,
-        "h": 5
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -146,9 +153,9 @@
       "description": "Subconjunto de Projetos não finalizados.",
       "gridPos": {
         "x": 12,
-        "y": 5,
+        "y": 2,
         "w": 6,
-        "h": 5
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -197,9 +204,9 @@
       "description": "Média de percent_done dos projetos válidos; não representa taxa de conclusão.",
       "gridPos": {
         "x": 18,
-        "y": 5,
+        "y": 2,
         "w": 6,
-        "h": 5
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -250,9 +257,9 @@
       "description": "Distribuição de projetos válidos por estado. Projetos sem estado aparecem como Sem estado.",
       "gridPos": {
         "x": 0,
-        "y": 10,
-        "w": 12,
-        "h": 8
+        "y": 5,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -327,10 +334,10 @@
       "type": "barchart",
       "description": "Distribuição dos valores de prioridade armazenados. Valores 3 e 5 recebem rótulos visuais; outros valores permanecem visíveis.",
       "gridPos": {
-        "x": 12,
-        "y": 10,
-        "w": 12,
-        "h": 8
+        "x": 8,
+        "y": 5,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -339,7 +346,7 @@
       },
       "targets": [
         {
-          "rawSql": "-- Distribution of valid projects by stored priority value.\nSELECT p.priority,\n       COUNT(DISTINCT p.id) AS project_count\nFROM glpi_projects AS p\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY p.priority\nORDER BY p.priority;\n",
+          "rawSql": "-- Distribution of valid projects by stored priority value.\nSELECT CAST(p.priority AS CHAR) AS priority,\n       COUNT(DISTINCT p.id) AS project_count\nFROM glpi_projects AS p\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY p.priority\nORDER BY p.priority;\n",
           "refId": "A",
           "format": "table"
         }
@@ -430,10 +437,10 @@
       "type": "barchart",
       "description": "Distribuição de tarefas válidas por estado. O filtro Entity é aplicado pela entidade do projeto pai.",
       "gridPos": {
-        "x": 0,
-        "y": 18,
-        "w": 24,
-        "h": 8
+        "x": 16,
+        "y": 5,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -509,7 +516,7 @@
       "description": "Projetos agrupados pelos estados cadastrados no GLPI. Progresso não determina o estado de conclusão.",
       "gridPos": {
         "x": 0,
-        "y": 26,
+        "y": 10,
         "w": 24,
         "h": 18
       },
@@ -534,164 +541,10 @@
         "content": "<div class=\"project-kanban\" role=\"region\" aria-label=\"Kanban de projetos\">\n  <div class=\"project-kanban__columns\">{{{renderKanban data}}}</div>\n</div>",
         "contentPartials": [],
         "renderTemplate": "all",
-        "styles": ".project-kanban {\n  color: var(--grafana-color-text-primary, inherit);\n  width: 100%;\n}\n.project-kanban__columns {\n  display: flex;\n  align-items: stretch;\n  gap: 12px;\n  overflow-x: auto;\n  padding: 4px 2px 12px;\n  scrollbar-width: thin;\n}\n.project-kanban__column {\n  flex: 0 0 clamp(245px, 25vw, 330px);\n  min-width: 0;\n  border: 1px solid var(--grafana-color-border-weak, rgba(128,128,128,.28));\n  border-radius: 8px;\n  background: var(--grafana-color-background-secondary, rgba(128,128,128,.06));\n}\n.project-kanban__header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 8px;\n  padding: 12px;\n  border-bottom: 1px solid var(--grafana-color-border-weak, rgba(128,128,128,.28));\n}\n.project-kanban__title {\n  overflow: hidden;\n  margin: 0;\n  font-size: 14px;\n  font-weight: 600;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.project-kanban__count {\n  flex: 0 0 auto;\n  min-width: 24px;\n  padding: 2px 7px;\n  border-radius: 12px;\n  background: var(--grafana-color-background-primary, rgba(128,128,128,.12));\n  text-align: center;\n  font-size: 12px;\n}\n.project-kanban__cards {\n  display: grid;\n  gap: 8px;\n  max-height: 570px;\n  overflow-y: auto;\n  padding: 10px;\n}\n.project-kanban__card {\n  padding: 11px;\n  border: 1px solid var(--grafana-color-border-weak, rgba(128,128,128,.22));\n  border-radius: 6px;\n  background: var(--grafana-color-background-primary, transparent);\n}\n.project-kanban__name {\n  margin: 3px 0 10px;\n  font-size: 13px;\n  font-weight: 600;\n  line-height: 1.4;\n  overflow-wrap: anywhere;\n}\n.project-kanban__id,\n.project-kanban__meta {\n  color: var(--grafana-color-text-secondary, #888);\n  font-size: 11px;\n}\n.project-kanban__meta {\n  display: flex;\n  justify-content: space-between;\n  gap: 6px;\n  margin-bottom: 8px;\n}\n.project-kanban__progress-label {\n  display: flex;\n  justify-content: space-between;\n  margin-bottom: 4px;\n  font-size: 11px;\n}\n.project-kanban__progress {\n  width: 100%;\n  height: 5px;\n  overflow: hidden;\n  border-radius: 4px;\n  background: var(--grafana-color-border-weak, rgba(128,128,128,.25));\n}\n.project-kanban__progress > span {\n  display: block;\n  height: 100%;\n  background: var(--grafana-color-text-link, #5794f2);\n}\n.project-kanban__empty {\n  padding: 8px 2px;\n  color: var(--grafana-color-text-secondary, #888);\n  font-size: 12px;\n}\n@media (max-width: 700px) {\n  .project-kanban__column { flex-basis: min(82vw, 300px); }\n}",
+        "styles": ".project-kanban {\n  color: var(--grafana-color-text-primary, inherit);\n  width: 100%;\n}\n.project-kanban__columns {\n  display: flex;\n  align-items: stretch;\n  gap: 12px;\n  overflow-x: auto;\n  padding: 4px 2px 12px;\n  scrollbar-width: thin;\n}\n.project-kanban__column {\n  flex: 0 0 clamp(245px, 25vw, 330px);\n  min-width: 0;\n  border: 1px solid var(--grafana-color-border-weak, rgba(128,128,128,.28));\n  border-radius: 8px;\n  background: var(--grafana-color-background-secondary, rgba(128,128,128,.06));\n}\n.project-kanban__header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 8px;\n  padding: 12px;\n  border-bottom: 1px solid var(--grafana-color-border-weak, rgba(128,128,128,.28));\n}\n.project-kanban__title {\n  overflow: hidden;\n  margin: 0;\n  font-size: 14px;\n  font-weight: 600;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.project-kanban__count {\n  flex: 0 0 auto;\n  min-width: 24px;\n  padding: 2px 7px;\n  border-radius: 12px;\n  background: var(--grafana-color-background-primary, rgba(128,128,128,.12));\n  text-align: center;\n  font-size: 12px;\n}\n.project-kanban__cards {\n  display: grid;\n  gap: 8px;\n  max-height: 440px;\n  overflow-y: auto;\n  padding: 10px;\n}\n.project-kanban__card {\n  padding: 11px;\n  border: 1px solid var(--grafana-color-border-weak, rgba(128,128,128,.22));\n  border-radius: 6px;\n  background: var(--grafana-color-background-primary, transparent);\n}\n.project-kanban__name {\n  margin: 3px 0 10px;\n  font-size: 13px;\n  font-weight: 600;\n  line-height: 1.4;\n  overflow-wrap: anywhere;\n}\n.project-kanban__id,\n.project-kanban__meta {\n  color: var(--grafana-color-text-secondary, #888);\n  font-size: 11px;\n}\n.project-kanban__meta {\n  display: flex;\n  justify-content: space-between;\n  gap: 6px;\n  margin-bottom: 8px;\n}\n.project-kanban__progress-label {\n  display: flex;\n  justify-content: space-between;\n  margin-bottom: 4px;\n  font-size: 11px;\n}\n.project-kanban__progress {\n  width: 100%;\n  height: 5px;\n  overflow: hidden;\n  border-radius: 4px;\n  background: var(--grafana-color-border-weak, rgba(128,128,128,.25));\n}\n.project-kanban__progress > span {\n  display: block;\n  height: 100%;\n  background: var(--grafana-color-text-link, #5794f2);\n}\n.project-kanban__empty {\n  padding: 8px 2px;\n  color: var(--grafana-color-text-secondary, #888);\n  font-size: 12px;\n}\n@media (max-width: 700px) {\n  .project-kanban__column { flex-basis: min(82vw, 300px); }\n}",
         "javascript": {
           "beforeContentRendering": "// Build safe, escaped card markup from the SQL data frame.\ncontext.handlebars.registerHelper('renderKanban', (rows) => {\n  const escapeHtml = (value) => String(value ?? '')\n    .replaceAll('&', '&amp;')\n    .replaceAll('<', '&lt;')\n    .replaceAll('>', '&gt;')\n    .replaceAll('\"', '&quot;')\n    .replaceAll(\"'\", '&#39;');\n  const values = Array.isArray(rows) ? rows : [];\n  const columns = new Map();\n\n  for (const row of values) {\n    const key = String(row.state_id ?? '');\n    if (!columns.has(key)) {\n      columns.set(key, { name: row.state_name || 'Sem estado', projects: [] });\n    }\n    if (row.project_id !== null && row.project_id !== undefined) {\n      columns.get(key).projects.push(row);\n    }\n  }\n\n  return [...columns.values()].map((column) => {\n    const cards = column.projects.length\n      ? column.projects.map((project) => {\n          const progress = Math.max(0, Math.min(100, Number(project.percent_done) || 0));\n          return `<article class=\"project-kanban__card\">\n            <div class=\"project-kanban__id\">#${escapeHtml(project.project_id)}</div>\n            <h3 class=\"project-kanban__name\">${escapeHtml(project.project_name)}</h3>\n            <div class=\"project-kanban__meta\"><span>Prioridade ${escapeHtml(project.priority)}</span><span>${escapeHtml(project.task_count)} tarefas</span></div>\n            <div class=\"project-kanban__progress-label\"><span>Progresso</span><span>${progress.toFixed(0)}%</span></div>\n            <div class=\"project-kanban__progress\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"${progress}\"><span style=\"width:${progress}%\"></span></div>\n          </article>`;\n        }).join('')\n      : '<div class=\"project-kanban__empty\">Nenhum projeto</div>';\n    return `<section class=\"project-kanban__column\"><header class=\"project-kanban__header\"><h2 class=\"project-kanban__title\">${escapeHtml(column.name)}</h2><span class=\"project-kanban__count\">${column.projects.length}</span></header><div class=\"project-kanban__cards\">${cards}</div></section>`;\n  }).join('');\n});",
           "afterContentReady": ""
-        }
-      }
-    },
-    {
-      "id": 8,
-      "title": "Projetos",
-      "type": "table",
-      "description": "Uma linha por projeto válido; a quantidade de tarefas é pré-agregada por projeto.",
-      "gridPos": {
-        "x": 0,
-        "y": 44,
-        "w": 24,
-        "h": 12
-      },
-      "pluginVersion": "13.2.2",
-      "datasource": {
-        "type": "mysql",
-        "uid": "glpi-mysql"
-      },
-      "targets": [
-        {
-          "rawSql": "-- Operational project table with valid task counts pre-aggregated per project.\nSELECT p.id AS project_id,\n       p.name AS project_name,\n       CASE\n           WHEN p.projectstates_id = 0 THEN 'Sem estado'\n           ELSE ps.name\n       END AS state_name,\n       p.priority,\n       p.percent_done,\n       COALESCE(task_counts.task_count, 0) AS task_count\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nLEFT JOIN (\n    SELECT pt.projects_id,\n           COUNT(*) AS task_count\n    FROM glpi_projecttasks AS pt\n    WHERE pt.is_deleted = 0\n      AND pt.is_template = 0\n    GROUP BY pt.projects_id\n) AS task_counts\n       ON task_counts.projects_id = p.id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nORDER BY p.name, p.id;\n",
-          "refId": "A",
-          "format": "table"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "custom": {
-            "align": "auto",
-            "cellOptions": {
-              "type": "auto"
-            },
-            "inspect": false
-          },
-          "mappings": []
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "project_id"
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "viz": true,
-                  "legend": false,
-                  "tooltip": false
-                }
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "project_name"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Projeto"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "state_name"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Estado"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "priority"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Prioridade"
-              },
-              {
-                "id": "mappings",
-                "value": [
-                  {
-                    "type": 1,
-                    "options": {
-                      "3": {
-                        "text": "Média"
-                      },
-                      "5": {
-                        "text": "Muito alta"
-                      }
-                    }
-                  }
-                ]
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "percent_done"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Progresso"
-              },
-              {
-                "id": "unit",
-                "value": "percent"
-              },
-              {
-                "id": "decimals",
-                "value": 1
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "task_count"
-            },
-            "properties": [
-              {
-                "id": "displayName",
-                "value": "Tarefas"
-              },
-              {
-                "id": "decimals",
-                "value": 0
-              }
-            ]
-          }
-        ]
-      },
-      "options": {
-        "showHeader": true,
-        "cellHeight": "sm",
-        "footer": {
-          "show": false,
-          "reducer": [
-            "sum"
-          ],
-          "countRows": false,
-          "fields": ""
         }
       }
     }

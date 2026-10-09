@@ -98,6 +98,8 @@ Ferramentas de IA apoiaram pesquisa, implementação e documentação. A arquite
 
 ## Documentação
 
+- [Layout do GLPI Projects](docs/projects-layout.md)
+
 - [Arquitetura](docs/architecture.md)
 - [Banco de dados e discovery](docs/database.md)
 - [Definições e validação das métricas](docs/metrics.md)
