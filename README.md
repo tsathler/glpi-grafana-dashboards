@@ -1,5 +1,7 @@
 # GLPI Grafana Dashboards
 
+O dashboard **GLPI Projects** inclui agora um Kanban Business Text com estados dinâmicos e coluna **Sem estado**. A query adicional e os arquivos de apresentação estão versionados; a validação no Grafana e contra o banco de testes continua pendente. Consulte [Desenvolvimento e implantação](docs/development.md) para reconstruir o JSON e [Marcos e roadmap](docs/milestones.md) para o estado da integração.
+
 [![CI](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml/badge.svg)](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml)
 
 Dashboards provisionados do Grafana para acompanhar o estado e o fluxo dos chamados do GLPI e, em uma frente em desenvolvimento, dados de projetos e tarefas. O **GLPI Service Desk** é a visão estável e validada; **GLPI Projects** continua em desenvolvimento, com validação integrada pendente. A stack conecta o Grafana a um MariaDB externo com acesso somente para leitura, e as queries são versionadas junto aos dashboards.
