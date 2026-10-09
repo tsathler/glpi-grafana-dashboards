@@ -105,7 +105,8 @@ const dashboards = readdirSync(dashboardRoot).filter((name) => name.endsWith('.j
 if (dashboards.length === 0) throw new Error('No dashboard JSON files found');
 const dashboardQuerySets = [
   { dashboard: 'glpi-service-desk.json', queryDirectory: join(sqlRoot, 'queries') },
-  { dashboard: 'glpi-projects.json', queryDirectory: join(sqlRoot, 'projects', 'queries') },
+  { dashboard: 'glpi-projects.json', queryDirectory: join(sqlRoot, 'projects', 'queries'), panelIds: [1, 2, 3, 4, 5, 6, 7, 9] },
+  { dashboard: 'glpi-projects-detail.json', queryDirectory: join(sqlRoot, 'projects', 'queries'), panelIds: [8] },
 ];
 const expectedDashboards = new Set(dashboardQuerySets.map(({ dashboard }) => dashboard));
 for (const { dashboard } of dashboardQuerySets) {
@@ -116,8 +117,11 @@ for (const name of dashboards) {
 }
 
 let matchedQueryCount = 0;
-for (const { dashboard: name, queryDirectory } of dashboardQuerySets) {
-  const queries = sqlFiles(queryDirectory);
+for (const { dashboard: name, queryDirectory, panelIds } of dashboardQuerySets) {
+  const allQueries = sqlFiles(queryDirectory);
+  const queries = panelIds
+    ? allQueries.filter((path) => panelIds.includes(Number(path.match(/(?:^|[\\/])(\d+)-/)?.[1])))
+    : allQueries;
   if (queries.length === 0) throw new Error(`${relative(root, queryDirectory)}: no SQL queries found`);
   const dashboard = JSON.parse(readFileSync(join(dashboardRoot, name), 'utf8'));
   const matchedQueries = new Set();
