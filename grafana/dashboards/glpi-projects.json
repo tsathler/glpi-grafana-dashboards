@@ -10,8 +10,10 @@
   "links": [
     {
       "title": "Tabela operacional",
-      "type": "link",
+      "type": "dashboards",
       "url": "/d/glpi-projects-detail",
+      "includeVars": true,
+      "keepTime": true,
       "targetBlank": false
     }
   ],
@@ -268,7 +270,7 @@
       },
       "targets": [
         {
-          "rawSql": "-- Distribution of valid projects by state; state 0 is labeled generically.\nSELECT CASE\n           WHEN p.projectstates_id = 0 THEN 'Sem estado'\n           ELSE ps.name\n       END AS state_name,\n       COUNT(DISTINCT p.id) AS project_count\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY p.projectstates_id, ps.name\nORDER BY (p.projectstates_id = 0), state_name;\n",
+          "rawSql": "-- Distribution of valid projects by state; state 0 is labeled generically.\nSELECT CASE\n           WHEN p.projectstates_id = 0 THEN 'Sem estado'\n           WHEN ps.name LIKE 'Concluído %' THEN 'Concluído'\n           ELSE ps.name\n       END AS state_name,\n       COUNT(DISTINCT p.id) AS project_count\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY state_name\nORDER BY (state_name = 'Sem estado'), state_name;\n",
           "refId": "A",
           "format": "table"
         }
@@ -449,7 +451,7 @@
       },
       "targets": [
         {
-          "rawSql": "-- Distribution of valid tasks by state, scoped through the parent project entity.\nSELECT CASE\n           WHEN pt.projectstates_id = 0 THEN 'Sem estado'\n           ELSE ps.name\n       END AS state_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nLEFT JOIN glpi_projectstates AS ps\n       ON pt.projectstates_id = ps.id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY pt.projectstates_id, ps.name\nORDER BY (pt.projectstates_id = 0), state_name;\n",
+          "rawSql": "-- Distribution of valid tasks by state, scoped through the parent project entity.\nSELECT CASE\n           WHEN pt.projectstates_id = 0 THEN 'Sem estado'\n           WHEN ps.name LIKE 'Concluído %' THEN 'Concluído'\n           ELSE ps.name\n       END AS state_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nLEFT JOIN glpi_projectstates AS ps\n       ON pt.projectstates_id = ps.id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY state_name\nORDER BY (state_name = 'Sem estado'), state_name;\n",
           "refId": "A",
           "format": "table"
         }
@@ -527,7 +529,7 @@
       },
       "targets": [
         {
-          "rawSql": "-- Dynamic project states plus an explicit no-state column for the Kanban.\n-- Empty states are retained; task counts are pre-aggregated within parent-project entity scope.\nSELECT state_list.state_id,\n       state_list.state_name,\n       p.id AS project_id,\n       p.name AS project_name,\n       p.priority,\n       p.percent_done,\n       COALESCE(task_counts.task_count, 0) AS task_count\nFROM (\n    SELECT ps.id AS state_id,\n           ps.name AS state_name,\n           0 AS is_no_state\n    FROM glpi_projectstates AS ps\n    UNION ALL\n    SELECT 0 AS state_id,\n           'Sem estado' AS state_name,\n           1 AS is_no_state\n) AS state_list\nLEFT JOIN glpi_projects AS p\n       ON p.projectstates_id = state_list.state_id\n      AND p.is_deleted = 0\n      AND p.is_template = 0\n      AND p.entities_id IN ($entity)\nLEFT JOIN (\n    SELECT pt.projects_id,\n           COUNT(*) AS task_count\n    FROM glpi_projecttasks AS pt\n    JOIN glpi_projects AS parent_project\n         ON parent_project.id = pt.projects_id\n    WHERE pt.is_deleted = 0\n      AND pt.is_template = 0\n      AND parent_project.is_deleted = 0\n      AND parent_project.is_template = 0\n      AND parent_project.entities_id IN ($entity)\n    GROUP BY pt.projects_id\n) AS task_counts\n       ON task_counts.projects_id = p.id\nORDER BY state_list.is_no_state, state_list.state_id, p.name, p.id;\n",
+          "rawSql": "-- Dynamic project states plus an explicit no-state column for the Kanban.\n-- Empty states are retained; task counts are pre-aggregated within parent-project entity scope.\nSELECT state_list.state_id,\n       state_list.state_name,\n       p.id AS project_id,\n       p.name AS project_name,\n       p.priority,\n       p.percent_done,\n       COALESCE(task_counts.task_count, 0) AS task_count\nFROM (\n    SELECT ps.id AS state_id,\n           CASE WHEN ps.name LIKE 'Concluído %' THEN 'Concluído' ELSE ps.name END AS state_name,\n           0 AS is_no_state\n    FROM glpi_projectstates AS ps\n    UNION ALL\n    SELECT 0 AS state_id,\n           'Sem estado' AS state_name,\n           1 AS is_no_state\n) AS state_list\nLEFT JOIN glpi_projects AS p\n       ON p.projectstates_id = state_list.state_id\n      AND p.is_deleted = 0\n      AND p.is_template = 0\n      AND p.entities_id IN ($entity)\nLEFT JOIN (\n    SELECT pt.projects_id,\n           COUNT(*) AS task_count\n    FROM glpi_projecttasks AS pt\n    JOIN glpi_projects AS parent_project\n         ON parent_project.id = pt.projects_id\n    WHERE pt.is_deleted = 0\n      AND pt.is_template = 0\n      AND parent_project.is_deleted = 0\n      AND parent_project.is_template = 0\n      AND parent_project.entities_id IN ($entity)\n    GROUP BY pt.projects_id\n) AS task_counts\n       ON task_counts.projects_id = p.id\nORDER BY state_list.is_no_state, state_list.state_id, p.name, p.id;\n",
           "refId": "A",
           "format": "table"
         }

@@ -10,7 +10,7 @@ O dashboard usa layout customizado em uma grade de 24 colunas. No Grafana, cada 
 | Indicadores | 4 Stat | `0/6/12/18, 2, 6, 3` |
 | Gráficos | Estado, prioridade, tarefas | `0/8/16, 5, 8, 5` |
 | Kanban | Business Text, largura total | `0, 10, 24, 16` |
-| Detalhamento | Tabela operacional no dashboard secundário | `0, 0, 24, 24` |
+| Detalhamento | Tabela operacional no dashboard secundário | `0, 0, 24, 18` |
 
 O conteúdo principal ocupa 26 unidades, ou 780 px de altura de grade. Em 1920×1080 espera-se que caiba sem rolagem vertical na maioria das configurações; a barra do Grafana, os filtros, o zoom do navegador e a altura útil da janela afetam o espaço. Em telas menores, a página pode rolar verticalmente. As colunas ocupam igualmente a largura quando cabem com largura mínima de 245 px; quando não couberem, o Kanban rola horizontalmente. Os cartões rolam internamente dentro das colunas, limitados a 380 px.
 

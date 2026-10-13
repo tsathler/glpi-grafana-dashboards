@@ -9,7 +9,7 @@ SELECT state_list.state_id,
        COALESCE(task_counts.task_count, 0) AS task_count
 FROM (
     SELECT ps.id AS state_id,
-           ps.name AS state_name,
+           CASE WHEN ps.name LIKE 'Concluído %' THEN 'Concluído' ELSE ps.name END AS state_name,
            0 AS is_no_state
     FROM glpi_projectstates AS ps
     UNION ALL
