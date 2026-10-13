@@ -23,7 +23,7 @@ A imagem usa métricas demonstrativas/sintéticas. Ela não representa dados, vo
 
 ### GLPI Projects — em desenvolvimento
 
-O dashboard MVP e suas oito queries read-only estão implementados. As queries foram conferidas diretamente no banco; a validação integrada dos painéis no Grafana continua pendente. O escopo atual inclui indicadores e distribuições de projetos e tarefas, progresso e uma tabela operacional. O dashboard não deve ser considerado concluído.
+O dashboard MVP e suas nove queries read-only estão implementados. As queries foram conferidas diretamente no banco; a validação integrada dos painéis no Grafana continua pendente. O escopo atual inclui indicadores e distribuições de projetos e tarefas, progresso, Kanban e tabela operacional. O dashboard não deve ser considerado concluído.
 
 ## Arquitetura
 
@@ -77,6 +77,8 @@ docker compose up -d
 ```
 
 Consulte [Desenvolvimento e implantação](docs/development.md) para configurar o ambiente e acessar o Grafana.
+
+Para gerar cópias locais dos dashboards de Projetos com URL base do GLPI específica do ambiente, consulte [URL local do GLPI](docs/glpi-local-url.md). A URL fica em configuração local ignorada pelo Git.
 
 ## Validação e estado
 

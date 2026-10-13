@@ -1,6 +1,7 @@
 -- Distribution of valid tasks by state, scoped through the parent project entity.
 SELECT CASE
            WHEN pt.projectstates_id = 0 THEN 'Sem estado'
+           WHEN ps.name LIKE 'Concluído %' THEN 'Concluído'
            ELSE ps.name
        END AS state_name,
        COUNT(DISTINCT pt.id) AS task_count
@@ -14,5 +15,5 @@ WHERE pt.is_deleted = 0
   AND p.is_deleted = 0
   AND p.is_template = 0
   AND p.entities_id IN ($entity)
-GROUP BY pt.projectstates_id, ps.name
-ORDER BY (pt.projectstates_id = 0), state_name;
+GROUP BY state_name
+ORDER BY (state_name = 'Sem estado'), state_name;

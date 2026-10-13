@@ -2,3 +2,4 @@
 .env.*
 !.env.example
 __pycache__/
+/grafana/glpi-url.local.json

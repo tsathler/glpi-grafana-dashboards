@@ -8,7 +8,7 @@ O Compose instala o Business Text `marcusolsson-dynamictext-panel` na versão `6
 node scripts/build-project-kanban.mjs
 ```
 
-O script substitui somente o painel 9, move a tabela operacional para baixo dele e mantém os demais painéis. Não desative a sanitização HTML do Grafana. O código escapa todos os valores textuais vindos do banco antes de gerar cartões.
+O script oferece `--check` para comparação sem gravação, `--safe` (padrão) para gerar somente quando os JSONs existentes já coincidem, e `--force` para sobrescrever após revisão explícita. Prefira conferir com `--check` antes de regenerar. Não desative a sanitização HTML do Grafana. O código escapa todos os valores textuais vindos do banco antes de gerar cartões.
 
 ## Separação entre ambientes
 

@@ -51,6 +51,9 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Test local dashboard generation
+        run: node --test scripts/*.test.mjs
+
       - name: Validate read-only SQL and dashboard parity
         run: node scripts/validate-sql.mjs
 

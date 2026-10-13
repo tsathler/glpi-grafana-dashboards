@@ -7,6 +7,7 @@ services:
     env_file:
       - .env
     environment:
+      GLPI_DASHBOARDS_PATH: ${GLPI_DASHBOARDS_PATH:-/var/lib/grafana/dashboards}
       GF_SERVER_HTTP_ADDR: 127.0.0.1
       GF_SECURITY_ADMIN_USER: ${GRAFANA_ADMIN_USER:-admin}
       GF_SECURITY_ADMIN_PASSWORD: ${GRAFANA_ADMIN_PASSWORD:?Set GRAFANA_ADMIN_PASSWORD in .env}
@@ -16,5 +17,6 @@ services:
       - grafana-data:/var/lib/grafana
       - ./grafana/provisioning:/etc/grafana/provisioning:ro
       - ./grafana/dashboards:/var/lib/grafana/dashboards:ro
+      - ./grafana/dashboards-local:/var/lib/grafana/dashboards-local:ro
 volumes:
   grafana-data:
