@@ -1,5 +1,7 @@
 # GLPI Grafana Dashboards
 
+**Languages:** [English](#english) · [Português](#português)
+
 ## English
 
 **Read-only GLPI service desk observability with Grafana, versioned SQL, Docker Compose and CI checks.**
@@ -49,15 +51,15 @@ AI tools assisted research, implementation and documentation; the engineering de
 
 ## Português
 
-**Observabilidade para operações de service desk, com SQL versionado e acesso somente de leitura ao GLPI.**
+[↑ English](#english)
 
-[![CI](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml/badge.svg)](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml)
+**Observabilidade para operações de service desk, com SQL versionado e acesso somente de leitura ao GLPI.**
 
 Este projeto transforma dados de chamados do GLPI em dashboards do Grafana, com consultas auditáveis, provisionamento via Docker Compose e validações automatizadas. O **GLPI Service Desk** está estável e validado em produção. O **GLPI Projects** é uma frente em desenvolvimento e ainda requer validação integrada.
 
 ## Visão geral
 
-![Exemplo demonstrativo do dashboard GLPI Service Desk](docs/images/dashboard-overview.png)
+*A captura demonstrativa e o estado de CI estão disponíveis na seção em inglês acima.*
 
 > **Dados de demonstração:** a imagem utiliza métricas sintéticas. Não representa dados, volumes ou informações reais da organização.
 
