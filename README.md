@@ -1,67 +1,86 @@
 # GLPI Grafana Dashboards
 
-O dashboard **GLPI Projects** inclui agora um Kanban Business Text com estados dinâmicos e coluna **Sem estado**. A query adicional e os arquivos de apresentação estão versionados; a validação no Grafana e contra o banco de testes continua pendente. Consulte [Desenvolvimento e implantação](docs/development.md) para reconstruir o JSON e [Marcos e roadmap](docs/milestones.md) para o estado da integração.
+**Observabilidade para operações de service desk, com SQL versionado e acesso somente de leitura ao GLPI.**
 
 [![CI](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml/badge.svg)](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml)
 
-Dashboards provisionados do Grafana para acompanhar o estado e o fluxo dos chamados do GLPI e, em uma frente em desenvolvimento, dados de projetos e tarefas. O **GLPI Service Desk** é a visão estável e validada; **GLPI Projects** continua em desenvolvimento, com validação integrada pendente. A stack conecta o Grafana a um MariaDB externo com acesso somente para leitura, e as queries são versionadas junto aos dashboards.
+Este projeto transforma dados de chamados do GLPI em dashboards do Grafana, com consultas auditáveis, provisionamento via Docker Compose e validações automatizadas. O **GLPI Service Desk** está estável e validado em produção. O **GLPI Projects** é uma frente em desenvolvimento e ainda requer validação integrada.
 
-## Captura de tela demonstrativa
+## Visão geral
 
 ![Exemplo demonstrativo do dashboard GLPI Service Desk](docs/images/dashboard-overview.png)
 
-A imagem usa métricas demonstrativas/sintéticas. Ela não representa dados, volumes ou informações internas reais da organização.
+> **Dados de demonstração:** a imagem utiliza métricas sintéticas. Não representa dados, volumes ou informações reais da organização.
 
-## Dashboards
+| Dashboard | Situação | O que apresenta |
+| --- | --- | --- |
+| **GLPI Service Desk** | **Estável e validado** | Indicadores de chamados, fluxo de criados × solucionados e eficiência de resolução por SLA/TTR |
+| **GLPI Projects** | **Em desenvolvimento** | Indicadores de projetos e tarefas, progresso, Kanban e tabela operacional; validação integrada pendente |
+| **Backlog** | **Planejado** | Escopo ainda não implementado |
 
-### GLPI Service Desk — estável e validado
+## O problema e a abordagem
 
-- Sete indicadores de estado dos chamados com filtro **Entity**.
-- Série temporal **Fluxo de chamados**, com chamados Criados e Solucionados.
-- Gauge **Eficiência de resolução (SLA)**, baseado no cumprimento do prazo TTR calculado pelo GLPI.
-- Datasource e dashboard provisionados; consultas read-only versionadas.
+Acompanhar operações apenas pelas telas transacionais do GLPI pode dificultar uma leitura rápida de volume, fluxo e cumprimento de prazos. A proposta aqui é oferecer visualizações operacionais **sem modificar dados do sistema de origem**.
+
+- Consultas SQL versionadas e restritas a operações read-only.
+- Datasource e dashboards provisionados a partir de arquivos.
+- Credenciais por ambiente em `.env` local, fora do Git.
+- Pipeline de CI para verificações estáticas de configuração, consultas e arquivos.
+- Documentação das métricas, decisões de segurança e limitações de compatibilidade.
+
+## O que foi implementado
+
+### GLPI Service Desk — estável
+
+- Sete indicadores de estado dos chamados, com filtro por **Entity**.
+- Série temporal **Fluxo de chamados**, comparando criados e solucionados.
+- Gauge **Eficiência de resolução (SLA)** com base no prazo TTR do GLPI.
+- Provisionamento de dashboard e datasource com SQL somente para leitura.
+
+**Evidência:** a visualização e os indicadores do Service Desk foram conferidos na interface do GLPI e implantados em produção.
 
 ### GLPI Projects — em desenvolvimento
 
-O dashboard MVP e suas nove queries read-only estão implementados. As queries foram conferidas diretamente no banco; a validação integrada dos painéis no Grafana continua pendente. O escopo atual inclui indicadores e distribuições de projetos e tarefas, progresso, Kanban e tabela operacional. O dashboard não deve ser considerado concluído.
+O MVP do dashboard e nove queries read-only estão implementados. As consultas foram verificadas diretamente no banco, mas **a validação integrada dos painéis no Grafana ainda está pendente**.
+
+O escopo inclui métricas de projetos e tarefas, progresso, Kanban e tabela operacional. O Kanban Business Text possui estados dinâmicos e uma coluna **Sem estado**; a query adicional e os arquivos de apresentação foram versionados, mas sua validação no Grafana e contra o banco de testes permanece pendente.
+
+Consulte [Desenvolvimento e implantação](docs/development.md) e [Marcos e roadmap](docs/milestones.md) antes de usar a frente de Projetos.
 
 ## Arquitetura
 
-O diagrama mostra o cenário atual de produção validado, não uma topologia obrigatória para todas as instalações:
-
 ```text
 Usuário autorizado
-        ↓
-Nginx (reverse proxy)
-        ↓
-Grafana ── leitura (conta dedicada read-only) ──→ MariaDB externo do GLPI
+        │
+        ▼
+Nginx / reverse proxy
+        │
+        ▼
+     Grafana ── SQL read-only ──► MariaDB externo do GLPI
+
+Repositório GitHub ──► GitHub Actions ──► verificações estáticas
 ```
 
-```text
-Repositório GitHub → GitHub Actions → validações estáticas
-```
+Este diagrama representa o cenário validado, não uma topologia obrigatória. O GLPI e o MariaDB ficam fora do Compose, que executa o Grafana. Outras instalações podem usar controles de acesso e reverse proxies diferentes, desde que protejam o Grafana e não exponham o banco publicamente.
 
-O GLPI e seu banco permanecem externos ao Compose, que executa o Grafana. Na implantação validada, o Grafana fica atrás de um reverse proxy; o banco não recebe alterações deste projeto.
+## Stack e práticas
 
-O Nginx e o firewall representam as escolhas do ambiente atual. Outra implantação pode usar um reverse proxy ou controle de acesso diferente, desde que mantenha acesso protegido e o banco fora de exposição pública.
+**Tecnologias:** Grafana, SQL, MariaDB/MySQL, Docker Compose, Nginx, Linux, Git e GitHub Actions.
 
-## Decisões técnicas e segurança
+**Segurança e qualidade:**
 
-- O schema do GLPI foi investigado antes da implementação das métricas.
-- O SQL usa operações read-only e não cria nem altera objetos no banco.
-- Os arquivos SQL versionados são verificados quanto à segurança e à paridade com as queries dos dashboards.
-- Datasource e dashboards são provisionados a partir de arquivos versionados.
-- Cada ambiente mantém seu próprio `.env` local, fora do Git.
-- O datasource usa uma conta dedicada com permissão somente de leitura. Consulte [Segurança](docs/security.md).
-- A CI valida arquivos e configuração; ela não acessa o GLPI, não executa queries no banco real e não faz deploy.
+- Conta dedicada de banco com permissão somente de leitura.
+- Nenhuma query do projeto cria ou altera objetos no banco.
+- Inspeção do schema do GLPI antes da construção das métricas.
+- Verificações de segurança e paridade entre SQL versionado e dashboards.
+- Configuração sensível mantida fora do controle de versão.
+- CI exclusivamente estática: **não** acessa o GLPI, executa consultas reais ou faz deploy.
 
-## Tecnologias
+Veja [Segurança](docs/security.md), [Arquitetura](docs/architecture.md) e [Definições das métricas](docs/metrics.md).
 
-Grafana, MariaDB/MySQL, SQL, Docker Compose, Nginx, Linux, Git e GitHub Actions. O Compose fixa a imagem `grafana/grafana:13.2.2`; a compatibilidade com outras versões não foi verificada neste projeto.
+## Executar em ambiente próprio
 
-## Executar
-
-Para executar o Compose como versionado, use Linux, Git, Docker Engine e Docker Compose. A configuração atual usa host networking; outros sistemas ou topologias podem exigir adaptação da rede do Compose. A validação de runtime foi feita com Ubuntu Server 24.04 LTS. Para clonar e iniciar:
+**Pré-requisitos:** Linux, Git, Docker Engine e Docker Compose, além de acesso autorizado a um MariaDB do GLPI com usuário read-only.
 
 ```sh
 git clone https://github.com/tsathler/glpi-grafana-dashboards.git
@@ -69,43 +88,38 @@ cd glpi-grafana-dashboards
 cp .env.example .env
 ```
 
-Edite `.env` com as credenciais do Grafana e os parâmetros do MariaDB apropriados ao seu ambiente. Use uma conta read-only e mantenha o arquivo local. Em seguida:
+Configure o `.env` com os parâmetros do seu ambiente e as credenciais apropriadas. **Não versione esse arquivo nem reutilize credenciais administrativas do banco.**
 
 ```sh
 docker compose config
 docker compose up -d
 ```
 
-Consulte [Desenvolvimento e implantação](docs/development.md) para configurar o ambiente e acessar o Grafana.
+A configuração versionada usa **host networking** e pode exigir adaptações em outros sistemas ou topologias. O runtime foi validado em Ubuntu Server 24.04 LTS. O Compose fixa a imagem `grafana/grafana:13.2.2`; outras versões não foram verificadas neste projeto.
 
-Para gerar cópias locais dos dashboards de Projetos com URL base do GLPI específica do ambiente, consulte [URL local do GLPI](docs/glpi-local-url.md). A URL fica em configuração local ignorada pelo Git.
+Para instruções completas, leia [Desenvolvimento e implantação](docs/development.md). Para ajustar URLs locais dos dashboards de Projetos, veja [URL local do GLPI](docs/glpi-local-url.md).
 
-## Validação e estado
+## Validação e limitações
 
-**Validação estática:** GitHub Actions verifica a configuração Compose, JSON dos dashboards, YAML, Markdown, SQL read-only, correspondência entre SQL versionado e dashboards, arquivos de ambiente e whitespace do Git.
+| Tipo | Cobertura |
+| --- | --- |
+| **CI / validação estática** | Compose, JSON, YAML, Markdown, SQL read-only, correspondência SQL/dashboard, arquivos de ambiente e whitespace |
+| **Runtime — Service Desk** | Comparação com a interface GLPI e implantação validada |
+| **Runtime — Projects** | Consultas do MVP verificadas no banco; integração dos painéis no Grafana pendente |
 
-**Validação de runtime:** o Service Desk foi validado contra a interface do GLPI e implantado em produção. Para Projetos, as queries do MVP foram verificadas diretamente no banco; a validação integrada do dashboard no Grafana permanece pendente.
+As consultas dependem do schema e de valores de domínio da instalação de referência. Versões, estados, relacionamentos, seleção de entidades e comportamento temporal podem variar. Antes de reutilizar o projeto, faça o discovery do banco, confira charset/collation/timezone e compare os resultados com a interface correspondente. A versão do MariaDB não é fixada pelo repositório.
 
-- Service Desk e primeira implantação de produção — estáveis e validados.
-- Projetos — em desenvolvimento; dashboard implementado, validação integrada pendente.
-- Dashboard de backlog — planejado.
-
-## Limitações
-
-As queries foram validadas contra uma instalação específica do GLPI e dependem de seu schema e valores de domínio. Status, relações, campos, seleção de Entity e comportamento temporal podem variar entre instalações ou versões. Antes de reutilizar o projeto, execute o discovery, confirme charset/collation/timezone quando relevante e compare os resultados com a interface GLPI correspondente. A versão do MariaDB não é fixada pelo repositório; compatibilidade com outras versões deve ser verificada.
-
-## Desenvolvimento com apoio de IA
-
-Ferramentas de IA apoiaram pesquisa, implementação e documentação. A arquitetura, o SQL, a segurança, o comportamento em runtime e as métricas foram revisados manualmente e validados contra o ambiente e a interface do GLPI.
-
-## Documentação
-
-- [Layout do GLPI Projects](docs/projects-layout.md)
+## Documentação técnica
 
 - [Arquitetura](docs/architecture.md)
 - [Banco de dados e discovery](docs/database.md)
 - [Definições e validação das métricas](docs/metrics.md)
 - [Desenvolvimento e implantação](docs/development.md)
+- [Layout do GLPI Projects](docs/projects-layout.md)
 - [Segurança](docs/security.md)
 - [Production Readiness](docs/production-readiness.md)
 - [Marcos e roadmap](docs/milestones.md)
+
+## Desenvolvimento com apoio de IA
+
+Ferramentas de IA apoiaram pesquisa, implementação e documentação. A arquitetura, o SQL, a segurança, o comportamento em runtime e as métricas foram revisados manualmente e validados conforme o estado descrito acima.
