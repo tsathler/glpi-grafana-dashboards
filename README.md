@@ -1,5 +1,54 @@
 # GLPI Grafana Dashboards
 
+## English
+
+**Read-only GLPI service desk observability with Grafana, versioned SQL, Docker Compose and CI checks.**
+
+[![CI](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml/badge.svg)](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml)
+
+![GLPI Service Desk dashboard — synthetic demonstration data](docs/images/dashboard-overview.png)
+
+> **Demo only:** the screenshot contains synthetic metrics and does not reveal actual organizational data.
+
+### Project overview
+
+This project provides operational dashboards without modifying source data in GLPI. SQL queries and dashboards are version-controlled, and a dedicated MariaDB user is granted read-only access.
+
+| Dashboard | Status | Scope |
+| --- | --- | --- |
+| GLPI Service Desk | **Stable; validated in production** | Ticket status indicators, created/resolved time series, SLA/TTR resolution efficiency |
+| GLPI Projects | **In development** | Project/task KPIs, progress, Kanban and tables; integrated Grafana validation pending |
+| Backlog | Planned | Not implemented |
+
+**Architecture:** authorized user → Nginx reverse proxy → Grafana → external GLPI MariaDB (read-only). GitHub Actions performs static checks of Compose, JSON, YAML, SQL and related configuration; CI does **not** query live systems or deploy.
+
+**Technology:** Grafana 13.2.2 (pinned image), SQL, MariaDB, Docker Compose, Nginx, Linux and GitHub Actions. The verified runtime uses Ubuntu Server 24.04 LTS and host networking, so other environments may need changes.
+
+### Quick start
+
+Use an authorized **read-only** GLPI database account. Keep credentials in a local `.env`, never in Git.
+
+```sh
+git clone https://github.com/tsathler/glpi-grafana-dashboards.git
+cd glpi-grafana-dashboards
+cp .env.example .env
+# Configure the local .env before starting
+docker compose config
+docker compose up -d
+```
+
+### Validation and limitations
+
+Service Desk was checked against GLPI and deployed; the Projects MVP SQL was checked directly against the database, but integrated Grafana panel validation remains pending. Its dynamic-state Kanban is versioned but not yet fully validated. Results can vary with GLPI schema, status values, entity filtering, collation and timezone. The MariaDB version is not pinned.
+
+**Technical documentation:** [Architecture](docs/architecture.md) · [Database discovery](docs/database.md) · [Metrics](docs/metrics.md) · [Development and deployment](docs/development.md) · [Security](docs/security.md) · [Readiness](docs/production-readiness.md) · [Milestones](docs/milestones.md).
+
+AI tools assisted research, implementation and documentation; the engineering decisions and tests were manually reviewed to the extent described above.
+
+---
+
+## Português
+
 **Observabilidade para operações de service desk, com SQL versionado e acesso somente de leitura ao GLPI.**
 
 [![CI](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml/badge.svg)](https://github.com/tsathler/glpi-grafana-dashboards/actions/workflows/ci.yml)
