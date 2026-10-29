@@ -156,6 +156,13 @@ for (const { dashboard: name, queryDirectory, panelIds } of dashboardQuerySets) 
         throw new Error(`${name}: panel ${panel.id} must use a horizontal bar chart`);
       }
     }
+    const teamMemberPanel = (dashboard.panels ?? []).find((panel) => panel.id === 16);
+    if (teamMemberPanel?.title !== 'Tarefas por membro da equipe'
+        || teamMemberPanel.type !== 'barchart'
+        || teamMemberPanel.gridPos?.x !== 0
+        || teamMemberPanel.gridPos?.w !== 24) {
+      throw new Error(`${name}: expected full-width team member task bar chart on panel 16`);
+    }
   }
   const matchedQueries = new Set();
   for (const panel of dashboard.panels ?? []) {

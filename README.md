@@ -19,7 +19,7 @@ This project provides operational dashboards without modifying source data in GL
 | Dashboard | Status | Scope |
 | --- | --- | --- |
 | GLPI Service Desk | **Stable; validated in production** | Ticket status indicators, created/resolved time series, SLA/TTR resolution efficiency |
-| GLPI Projects | **In development** | Native Grafana indicators for projects/tasks and state distributions; integrated validation pending |
+| GLPI Projects | **In development** | Native project/task indicators, state distributions and team member task counts; Grafana integration pending |
 | Backlog | Planned | Not implemented |
 
 **Architecture:** authorized user → Nginx reverse proxy → Grafana → external GLPI MariaDB (read-only). GitHub Actions performs static checks of Compose, JSON, YAML, SQL and related configuration; CI does **not** query live systems or deploy.
@@ -41,7 +41,7 @@ docker compose up -d
 
 ### Validation and limitations
 
-Service Desk was checked against GLPI and deployed. The original read-only Projects queries were checked directly against the database. The dashboard now has native indicators for projects and tasks and state distribution charts. New task indicator queries have not been run against TEST MariaDB; integrated validation in Grafana remains pending. No responsible-user chart is included because assignment semantics have not been confirmed.
+Service Desk was checked against GLPI and deployed. The original read-only Projects queries were checked directly against the database. The dashboard now includes native project/task indicators, state distribution charts and task counts for User team members. Assignment semantics are based on the GLPI 11 discovery; execution of the new query and Grafana integration validation remain pending in TEST.
 
 **Technical documentation:** [Architecture](docs/architecture.md) · [Database discovery](docs/database.md) · [Metrics](docs/metrics.md) · [Development and deployment](docs/development.md) · [Security](docs/security.md) · [Readiness](docs/production-readiness.md) · [Milestones](docs/milestones.md).
 
@@ -66,7 +66,7 @@ Este projeto transforma dados de chamados do GLPI em dashboards do Grafana, com 
 | Dashboard | Situação | O que apresenta |
 | --- | --- | --- |
 | **GLPI Service Desk** | **Estável e validado** | Indicadores de chamados, fluxo de criados × solucionados e eficiência de resolução por SLA/TTR |
-| **GLPI Projects** | **Em desenvolvimento** | Indicadores e gráficos nativos para projetos e tarefas; validação integrada pendente |
+| **GLPI Projects** | **Em desenvolvimento** | Indicadores, distribuições por estado e tarefas por membro da equipe; validação integrada pendente |
 | **Backlog** | **Planejado** | Escopo ainda não implementado |
 
 ## O problema e a abordagem
@@ -92,7 +92,7 @@ Acompanhar operações apenas pelas telas transacionais do GLPI pode dificultar 
 
 ### GLPI Projects — em desenvolvimento
 
-O dashboard usa visualizações nativas do Grafana para quatro indicadores de projetos, quatro de tarefas e dois gráficos de distribuição por estado. As consultas originais foram verificadas diretamente no banco; as novas consultas de tarefas ainda não foram executadas no MariaDB de TEST. O gráfico por responsável não foi incluído porque o significado funcional da atribuição não foi confirmado. **A validação integrada da nova composição no Grafana ainda está pendente.**
+O dashboard usa visualizações nativas do Grafana para quatro indicadores de projetos, quatro de tarefas, duas distribuições por estado e tarefas por membro da equipe. O vínculo de equipe foi confirmado no discovery do GLPI 11. A execução da nova consulta e a validação integrada no Grafana de TEST permanecem pendentes.
 
 Consulte [Layout do GLPI Projects](docs/projects-layout.md), [Desenvolvimento e implantação](docs/development.md) e [Marcos e roadmap](docs/milestones.md) para detalhes e limitações.
 
@@ -154,7 +154,7 @@ Para instruções completas, leia [Desenvolvimento e implantação](docs/develop
 | --- | --- |
 | **CI / validação estática** | Compose, JSON, YAML, Markdown, SQL read-only, correspondência SQL/dashboard, arquivos de ambiente e whitespace |
 | **Runtime — Service Desk** | Comparação com a interface GLPI e implantação validada |
-| **Runtime — Projects** | Consultas originais verificadas no banco; novas métricas e integração dos painéis pendentes |
+| **Runtime — Projects** | Consultas originais verificadas no banco; nova consulta de membros e integração dos painéis pendentes |
 
 As consultas dependem do schema e de valores de domínio da instalação de referência. Versões, estados, relacionamentos, seleção de entidades e comportamento temporal podem variar. Antes de reutilizar o projeto, faça o discovery do banco, confira charset/collation/timezone e compare os resultados com a interface correspondente. A versão do MariaDB não é fixada pelo repositório.
 

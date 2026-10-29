@@ -577,6 +577,84 @@
           "axisSoftMin": 0
         }
       }
+    },
+    {
+      "id": 16,
+      "title": "Tarefas por membro da equipe",
+      "type": "barchart",
+      "description": "Count of valid tasks per User team member. This is not a productivity measure; groups are not expanded.",
+      "gridPos": {
+        "x": 0,
+        "y": 13,
+        "w": 24,
+        "h": 8
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Valid tasks counted once per User team member; group memberships are not expanded.\nSELECT COALESCE(\n           NULLIF(TRIM(CONCAT_WS(' ', NULLIF(TRIM(u.firstname), ''), NULLIF(TRIM(u.realname), ''))), ''),\n           CONCAT('Usuário #', team.items_id)\n       ) AS member_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN (\n    SELECT DISTINCT projecttasks_id, items_id\n    FROM glpi_projecttaskteams\n    WHERE itemtype = 'User'\n) AS team\n     ON team.projecttasks_id = pt.id\nLEFT JOIN glpi_users AS u\n       ON u.id = team.items_id\n      AND u.is_deleted = 0\n      AND u.is_active = 1\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY team.items_id, u.firstname, u.realname\n\nUNION ALL\n\nSELECT 'Sem usuário na equipe' AS member_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND NOT EXISTS (\n      SELECT 1\n      FROM glpi_projecttaskteams AS team\n      WHERE team.projecttasks_id = pt.id\n        AND team.itemtype = 'User'\n  )\nORDER BY task_count DESC, member_name;\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "axisColorMode": "text",
+            "axisBorderShow": false,
+            "axisGridShow": true,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "fillOpacity": 80,
+            "gradientMode": "none",
+            "lineWidth": 0
+          },
+          "mappings": []
+        },
+        "overrides": []
+      },
+      "options": {
+        "orientation": "horizontal",
+        "xField": "member_name",
+        "showValue": "auto",
+        "stacking": "none",
+        "groupWidth": 0.7,
+        "barWidth": 0.85,
+        "barRadius": 0,
+        "fullHighlight": false,
+        "tooltip": {
+          "mode": "single",
+          "sort": "none",
+          "hideZeros": false
+        },
+        "legend": {
+          "showLegend": false,
+          "displayMode": "list",
+          "placement": "bottom",
+          "calcs": []
+        },
+        "yAxis": {
+          "axisLabel": "",
+          "axisPlacement": "auto",
+          "axisColorMode": "text",
+          "axisBorderShow": false,
+          "axisGridShow": true,
+          "scale": {
+            "type": "linear",
+            "log": false,
+            "logBase": 2
+          },
+          "axisSoftMin": 0
+        }
+      }
     }
   ],
   "refresh": "",

@@ -154,7 +154,7 @@ Enquanto este marco estiver Planejado, não serão incluídas alterações em SQ
 
 Status: Implementação e validação estática concluídas; validação integrada no Grafana e no ambiente TEST pendente.
 
-As queries originais foram conferidas diretamente no banco em mais de um escopo de entidade. Nesta segunda refatoração, foram removidos o gráfico de prioridade e a tabela operacional e adicionadas quatro métricas de tarefas. As novas queries e a composição atual do dashboard ainda não foram validadas no MariaDB/Grafana de TEST. Os nomes de estado são preservados e o valor zero é exibido como **Sem estado**. A atribuição por usuário permanece sem confirmação e sem painel; o roteiro read-only está em `sql/discovery/15-project-task-assignments.sql`.
+As queries originais foram conferidas diretamente no banco em mais de um escopo de entidade. A segunda refatoração removeu o gráfico de prioridade e a tabela operacional e adicionou quatro métricas de tarefas. Esta mudança adiciona a distribuição de tarefas por membro User da equipe, baseada no discovery informado de TEST e sem registrar nomes ou IDs reais. A execução da query e a validação integrada do painel no Grafana de TEST permanecem pendentes.
 
 ### Escopo do dashboard de Projetos
 
