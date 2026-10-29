@@ -1,7 +1,6 @@
 -- Distribution of valid projects by state; state 0 is labeled generically.
 SELECT CASE
            WHEN p.projectstates_id = 0 THEN 'Sem estado'
-           WHEN ps.name LIKE 'Concluído %' THEN 'Concluído'
            ELSE ps.name
        END AS state_name,
        COUNT(DISTINCT p.id) AS project_count

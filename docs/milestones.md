@@ -1,9 +1,5 @@
 # Status de validação dos marcos
 
-## Retomada do Marco 5 — Kanban (implementação local)
-
-Foi adicionado o painel Kanban com estados dinâmicos, projetos sem estado, cartões e contagens. O painel usa Business Text 6.3.0, instalado pelo Compose. Os indicadores e a tabela existente permanecem. A query 09 é uma nova consulta read-only ainda não validada contra o banco real. A validação na interface, assim como a execução da query em testes, permanece pendente e deverá ser registrada após a integração manual.
-
 ## Marco 1 — Fundação
 
 Escopo: serviço Grafana no Compose, configuração do ambiente, provisioning do datasource e do dashboard, volume de dados persistente, CI estática e validação da fundação do ambiente de testes. Nenhum SQL de métricas do GLPI é incluído antes do discovery do schema e da versão.
@@ -154,11 +150,11 @@ Antes de implementar o dashboard:
 
 Enquanto este marco estiver Planejado, não serão incluídas alterações em SQL, dashboard, banco GLPI, schema ou aplicação.
 
-## Marco 5 — Dashboard de Projetos
+## Marco 5 — Dashboard gerencial e operacional de Projetos
 
-Status: Em validação
+Status: Implementação e validação estática concluídas; validação integrada no Grafana e no ambiente TEST pendente.
 
-O discovery estrutural inicial foi concluído e validado o suficiente para iniciar a definição das métricas do MVP. Ele está versionado em [11-projects-schema.sql](../sql/discovery/11-projects-schema.sql), [12-projects-domains.sql](../sql/discovery/12-projects-domains.sql), [13-project-tasks.sql](../sql/discovery/13-project-tasks.sql) e [14-projects-cardinality.sql](../sql/discovery/14-projects-cardinality.sql). As oito queries read-only de produção do MVP estão versionadas em `sql/projects/queries/` e foram conferidas diretamente no banco em mais de um escopo de entidade. As contagens por estado fecharam com os indicadores; a tabela manteve uma linha por projeto; e a soma das tarefas pré-agregadas coincidiu com a distribuição de tarefas por estado. O Marco 5 está **Em validação**: o dashboard de Projetos foi implementado, mas ainda precisa de validação integrada no Grafana.
+O discovery estrutural inicial foi concluído e validado o suficiente para definir as métricas. Ele está versionado em [11-projects-schema.sql](../sql/discovery/11-projects-schema.sql), [12-projects-domains.sql](../sql/discovery/12-projects-domains.sql), [13-project-tasks.sql](../sql/discovery/13-project-tasks.sql) e [14-projects-cardinality.sql](../sql/discovery/14-projects-cardinality.sql). As oito queries read-only estão versionadas em `sql/projects/queries/` e foram conferidas diretamente no banco em mais de um escopo de entidade. As contagens por estado fecharam com os indicadores; a tabela manteve uma linha por projeto; e a soma das tarefas pré-agregadas coincidiu com a distribuição de tarefas por estado. O dashboard único tem quatro indicadores, três distribuições e a tabela operacional; a consulta da tabela e as distribuições foram reaproveitadas, e foi adicionada a consulta do total de projetos. Os nomes de estado foram preservados e o valor zero é exibido como **Sem estado**. A validação integrada no Grafana 13.2.2 com GLPI/MariaDB em TEST ainda está pendente.
 
 ### Escopo do dashboard de Projetos
 
@@ -171,7 +167,7 @@ O discovery estrutural inicial foi concluído e validado o suficiente para inici
 
 Projetos e tarefas usam `projectstates_id`, relacionado a `glpi_projectstates`; o valor `0` representa ausência de estado, não um estado ativo. Use `glpi_projectstates.is_finished` para distinguir estados finalizados e não finalizados; `percent_done` não deve determinar conclusão sozinho. Métricas de projetos e tarefas válidos devem excluir deletados e templates (`is_deleted = 0` e `is_template = 0`). Métricas de tarefas devem filtrar a entidade pelo projeto pai e tratar a relação projeto-tarefa como 1:N.
 
-A cobertura das datas de projeto é insuficiente para métricas de atraso no MVP; datas de tarefas têm cobertura parcial e exigem validação específica antes do uso. O discovery estrutural está concluído, as queries do MVP foram verificadas diretamente no banco, e o dashboard foi implementado. A validação integrada dos painéis no Grafana ainda está pendente; não foram incluídas métricas de atraso, prazos, timeline ou Gantt.
+A cobertura das datas de projeto é insuficiente para métricas de atraso; datas de tarefas têm cobertura parcial e exigem validação específica antes do uso. O discovery estrutural está concluído, as queries foram verificadas diretamente no banco, e o dashboard consolidado foi implementado. A validação integrada dos painéis no Grafana ainda está pendente; não foram incluídas métricas de atraso, prazos, timeline ou Gantt.
 
 ### Melhoria futura: título principal por entidade
 

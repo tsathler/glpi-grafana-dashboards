@@ -19,7 +19,7 @@ This project provides operational dashboards without modifying source data in GL
 | Dashboard | Status | Scope |
 | --- | --- | --- |
 | GLPI Service Desk | **Stable; validated in production** | Ticket status indicators, created/resolved time series, SLA/TTR resolution efficiency |
-| GLPI Projects | **In development** | Project/task KPIs, progress, Kanban and tables; integrated Grafana validation pending |
+| GLPI Projects | **In development** | Native Grafana indicators and charts for projects/tasks, progress and operational table; integrated validation pending |
 | Backlog | Planned | Not implemented |
 
 **Architecture:** authorized user → Nginx reverse proxy → Grafana → external GLPI MariaDB (read-only). GitHub Actions performs static checks of Compose, JSON, YAML, SQL and related configuration; CI does **not** query live systems or deploy.
@@ -41,7 +41,7 @@ docker compose up -d
 
 ### Validation and limitations
 
-Service Desk was checked against GLPI and deployed; the Projects MVP SQL was checked directly against the database, but integrated Grafana panel validation remains pending. Its dynamic-state Kanban is versioned but not yet fully validated. Results can vary with GLPI schema, status values, entity filtering, collation and timezone. The MariaDB version is not pinned.
+Service Desk was checked against GLPI and deployed. The eight read-only Projects queries were checked directly against the database. The consolidated dashboard uses native Grafana visualizations for indicators, project and task distributions, and the operational table. The Kanban and Business Text dependency have been removed. Integrated validation of the new dashboard in Grafana remains pending. Results can vary with GLPI schema, status values, entity filtering, collation and timezone. The MariaDB version is not pinned.
 
 **Technical documentation:** [Architecture](docs/architecture.md) · [Database discovery](docs/database.md) · [Metrics](docs/metrics.md) · [Development and deployment](docs/development.md) · [Security](docs/security.md) · [Readiness](docs/production-readiness.md) · [Milestones](docs/milestones.md).
 
@@ -66,7 +66,7 @@ Este projeto transforma dados de chamados do GLPI em dashboards do Grafana, com 
 | Dashboard | Situação | O que apresenta |
 | --- | --- | --- |
 | **GLPI Service Desk** | **Estável e validado** | Indicadores de chamados, fluxo de criados × solucionados e eficiência de resolução por SLA/TTR |
-| **GLPI Projects** | **Em desenvolvimento** | Indicadores de projetos e tarefas, progresso, Kanban e tabela operacional; validação integrada pendente |
+| **GLPI Projects** | **Em desenvolvimento** | Indicadores e gráficos nativos para projetos e tarefas, progresso e tabela operacional; validação integrada pendente |
 | **Backlog** | **Planejado** | Escopo ainda não implementado |
 
 ## O problema e a abordagem
@@ -92,11 +92,9 @@ Acompanhar operações apenas pelas telas transacionais do GLPI pode dificultar 
 
 ### GLPI Projects — em desenvolvimento
 
-O MVP do dashboard e nove queries read-only estão implementados. As consultas foram verificadas diretamente no banco, mas **a validação integrada dos painéis no Grafana ainda está pendente**.
+O dashboard consolidado usa visualizações nativas do Grafana para quatro indicadores, três gráficos de distribuição de projetos e tarefas e uma tabela operacional. As oito consultas SQL read-only foram verificadas diretamente no banco. O Kanban e a dependência do plugin Business Text foram removidos. **A validação integrada da nova composição no Grafana ainda está pendente.**
 
-O escopo inclui métricas de projetos e tarefas, progresso, Kanban e tabela operacional. O Kanban Business Text possui estados dinâmicos e uma coluna **Sem estado**; a query adicional e os arquivos de apresentação foram versionados, mas sua validação no Grafana e contra o banco de testes permanece pendente.
-
-Consulte [Desenvolvimento e implantação](docs/development.md) e [Marcos e roadmap](docs/milestones.md) antes de usar a frente de Projetos.
+Consulte [Layout do GLPI Projects](docs/projects-layout.md), [Desenvolvimento e implantação](docs/development.md) e [Marcos e roadmap](docs/milestones.md) para detalhes e limitações.
 
 ## Arquitetura
 

@@ -1,27 +1,17 @@
 # Layout do GLPI Projects
 
-O dashboard usa layout customizado em uma grade de 24 colunas. No Grafana, cada unidade de altura de `gridPos` representa 30 px; o layout mantém o Kanban como painel principal e move a tabela operacional para `glpi-projects-detail.json`, com navegação entre os dashboards.
+O dashboard principal de Projetos usa somente painéis nativos do Grafana e mantém indicadores, distribuições e tabela operacional em `glpi-projects.json`. O UID `glpi-projects` foi preservado.
 
-## Distribuição
-
-| Linha | Painéis | `x, y, w, h` |
+| Seção | Painéis | `x, y, w, h` |
 | --- | --- | --- |
-| Cabeçalho | Título compacto | `0, 0, 24, 2` |
-| Indicadores | 4 Stat | `0/6/12/18, 2, 6, 3` |
-| Gráficos | Estado, prioridade, tarefas | `0/8/16, 5, 8, 5` |
-| Kanban | Business Text, largura total | `0, 10, 24, 16` |
-| Detalhamento | Tabela operacional no dashboard secundário | `0, 0, 24, 18` |
+| Indicadores | Total, não finalizados, finalizados e progresso médio | `0/6/12/18, 2, 6, 3` |
+| Distribuição | Projetos por estado, projetos por prioridade e tarefas por estado | `0/8/16, 5, 8, 5` |
+| Operação | Tabela de projetos em largura total | `0, 10, 24, 14` |
 
-O conteúdo principal ocupa 26 unidades, ou 780 px de altura de grade. Em 1920×1080 espera-se que caiba sem rolagem vertical na maioria das configurações; a barra do Grafana, os filtros, o zoom do navegador e a altura útil da janela afetam o espaço. Em telas menores, a página pode rolar verticalmente. As colunas ocupam igualmente a largura quando cabem com largura mínima de 245 px; quando não couberem, o Kanban rola horizontalmente. Os cartões rolam internamente dentro das colunas, limitados a 380 px.
+Os indicadores são snapshots atuais e não usam o time picker. Todas as métricas filtram a variável **Entity**. Projetos não finalizados incluem os sem estado; projetos finalizados são determinados por `glpi_projectstates.is_finished`, sem usar `percent_done` como critério.
 
-Os quatro indicadores mantêm a largura uniforme. Os três gráficos dividem a linha em partes iguais. A tabela fica acessível pelo link **Tabela operacional**, e o dashboard de detalhamento tem link de retorno.
+A tabela mantém uma linha por projeto válido, com tarefas pré-agregadas por projeto para evitar multiplicação de linhas. A coluna de progresso usa a célula nativa de gauge do Grafana. O link da coluna de ID abre o formulário do projeto no GLPI; para habilitá-lo, gere a cópia local usando a URL base do ambiente conforme [URL local do GLPI](glpi-local-url.md). A URL específica não é incorporada ao JSON versionado.
 
-## Painel de prioridade
+Os gráficos e tabela preservam os nomes de estado cadastrados no GLPI. O estado `projectstates_id = 0` é apresentado como **Sem estado**. O layout foi dimensionado para Full HD sem rolagem horizontal em condições usuais; barras de navegação, filtros, zoom e altura útil podem exigir rolagem vertical.
 
-A consulta retorna `priority` como texto para fornecer categorias ao eixo do Bar chart. O agrupamento e a ordenação continuam baseados na prioridade original; as contagens continuam contando projetos distintos e os filtros de projetos válidos e Entity permanecem. O painel não tem transformações configuradas. A alteração corrige localmente a forma do campo categórico, mas a causa original de `An unexpected error happened` não pode ser confirmada sem erro detalhado ou reprodução no Grafana.
-
-Se o erro persistir, colete: (1) Query Inspector > Query, incluindo o SQL interpolado, (2) Query Inspector > Data/JSON com nomes e tipos dos campos e uma amostra anonimizada, (3) detalhes do erro no painel e no console do navegador, (4) versão efetiva do Grafana e do plugin, e (5) export do JSON do painel após abrir em edição. Não inclua credenciais nem nomes/dados reais do GLPI.
-
-Para regenerar os dashboards após editar os fontes do Kanban ou sua consulta, execute `node scripts/build-project-kanban.mjs` na raiz do repositório. O JSON secundário reutiliza a consulta operacional existente; não há um segundo arquivo SQL.
-
-O painel Business Text usa `renderMode: allRows`, registra `renderKanban` em `helpers`, define `editor.format` como HTML e reserva `afterRender` vazio. HTML e CSS são incorporados de arquivos versionados. A sanitização padrão do plugin continua habilitada. O validador SQL também verifica essas opções para detectar regressões no JSON gerado.
+O schema e as consultas foram verificados em um ambiente GLPI específico. A composição atual do dashboard ainda depende de validação integrada no Grafana; não se declara validação de runtime nesta refatoração.

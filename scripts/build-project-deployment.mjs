@@ -1,4 +1,4 @@
-import { mkdir, readFile, writeFile } from 'node:fs/promises';
+import { mkdir, readFile, unlink, writeFile } from 'node:fs/promises';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -36,17 +36,16 @@ export async function generateProjectDeployment(root) {
     throw new Error(`Malformed JSON in ${configPath}`);
   }
   const baseUrl = validateBaseUrl(config?.baseUrl);
-  const detail = JSON.parse(await readFile(path.join(sourceDir, 'glpi-projects-detail.json'), 'utf8'));
   const main = JSON.parse(await readFile(path.join(sourceDir, 'glpi-projects.json'), 'utf8'));
   let linksUpdated = 0;
 
-  for (const panel of detail.panels ?? []) {
+  for (const panel of main.panels ?? []) {
     for (const override of panel.fieldConfig?.overrides ?? []) {
       if (override.matcher?.options !== 'project_id') continue;
       for (const property of override.properties ?? []) {
         if (property.id !== 'links') continue;
         for (const link of property.value ?? []) {
-          if (typeof link.url === 'string' && /\/front\/project\.form\.php\?id=\$\{__value\.raw\}$/.test(link.url)) {
+          if (typeof link.url === 'string' && /^\/front\/project\.form\.php\?id=\$\{__value\.raw\}$/.test(link.url)) {
             link.url = `${baseUrl}/front/project.form.php?id=\${__value.raw}`;
             linksUpdated += 1;
           }
@@ -58,7 +57,9 @@ export async function generateProjectDeployment(root) {
 
   await mkdir(localDir, { recursive: true });
   await writeFile(path.join(localDir, 'glpi-projects.json'), `${JSON.stringify(main, null, 2)}\n`);
-  await writeFile(path.join(localDir, 'glpi-projects-detail.json'), `${JSON.stringify(detail, null, 2)}\n`);
+  await unlink(path.join(localDir, 'glpi-projects-detail.json')).catch((error) => {
+    if (error.code !== 'ENOENT') throw error;
+  });
   return { baseUrl, linksUpdated };
 }
 
