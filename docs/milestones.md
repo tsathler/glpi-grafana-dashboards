@@ -154,7 +154,7 @@ Enquanto este marco estiver Planejado, não serão incluídas alterações em SQ
 
 Status: Implementação e validação estática concluídas; validação integrada no Grafana e no ambiente TEST pendente.
 
-O discovery estrutural inicial foi concluído e validado o suficiente para definir as métricas. Ele está versionado em [11-projects-schema.sql](../sql/discovery/11-projects-schema.sql), [12-projects-domains.sql](../sql/discovery/12-projects-domains.sql), [13-project-tasks.sql](../sql/discovery/13-project-tasks.sql) e [14-projects-cardinality.sql](../sql/discovery/14-projects-cardinality.sql). As oito queries read-only estão versionadas em `sql/projects/queries/` e foram conferidas diretamente no banco em mais de um escopo de entidade. As contagens por estado fecharam com os indicadores; a tabela manteve uma linha por projeto; e a soma das tarefas pré-agregadas coincidiu com a distribuição de tarefas por estado. O dashboard único tem quatro indicadores, três distribuições e a tabela operacional; a consulta da tabela e as distribuições foram reaproveitadas, e foi adicionada a consulta do total de projetos. Os nomes de estado foram preservados e o valor zero é exibido como **Sem estado**. A validação integrada no Grafana 13.2.2 com GLPI/MariaDB em TEST ainda está pendente.
+As queries originais foram conferidas diretamente no banco em mais de um escopo de entidade. Nesta segunda refatoração, foram removidos o gráfico de prioridade e a tabela operacional e adicionadas quatro métricas de tarefas. As novas queries e a composição atual do dashboard ainda não foram validadas no MariaDB/Grafana de TEST. Os nomes de estado são preservados e o valor zero é exibido como **Sem estado**. A atribuição por usuário permanece sem confirmação e sem painel; o roteiro read-only está em `sql/discovery/15-project-task-assignments.sql`.
 
 ### Escopo do dashboard de Projetos
 
@@ -163,11 +163,11 @@ O discovery estrutural inicial foi concluído e validado o suficiente para defin
 - Visões de projetos e tarefas, incluindo estados e progresso.
 - Tratamento explícito de projetos e tarefas sem estado.
 - Possível identificação de projetos atrasados, somente após validar sua semântica.
-- Uma tabela operacional de projetos.
+- Indicadores e distribui??es nativas para projetos e tarefas.
 
 Projetos e tarefas usam `projectstates_id`, relacionado a `glpi_projectstates`; o valor `0` representa ausência de estado, não um estado ativo. Use `glpi_projectstates.is_finished` para distinguir estados finalizados e não finalizados; `percent_done` não deve determinar conclusão sozinho. Métricas de projetos e tarefas válidos devem excluir deletados e templates (`is_deleted = 0` e `is_template = 0`). Métricas de tarefas devem filtrar a entidade pelo projeto pai e tratar a relação projeto-tarefa como 1:N.
 
-A cobertura das datas de projeto é insuficiente para métricas de atraso; datas de tarefas têm cobertura parcial e exigem validação específica antes do uso. O discovery estrutural está concluído, as queries foram verificadas diretamente no banco, e o dashboard consolidado foi implementado. A validação integrada dos painéis no Grafana ainda está pendente; não foram incluídas métricas de atraso, prazos, timeline ou Gantt.
+As datas de projetos ainda nao permitem metricas de atraso; datas de tarefas tem cobertura parcial e exigem validacao especifica. O discovery estrutural inicial e as queries originais foram conferidos no banco. As novas metricas de tarefas usam o schema documentado, mas aguardam validacao no MariaDB de TEST; a composicao atual tambem aguarda validacao integrada no Grafana. Nao foram incluidas metricas de atraso, prazos, timeline ou Gantt.
 
 ### Melhoria futura: título principal por entidade
 

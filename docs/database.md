@@ -68,3 +68,5 @@ As datas de projeto têm cobertura insuficiente no ambiente validado; métricas 
 ### Queries de produção do MVP de Projetos
 
 As queries read-only preparadas para o MVP estão versionadas em `sql/projects/queries/`, separadas das queries do Service Desk em `sql/queries/`. Elas usam somente campos e relações descritos pelo discovery. As oito consultas foram conferidas diretamente no banco em mais de um escopo de entidade; ainda precisam de validação integrada no Grafana antes de serem usadas em um dashboard.
+
+Para atribuição de tarefas, o schema documentado confirma que `glpi_projecttasks` contém os campos `users_id` e `users_id_tech`, mas a semântica funcional destes campos e a existência/cardinalidade de tabelas de relação não foi confirmada no ambiente MariaDB desta revisão. O roteiro read-only em `sql/discovery/15-project-task-assignments.sql` verifica schema e cobertura sem expor nomes pessoais. O gráfico por responsável depende de validação manual na versão GLPI 11 implantada, incluindo significado dos campos, cardinalidade, usuários inativos/excluídos e tarefas sem responsável. Nenhuma atribuição é presumida.
