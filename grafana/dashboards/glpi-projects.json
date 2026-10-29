@@ -2,7 +2,7 @@
   "annotations": {
     "list": []
   },
-  "description": "Indicadores de projetos e tarefas e suas distribui??es por estado.",
+  "description": "Indicadores de projetos e tarefas e suas distribui\u00e7\u00f5es por estado.",
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -14,7 +14,7 @@
       "id": 11,
       "title": "Total de projetos",
       "type": "stat",
-      "description": "Quantidade de projetos v?lidos na entidade selecionada.",
+      "description": "Quantidade de projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
         "y": 0,
@@ -63,9 +63,9 @@
     },
     {
       "id": 1,
-      "title": "Projetos n?o finalizados",
+      "title": "Projetos n\u00e3o finalizados",
       "type": "stat",
-      "description": "Projetos v?lidos cujo estado n?o est? marcado como finalizado, incluindo os sem estado.",
+      "description": "Projetos v\u00e1lidos cujo estado n\u00e3o est\u00e1 marcado como finalizado, incluindo os sem estado.",
       "gridPos": {
         "x": 6,
         "y": 0,
@@ -116,7 +116,7 @@
       "id": 2,
       "title": "Projetos finalizados",
       "type": "stat",
-      "description": "Projetos v?lidos cujo estado est? marcado como finalizado.",
+      "description": "Projetos v\u00e1lidos cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
         "x": 12,
         "y": 0,
@@ -165,9 +165,9 @@
     },
     {
       "id": 4,
-      "title": "Progresso m?dio dos projetos",
+      "title": "Progresso m\u00e9dio dos projetos",
       "type": "stat",
-      "description": "M?dia de percent_done dos projetos v?lidos; n?o representa taxa de conclus?o.",
+      "description": "M\u00e9dia de percent_done dos projetos v\u00e1lidos; n\u00e3o representa taxa de conclus\u00e3o.",
       "gridPos": {
         "x": 18,
         "y": 0,
@@ -220,7 +220,7 @@
       "id": 12,
       "title": "Total de tarefas",
       "type": "stat",
-      "description": "Quantidade de tarefas v?lidas em projetos v?lidos na entidade selecionada.",
+      "description": "Quantidade de tarefas v\u00e1lidas em projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
         "y": 3,
@@ -269,9 +269,9 @@
     },
     {
       "id": 13,
-      "title": "Tarefas n?o finalizadas",
+      "title": "Tarefas n\u00e3o finalizadas",
       "type": "stat",
-      "description": "Tarefas v?lidas cujo estado n?o est? marcado como finalizado, incluindo tarefas sem estado.",
+      "description": "Tarefas v\u00e1lidas cujo estado n\u00e3o est\u00e1 marcado como finalizado, incluindo tarefas sem estado.",
       "gridPos": {
         "x": 6,
         "y": 3,
@@ -322,7 +322,7 @@
       "id": 14,
       "title": "Tarefas finalizadas",
       "type": "stat",
-      "description": "Tarefas v?lidas cujo estado est? marcado como finalizado.",
+      "description": "Tarefas v\u00e1lidas cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
         "x": 12,
         "y": 3,
@@ -371,9 +371,9 @@
     },
     {
       "id": 15,
-      "title": "Progresso m?dio das tarefas",
+      "title": "Progresso m\u00e9dio das tarefas",
       "type": "stat",
-      "description": "M?dia de percent_done das tarefas v?lidas; n?o representa taxa de conclus?o.",
+      "description": "M\u00e9dia de percent_done das tarefas v\u00e1lidas; n\u00e3o representa taxa de conclus\u00e3o.",
       "gridPos": {
         "x": 18,
         "y": 3,
