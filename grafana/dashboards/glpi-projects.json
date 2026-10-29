@@ -7,42 +7,57 @@
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
   "id": null,
-  "links": [
-    {
-      "title": "Tabela operacional",
-      "type": "dashboards",
-      "url": "/d/glpi-projects-detail",
-      "includeVars": true,
-      "keepTime": true,
-      "targetBlank": false
-    }
-  ],
+  "links": [],
   "liveNow": false,
   "panels": [
     {
-      "id": 10,
-      "title": "",
-      "type": "text",
+      "id": 11,
+      "title": "Total de projetos",
+      "type": "stat",
+      "description": "Todos os projetos válidos no escopo da Entity selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 0,
-        "w": 24,
-        "h": 2
+        "y": 2,
+        "w": 6,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
-      "transparent": true,
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Current snapshot: all valid projects in the selected entity scope.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity);\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
       "fieldConfig": {
-        "defaults": {},
+        "defaults": {
+          "unit": "none",
+          "decimals": 0
+        },
         "overrides": []
       },
       "options": {
-        "mode": "html",
-        "content": "<div style=\"font-size:24px;font-weight:700;letter-spacing:0.2px;line-height:1.1;margin:0;padding:0;\">Painel de Projetos</div>",
-        "disableSanitizeHtml": false,
-        "code": {
-          "language": "plaintext",
-          "showLineNumbers": false,
-          "showMiniMap": false
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 40
         }
       }
     },
@@ -50,9 +65,9 @@
       "id": 1,
       "title": "Projetos não finalizados",
       "type": "stat",
-      "description": "Inclui projetos sem estado; estes também são mostrados em Projetos sem estado.",
+      "description": "Projetos válidos cujo estado não está marcado como finalizado, incluindo os sem estado.",
       "gridPos": {
-        "x": 0,
+        "x": 6,
         "y": 2,
         "w": 6,
         "h": 3
@@ -103,57 +118,6 @@
       "type": "stat",
       "description": "Projetos válidos cujo estado está marcado como finalizado.",
       "gridPos": {
-        "x": 6,
-        "y": 2,
-        "w": 6,
-        "h": 3
-      },
-      "pluginVersion": "13.2.2",
-      "datasource": {
-        "type": "mysql",
-        "uid": "glpi-mysql"
-      },
-      "targets": [
-        {
-          "rawSql": "-- Current snapshot: valid projects whose state is marked finished.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 1;\n",
-          "refId": "A",
-          "format": "table"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "unit": "none",
-          "decimals": 0
-        },
-        "overrides": []
-      },
-      "options": {
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "orientation": "auto",
-        "textMode": "value",
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "wideLayout": false,
-        "showPercentChange": false,
-        "text": {
-          "titleSize": 16,
-          "valueSize": 40
-        }
-      }
-    },
-    {
-      "id": 3,
-      "title": "Projetos sem estado",
-      "type": "stat",
-      "description": "Subconjunto de Projetos não finalizados.",
-      "gridPos": {
         "x": 12,
         "y": 2,
         "w": 6,
@@ -166,7 +130,7 @@
       },
       "targets": [
         {
-          "rawSql": "-- Current snapshot: valid projects with no state assigned.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND p.projectstates_id = 0;\n",
+          "rawSql": "-- Current snapshot: valid projects whose state is marked finished.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 1;\n",
           "refId": "A",
           "format": "table"
         }
@@ -270,7 +234,7 @@
       },
       "targets": [
         {
-          "rawSql": "-- Distribution of valid projects by state; state 0 is labeled generically.\nSELECT CASE\n           WHEN p.projectstates_id = 0 THEN 'Sem estado'\n           WHEN ps.name LIKE 'Concluído %' THEN 'Concluído'\n           ELSE ps.name\n       END AS state_name,\n       COUNT(DISTINCT p.id) AS project_count\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY state_name\nORDER BY (state_name = 'Sem estado'), state_name;\n",
+          "rawSql": "-- Distribution of valid projects by state; state 0 is labeled generically.\nSELECT CASE\n           WHEN p.projectstates_id = 0 THEN 'Sem estado'\n           ELSE ps.name\n       END AS state_name,\n       COUNT(DISTINCT p.id) AS project_count\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY state_name\nORDER BY (state_name = 'Sem estado'), state_name;\n",
           "refId": "A",
           "format": "table"
         }
@@ -451,7 +415,7 @@
       },
       "targets": [
         {
-          "rawSql": "-- Distribution of valid tasks by state, scoped through the parent project entity.\nSELECT CASE\n           WHEN pt.projectstates_id = 0 THEN 'Sem estado'\n           WHEN ps.name LIKE 'Concluído %' THEN 'Concluído'\n           ELSE ps.name\n       END AS state_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nLEFT JOIN glpi_projectstates AS ps\n       ON pt.projectstates_id = ps.id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY state_name\nORDER BY (state_name = 'Sem estado'), state_name;\n",
+          "rawSql": "-- Distribution of valid tasks by state, scoped through the parent project entity.\nSELECT CASE\n           WHEN pt.projectstates_id = 0 THEN 'Sem estado'\n           ELSE ps.name\n       END AS state_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nLEFT JOIN glpi_projectstates AS ps\n       ON pt.projectstates_id = ps.id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY state_name\nORDER BY (state_name = 'Sem estado'), state_name;\n",
           "refId": "A",
           "format": "table"
         }
@@ -512,49 +476,190 @@
       }
     },
     {
-      "id": 9,
-      "title": "Kanban de projetos",
-      "type": "marcusolsson-dynamictext-panel",
-      "description": "Projetos agrupados pelos estados cadastrados no GLPI. Progresso não determina o estado de conclusão.",
+      "id": 8,
+      "title": "Projetos — acompanhamento operacional",
+      "type": "table",
+      "description": "Uma linha por projeto válido; a quantidade de tarefas é pré-agregada por projeto.",
       "gridPos": {
         "x": 0,
         "y": 10,
         "w": 24,
-        "h": 16
+        "h": 14
       },
-      "pluginVersion": "6.3.0",
+      "pluginVersion": "13.2.2",
       "datasource": {
         "type": "mysql",
         "uid": "glpi-mysql"
       },
       "targets": [
         {
-          "rawSql": "-- Dynamic project states plus an explicit no-state column for the Kanban.\n-- Empty states are retained; task counts are pre-aggregated within parent-project entity scope.\nSELECT state_list.state_id,\n       state_list.state_name,\n       p.id AS project_id,\n       p.name AS project_name,\n       p.priority,\n       p.percent_done,\n       COALESCE(task_counts.task_count, 0) AS task_count\nFROM (\n    SELECT ps.id AS state_id,\n           CASE WHEN ps.name LIKE 'Concluído %' THEN 'Concluído' ELSE ps.name END AS state_name,\n           0 AS is_no_state\n    FROM glpi_projectstates AS ps\n    UNION ALL\n    SELECT 0 AS state_id,\n           'Sem estado' AS state_name,\n           1 AS is_no_state\n) AS state_list\nLEFT JOIN glpi_projects AS p\n       ON p.projectstates_id = state_list.state_id\n      AND p.is_deleted = 0\n      AND p.is_template = 0\n      AND p.entities_id IN ($entity)\nLEFT JOIN (\n    SELECT pt.projects_id,\n           COUNT(*) AS task_count\n    FROM glpi_projecttasks AS pt\n    JOIN glpi_projects AS parent_project\n         ON parent_project.id = pt.projects_id\n    WHERE pt.is_deleted = 0\n      AND pt.is_template = 0\n      AND parent_project.is_deleted = 0\n      AND parent_project.is_template = 0\n      AND parent_project.entities_id IN ($entity)\n    GROUP BY pt.projects_id\n) AS task_counts\n       ON task_counts.projects_id = p.id\nORDER BY state_list.is_no_state, state_list.state_id, p.name, p.id;\n",
+          "rawSql": "-- Operational project table with valid task counts pre-aggregated per project.\nSELECT p.id AS project_id,\n       p.name AS project_name,\n       CASE\n           WHEN p.projectstates_id = 0 THEN 'Sem estado'\n           ELSE ps.name\n       END AS state_name,\n       p.priority,\n       p.percent_done,\n       COALESCE(task_counts.task_count, 0) AS task_count\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nLEFT JOIN (\n    SELECT pt.projects_id,\n           COUNT(*) AS task_count\n    FROM glpi_projecttasks AS pt\n    WHERE pt.is_deleted = 0\n      AND pt.is_template = 0\n    GROUP BY pt.projects_id\n) AS task_counts\n       ON task_counts.projects_id = p.id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nORDER BY p.name, p.id;\n",
           "refId": "A",
           "format": "table"
         }
       ],
       "fieldConfig": {
-        "defaults": {},
-        "overrides": []
+        "defaults": {
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": []
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "project_id"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "ID"
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "title": "Abrir projeto no GLPI",
+                    "url": "/front/project.form.php?id=${__value.raw}",
+                    "targetBlank": true
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "project_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Projeto"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "state_name"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Estado"
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "priority"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Prioridade"
+              },
+              {
+                "id": "mappings",
+                "value": [
+                  {
+                    "type": "value",
+                    "options": {
+                      "1": {
+                        "text": "Muito baixa"
+                      },
+                      "2": {
+                        "text": "Baixa"
+                      },
+                      "3": {
+                        "text": "Média"
+                      },
+                      "4": {
+                        "text": "Alta"
+                      },
+                      "5": {
+                        "text": "Muito alta"
+                      },
+                      "6": {
+                        "text": "Maior"
+                      }
+                    }
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "percent_done"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Progresso"
+              },
+              {
+                "id": "unit",
+                "value": "percent"
+              },
+              {
+                "id": "min",
+                "value": 0
+              },
+              {
+                "id": "max",
+                "value": 100
+              },
+              {
+                "id": "decimals",
+                "value": 1
+              },
+              {
+                "id": "custom.cellOptions",
+                "value": {
+                  "type": "gauge",
+                  "mode": "basic"
+                }
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "task_count"
+            },
+            "properties": [
+              {
+                "id": "displayName",
+                "value": "Tarefas"
+              },
+              {
+                "id": "decimals",
+                "value": 0
+              }
+            ]
+          }
+        ]
       },
       "options": {
-        "content": "<div class=\"project-kanban\" role=\"region\" aria-label=\"Kanban de projetos\">\n  <div class=\"project-kanban__columns\">{{{renderKanban data}}}</div>\n</div>",
-        "contentPartials": [],
-        "renderMode": "allRows",
-        "styles": ".project-kanban {\n  color: var(--grafana-color-text-primary, inherit);\n  width: 100%;\n}\n.project-kanban__columns {\n  display: flex;\n  align-items: stretch;\n  gap: 12px;\n  overflow-x: auto;\n  padding: 4px 2px 12px;\n  scrollbar-width: thin;\n}\n.project-kanban__column {\n  flex: 1 0 245px;\n  min-width: 0;\n  border: 1px solid var(--grafana-color-border-weak, rgba(128,128,128,.28));\n  border-radius: 8px;\n  background: var(--grafana-color-background-secondary, rgba(128,128,128,.06));\n}\n.project-kanban__header {\n  display: flex;\n  justify-content: space-between;\n  align-items: center;\n  gap: 8px;\n  padding: 12px;\n  border-bottom: 1px solid var(--grafana-color-border-weak, rgba(128,128,128,.28));\n}\n.project-kanban__title {\n  overflow: hidden;\n  margin: 0;\n  font-size: 14px;\n  font-weight: 600;\n  text-overflow: ellipsis;\n  white-space: nowrap;\n}\n.project-kanban__count {\n  flex: 0 0 auto;\n  min-width: 24px;\n  padding: 2px 7px;\n  border-radius: 12px;\n  background: var(--grafana-color-background-primary, rgba(128,128,128,.12));\n  text-align: center;\n  font-size: 12px;\n}\n.project-kanban__cards {\n  display: grid;\n  gap: 8px;\n  max-height: 380px;\n  overflow-y: auto;\n  padding: 10px;\n}\n.project-kanban__card {\n  padding: 11px;\n  border: 1px solid var(--grafana-color-border-weak, rgba(128,128,128,.22));\n  border-radius: 6px;\n  background: var(--grafana-color-background-primary, transparent);\n}\n.project-kanban__name {\n  margin: 3px 0 10px;\n  font-size: 13px;\n  font-weight: 600;\n  line-height: 1.4;\n  overflow-wrap: anywhere;\n}\n.project-kanban__id,\n.project-kanban__meta {\n  color: var(--grafana-color-text-secondary, #888);\n  font-size: 11px;\n}\n.project-kanban__meta {\n  display: flex;\n  justify-content: space-between;\n  gap: 6px;\n  margin-bottom: 8px;\n}\n.project-kanban__progress-label {\n  display: flex;\n  justify-content: space-between;\n  margin-bottom: 4px;\n  font-size: 11px;\n}\n.project-kanban__progress {\n  width: 100%;\n  height: 5px;\n  overflow: hidden;\n  border-radius: 4px;\n  background: var(--grafana-color-border-weak, rgba(128,128,128,.25));\n}\n.project-kanban__progress > span {\n  display: block;\n  height: 100%;\n  background: var(--grafana-color-text-link, #5794f2);\n}\n.project-kanban__empty {\n  padding: 8px 2px;\n  color: var(--grafana-color-text-secondary, #888);\n  font-size: 12px;\n}",
-        "helpers": "// Build safe, escaped card markup from the SQL data frame.\ncontext.handlebars.registerHelper('renderKanban', (rows) => {\n  const escapeHtml = (value) => String(value ?? '')\n    .replaceAll('&', '&amp;')\n    .replaceAll('<', '&lt;')\n    .replaceAll('>', '&gt;')\n    .replaceAll('\"', '&quot;')\n    .replaceAll(\"'\", '&#39;');\n  const values = Array.isArray(rows) ? rows : [];\n  const columns = new Map();\n\n  for (const row of values) {\n    const key = String(row.state_id ?? '');\n    if (!columns.has(key)) {\n      columns.set(key, { name: row.state_name || 'Sem estado', projects: [] });\n    }\n    if (row.project_id !== null && row.project_id !== undefined) {\n      columns.get(key).projects.push(row);\n    }\n  }\n\n  return [...columns.values()].map((column) => {\n    const cards = column.projects.length\n      ? column.projects.map((project) => {\n          const progress = Math.max(0, Math.min(100, Number(project.percent_done) || 0));\n          return `<article class=\"project-kanban__card\">\n            <div class=\"project-kanban__id\">#${escapeHtml(project.project_id)}</div>\n            <h3 class=\"project-kanban__name\">${escapeHtml(project.project_name)}</h3>\n            <div class=\"project-kanban__meta\"><span>Prioridade ${escapeHtml(project.priority)}</span><span>${escapeHtml(project.task_count)} tarefas</span></div>\n            <div class=\"project-kanban__progress-label\"><span>Progresso</span><span>${progress.toFixed(0)}%</span></div>\n            <div class=\"project-kanban__progress\" role=\"progressbar\" aria-valuemin=\"0\" aria-valuemax=\"100\" aria-valuenow=\"${progress}\"><span style=\"width:${progress}%\"></span></div>\n          </article>`;\n        }).join('')\n      : '<div class=\"project-kanban__empty\">Nenhum projeto</div>';\n    return `<section class=\"project-kanban__column\"><header class=\"project-kanban__header\"><h2 class=\"project-kanban__title\">${escapeHtml(column.name)}</h2><span class=\"project-kanban__count\">${column.projects.length}</span></header><div class=\"project-kanban__cards\">${cards}</div></section>`;\n  }).join('');\n});",
-        "editors": [
-          "default",
-          "helpers",
-          "styles",
-          "afterRender"
-        ],
-        "editor": {
-          "format": "html",
-          "language": "html"
-        },
-        "afterRender": ""
+        "showHeader": true,
+        "cellHeight": "sm",
+        "footer": {
+          "show": false,
+          "reducer": [
+            "sum"
+          ],
+          "countRows": false,
+          "fields": ""
+        }
       }
     }
   ],

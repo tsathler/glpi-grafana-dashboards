@@ -126,7 +126,7 @@ const dashboardQuerySets = [
   { dashboard: 'glpi-service-desk.json', queryDirectory: join(sqlRoot, 'queries') },
   { dashboard: 'glpi-projects.json', queryDirectory: join(sqlRoot, 'projects', 'queries') },
 ];
-const expectedDashboards = new Set([...dashboardQuerySets.map(({ dashboard }) => dashboard), 'glpi-projects-detail.json']);
+const expectedDashboards = new Set(dashboardQuerySets.map(({ dashboard }) => dashboard));
 for (const name of expectedDashboards) {
   if (!dashboards.includes(name)) throw new Error(`Expected dashboard ${name}`);
 }
@@ -143,47 +143,10 @@ for (const { dashboard: name, queryDirectory, panelIds } of dashboardQuerySets) 
   if (queries.length === 0) throw new Error(`${relative(root, queryDirectory)}: no SQL queries found`);
   const dashboard = JSON.parse(readFileSync(join(dashboardRoot, name), 'utf8'));
   if (name === 'glpi-projects.json') {
-    const detailDashboard = JSON.parse(readFileSync(join(dashboardRoot, 'glpi-projects-detail.json'), 'utf8'));
-    const tablePanelTemplate = JSON.parse(readFileSync(join(dashboardRoot, 'project-kanban', 'operational-table-panel.json'), 'utf8'));
     validateProjectValueMappings(dashboard, name);
-    validateProjectValueMappings(detailDashboard, 'glpi-projects-detail.json');
-    validateProjectValueMappings({ panels: [tablePanelTemplate] }, 'operational-table-panel.json');
-    const detailTable = detailDashboard.panels?.filter((panel) => panel.id === 8 && panel.type === 'table') ?? [];
-    if (detailTable.length !== 1 || detailDashboard.uid !== 'glpi-projects-detail') {
-      throw new Error('glpi-projects-detail.json must have UID glpi-projects-detail and exactly one operational table panel (id 8)');
-    }
-    if (!detailDashboard.links?.some((link) => link.url?.includes('/d/glpi-projects/'))) {
-      throw new Error('glpi-projects-detail.json must link back to the GLPI Projects dashboard');
-    }
-    dashboard.panels = [...(dashboard.panels ?? []), ...(detailDashboard.panels ?? [])];
-  }
-  if (name === 'glpi-projects.json') {
-    const kanban = dashboard.panels?.find((panel) => panel.id === 9);
-    const options = kanban?.options ?? {};
-      if (!dashboard.links?.some((link) => link.url?.includes('/d/glpi-projects-detail'))) {
-        throw new Error(`${name}: dashboard link to the operational detail is missing`);
-      }
-    if (kanban?.type !== 'marcusolsson-dynamictext-panel') {
-      throw new Error(`${name}: panel 9 must use the Business Text visualization`);
-    }
-    if (options.renderMode !== 'allRows' || typeof options.helpers !== 'string' ||
-        !options.helpers.includes("registerHelper('renderKanban'")) {
-      throw new Error(`${name}: Business Text must register renderKanban in helpers and render all rows`);
-    }
-    if (options.editor?.format !== 'html' || typeof options.afterRender !== 'string') {
-      throw new Error(`${name}: invalid Business Text editor/afterRender options`);
-    }
-    if (typeof options.content !== 'string' || !options.content.includes('{{{renderKanban data}}}') ||
-        typeof options.styles !== 'string' || options.styles.trim() === '') {
-      throw new Error(`${name}: Kanban HTML content and CSS styles must be provisioned`);
-    }
-    for (const obsolete of ['mode', 'renderTemplate', 'javascript']) {
-      if (Object.hasOwn(options, obsolete)) {
-        throw new Error(`${name}: obsolete Business Text option ${obsolete}`);
-      }
-    }
-    if (options.disableSanitizeHtml === true) {
-      throw new Error(`${name}: Business Text HTML sanitization must remain enabled`);
+    if (dashboard.uid !== 'glpi-projects') throw new Error(`${name}: dashboard UID must remain glpi-projects`);
+    if ((dashboard.panels ?? []).filter((panel) => panel.type === 'table').length !== 1) {
+      throw new Error(`${name}: expected exactly one operational table`);
     }
   }
   const matchedQueries = new Set();

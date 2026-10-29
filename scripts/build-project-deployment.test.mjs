@@ -15,38 +15,34 @@ async function fixture(t, config) {
   const local = path.join(root, 'grafana', 'dashboards-local');
   await mkdir(dashboards, { recursive: true });
   await mkdir(local, { recursive: true });
-  for (const filename of ['glpi-projects.json', 'glpi-projects-detail.json']) {
-    await cp(path.join(repoRoot, 'grafana', 'dashboards', filename), path.join(dashboards, filename));
-  }
+  await cp(path.join(repoRoot, 'grafana', 'dashboards', 'glpi-projects.json'), path.join(dashboards, 'glpi-projects.json'));
   if (config !== undefined) await writeFile(path.join(root, 'grafana', 'glpi-url.local.json'), JSON.stringify(config));
   return { root, dashboards, local };
 }
 
-test('generates local dashboards with a literal Grafana value expression', async (t) => {
+test('generates the consolidated local dashboard with a literal Grafana value expression', async (t) => {
   const { root, dashboards, local } = await fixture(t, { baseUrl: 'https://glpi.example.test/portal/' });
-  const original = await Promise.all(['glpi-projects.json', 'glpi-projects-detail.json']
-    .map((filename) => readFile(path.join(dashboards, filename), 'utf8')));
+  await writeFile(path.join(local, 'glpi-projects-detail.json'), '{}');
+  const original = await readFile(path.join(dashboards, 'glpi-projects.json'), 'utf8');
 
   await generateProjectDeployment(root);
 
-  const detail = JSON.parse(await readFile(path.join(local, 'glpi-projects-detail.json'), 'utf8'));
-  const link = detail.panels.flatMap((panel) => panel.fieldConfig?.overrides ?? [])
+  const main = JSON.parse(await readFile(path.join(local, 'glpi-projects.json'), 'utf8'));
+  const link = main.panels.flatMap((panel) => panel.fieldConfig?.overrides ?? [])
     .flatMap((override) => override.properties ?? [])
     .filter((property) => property.id === 'links')
     .flatMap((property) => property.value ?? [])[0];
   assert.equal(link.url, 'https://glpi.example.test/portal/front/project.form.php?id=${__value.raw}');
-  assert.deepEqual(await Promise.all(['glpi-projects.json', 'glpi-projects-detail.json']
-    .map((filename) => readFile(path.join(dashboards, filename), 'utf8'))), original);
+  assert.equal(await readFile(path.join(dashboards, 'glpi-projects.json'), 'utf8'), original);
+  await assert.rejects(readFile(path.join(local, 'glpi-projects-detail.json'), 'utf8'), { code: 'ENOENT' });
 });
 
 test('generation is repeatable', async (t) => {
   const { root, local } = await fixture(t, { baseUrl: 'https://glpi.example.test' });
   await generateProjectDeployment(root);
-  const first = await Promise.all(['glpi-projects.json', 'glpi-projects-detail.json']
-    .map((filename) => readFile(path.join(local, filename), 'utf8')));
+  const first = await readFile(path.join(local, 'glpi-projects.json'), 'utf8');
   await generateProjectDeployment(root);
-  const second = await Promise.all(['glpi-projects.json', 'glpi-projects-detail.json']
-    .map((filename) => readFile(path.join(local, filename), 'utf8')));
+  const second = await readFile(path.join(local, 'glpi-projects.json'), 'utf8');
   assert.deepEqual(second, first);
 });
 
@@ -65,9 +61,8 @@ test('missing and invalid local URL configuration fail clearly', async (t) => {
 
 test('project SQL files match their dashboard queries', async () => {
   const dashboard = JSON.parse(await readFile(path.join(repoRoot, 'grafana', 'dashboards', 'glpi-projects.json'), 'utf8'));
-  const detail = JSON.parse(await readFile(path.join(repoRoot, 'grafana', 'dashboards', 'glpi-projects-detail.json'), 'utf8'));
-  const panels = [...dashboard.panels, ...detail.panels];
-  for (let id = 1; id <= 9; id += 1) {
+  const panels = dashboard.panels;
+  for (const id of [1, 2, 4, 5, 6, 7, 8, 11]) {
     const panel = panels.find((item) => item.id === id && item.targets?.some((target) => target.refId === 'A'));
     const name = (await readdir(path.join(repoRoot, 'sql', 'projects', 'queries')))
       .find((filename) => filename.startsWith(`${String(id).padStart(2, '0')}-`));
@@ -76,4 +71,5 @@ test('project SQL files match their dashboard queries', async () => {
     const sql = await readFile(path.join(repoRoot, 'sql', 'projects', 'queries', name), 'utf8');
     assert.equal(panel.targets.find((target) => target.refId === 'A').rawSql.trim(), sql.trim(), `SQL mismatch for panel ${id}`);
   }
+  assert.equal(panels.filter((panel) => panel.type === 'table').length, 1);
 });

@@ -1,14 +1,8 @@
 # Desenvolvimento e implantação
 
-## Kanban de projetos
+## Dashboard de projetos
 
-O Compose instala o Business Text `marcusolsson-dynamictext-panel` na versão `6.3.0`, compatível com Grafana 13.2.2 conforme o catálogo oficial do plugin (requisito mínimo Grafana 12.3.0). A consulta e os arquivos de apresentação são versionados. Após alterar HTML, CSS, JavaScript ou SQL do Kanban, incorpore novamente os arquivos no dashboard:
-
-```sh
-node scripts/build-project-kanban.mjs
-```
-
-O script oferece `--check` para comparação sem gravação, `--safe` (padrão) para gerar somente quando os JSONs existentes já coincidem, e `--force` para sobrescrever após revisão explícita. Prefira conferir com `--check` antes de regenerar. Não desative a sanitização HTML do Grafana. O código escapa todos os valores textuais vindos do banco antes de gerar cartões.
+Indicadores, gráficos e tabela operacional são provisionados em `grafana/dashboards/glpi-projects.json`. As consultas ficam em `sql/projects/queries/`; execute `node scripts/validate-sql.mjs` para conferir SQL read-only e paridade entre consultas e dashboard. O link local para abrir projetos no GLPI é aplicado por `node scripts/build-project-deployment.mjs` conforme [URL local do GLPI](glpi-local-url.md).
 
 ## Separação entre ambientes
 

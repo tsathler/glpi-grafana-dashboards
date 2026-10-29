@@ -17,17 +17,16 @@ Os dashboards versionados usam uma URL independente do ambiente. Para habilitar 
 2. Confira se os dashboards versionados correspondem às fontes antes de qualquer regeneração:
 
    ```sh
-   node scripts/build-project-kanban.mjs --check
+   node scripts/validate-sql.mjs
    ```
 
    Gere os dashboards locais sem sobrescrever alterações manuais inesperadas:
 
    ```sh
-   node scripts/build-project-kanban.mjs --safe
    node scripts/build-project-deployment.mjs
    ```
 
-   O primeiro comando só grava quando a saída gerada é idêntica aos JSONs existentes. Se apontar diferenças, revise-as; `--force` permite sobrescrever intencionalmente depois dessa revisão.
+   O comando gera somente o dashboard local consolidado e remove uma cópia local antiga do dashboard secundário, se houver.
 
 3. No `.env` local do Compose, selecione o diretório local como fonte do provider:
 
@@ -48,4 +47,4 @@ O script valida URL HTTP(S), host e ausência de credenciais/query/fragmento. El
 
 ## Atualizações
 
-Após atualizar o repositório, execute novamente `build-project-kanban.mjs --check`. Se a saída divergir, revise os arquivos e use `--force` somente quando quiser regenerá-los deliberadamente. Em seguida execute `build-project-deployment.mjs` para reaplicar a URL local. `docker compose up -d` aplica a configuração no ambiente; a validação de runtime dos links continua dependente do ambiente integrado.
+Após atualizar o repositório, execute `node scripts/validate-sql.mjs` e `node scripts/build-project-deployment.mjs` para reaplicar a URL local. `docker compose up -d` aplica a configuração no ambiente; a validação de runtime dos links continua dependente do ambiente integrado.
