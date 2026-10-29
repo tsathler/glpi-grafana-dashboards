@@ -2,7 +2,7 @@
 
 ## Dashboard de projetos
 
-Indicadores, gráficos e tabela operacional são provisionados em `grafana/dashboards/glpi-projects.json`. As consultas ficam em `sql/projects/queries/`; execute `node scripts/validate-sql.mjs` para conferir SQL read-only e paridade entre consultas e dashboard. O link local para abrir projetos no GLPI é aplicado por `node scripts/build-project-deployment.mjs` conforme [URL local do GLPI](glpi-local-url.md).
+Indicadores e gráficos nativos são provisionados em `grafana/dashboards/glpi-projects.json`. As consultas ficam em `sql/projects/queries/`; execute `node scripts/validate-sql.mjs` para conferir SQL read-only e paridade entre consultas e dashboard. Não há geração de dashboards locais: o dashboard não contém links para o GLPI.
 
 ## Separação entre ambientes
 

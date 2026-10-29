@@ -145,8 +145,16 @@ for (const { dashboard: name, queryDirectory, panelIds } of dashboardQuerySets) 
   if (name === 'glpi-projects.json') {
     validateProjectValueMappings(dashboard, name);
     if (dashboard.uid !== 'glpi-projects') throw new Error(`${name}: dashboard UID must remain glpi-projects`);
-    if ((dashboard.panels ?? []).filter((panel) => panel.type === 'table').length !== 1) {
-      throw new Error(`${name}: expected exactly one operational table`);
+    if ((dashboard.panels ?? []).some((panel) => panel.type === 'table')) {
+      throw new Error(`${name}: project dashboard must not contain an operational table`);
+    }
+    if ((dashboard.panels ?? []).some((panel) => panel.title === 'Projetos por prioridade')) {
+      throw new Error(`${name}: removed priority chart is still present`);
+    }
+    for (const panel of dashboard.panels ?? []) {
+      if (panel.type === 'barchart' && panel.options?.orientation !== 'horizontal') {
+        throw new Error(`${name}: panel ${panel.id} must use a horizontal bar chart`);
+      }
     }
   }
   const matchedQueries = new Set();

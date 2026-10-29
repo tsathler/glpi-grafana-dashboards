@@ -1,17 +1,17 @@
-# Layout do GLPI Projects
+# GLPI Projects layout
 
-O dashboard principal de Projetos usa somente painéis nativos do Grafana e mantém indicadores, distribuições e tabela operacional em `glpi-projects.json`. O UID `glpi-projects` foi preservado.
+The `glpi-projects` dashboard uses native Grafana Stat and horizontal Bar chart panels. It keeps the four existing project indicators, adds four task indicators, and removes the priority distribution and operational project table.
 
-| Seção | Painéis | `x, y, w, h` |
+| Section | Panel IDs | `x, y, w, h` |
 | --- | --- | --- |
-| Indicadores | Total, não finalizados, finalizados e progresso médio | `0/6/12/18, 2, 6, 3` |
-| Distribuição | Projetos por estado, projetos por prioridade e tarefas por estado | `0/8/16, 5, 8, 5` |
-| Operação | Tabela de projetos em largura total | `0, 10, 24, 14` |
+| Project indicators | 11, 1, 2, 4 | `0/6/12/18, 0, 6, 3` |
+| Task indicators | 12, 13, 14, 15 | `0/6/12/18, 3, 6, 3` |
+| Distributions | 5 Projects by state; 7 Tasks by state | `0, 6, 12, 7`; `12, 6, 12, 7` |
 
-Os indicadores são snapshots atuais e não usam o time picker. Todas as métricas filtram a variável **Entity**. Projetos não finalizados incluem os sem estado; projetos finalizados são determinados por `glpi_projectstates.is_finished`, sem usar `percent_done` como critério.
+All indicators are current snapshots independent of the time picker. Every query uses the selected **Entity**. Task queries use an inner join to the valid parent project, so tasks outside valid projects are excluded; each task joins to one project and at most one state. Project state `0` is labeled **Sem estado**. Finished status is determined by `glpi_projectstates.is_finished`, never by `percent_done`.
 
-A tabela mantém uma linha por projeto válido, com tarefas pré-agregadas por projeto para evitar multiplicação de linhas. A coluna de progresso usa a célula nativa de gauge do Grafana. O link da coluna de ID abre o formulário do projeto no GLPI; para habilitá-lo, gere a cópia local usando a URL base do ambiente conforme [URL local do GLPI](glpi-local-url.md). A URL específica não é incorporada ao JSON versionado.
+Task total and average progress include valid tasks without a state. The unfinished count includes tasks whose state is absent or is not marked finished; the finished count uses `is_finished = 1`. Average progress uses the stored `percent_done` on the GLPI 0–100 scale and is displayed as a percentage. No indicator uses the time picker.
 
-Os gráficos e tabela preservam os nomes de estado cadastrados no GLPI. O estado `projectstates_id = 0` é apresentado como **Sem estado**. O layout foi dimensionado para Full HD sem rolagem horizontal em condições usuais; barras de navegação, filtros, zoom e altura útil podem exigir rolagem vertical.
+The user assignment chart is not implemented. The repository does not contain verified functional semantics for `glpi_projecttasks.users_id`, `users_id_tech`, or a task-user relationship table. Run the read-only queries in `sql/discovery/15-project-task-assignments.sql` in the target MariaDB and verify field meanings against the GLPI 11 version before adding it. The query set alone cannot establish whether a field means creator, requester, responsible user, or assigned technician.
 
-O schema e as consultas foram verificados em um ambiente GLPI específico. A composição atual do dashboard ainda depende de validação integrada no Grafana; não se declara validação de runtime nesta refatoração.
+The project-task discovery and new metric SQL have not been executed against the test MariaDB in this development environment. Static SQL validation is not database validation. Integrated Grafana validation remains pending.
