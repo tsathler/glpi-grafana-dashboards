@@ -7,7 +7,7 @@ The `glpi-projects` dashboard uses native Grafana Stat and horizontal Bar chart 
 | Project indicators | 11, 1, 2, 4 | `0/6/12/18, 0, 6, 3` |
 | Task indicators | 12, 13, 14, 15 | `0/6/12/18, 3, 6, 3` |
 | Distributions | 5 Projects by state; 7 Tasks by state | `0, 6, 12, 7`; `12, 6, 12, 7` |
-| Team | 16 Tasks by team member | `0, 13, 24, 8` |
+| Team | 16 Tasks by team member | `0, 13, 24, 14` |
 
 All indicators are current snapshots independent of the time picker. Every query uses the selected **Entity**. Task queries use an inner join to the valid parent project, so tasks outside valid projects are excluded; each task joins to one project and at most one state. Project state `0` is labeled **Sem estado**. Finished status is determined by `glpi_projectstates.is_finished`, never by `percent_done`.
 

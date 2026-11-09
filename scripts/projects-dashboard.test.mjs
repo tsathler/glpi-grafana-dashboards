@@ -21,7 +21,7 @@ test('project dashboard has the expected native panels and 24-column layout', as
   assert.deepEqual(dashboard.panels.slice(8, 10).map(({ gridPos }) => [gridPos.x, gridPos.y, gridPos.w, gridPos.h]), [
     [0, 6, 12, 7], [12, 6, 12, 7],
   ]);
-  assert.deepEqual(dashboard.panels[10].gridPos, { x: 0, y: 13, w: 24, h: 8 });
+  assert.deepEqual(dashboard.panels[10].gridPos, { x: 0, y: 13, w: 24, h: 14 });
   assert.equal(dashboard.panels[10].title, 'Tarefas por membro da equipe');
   assert.ok(dashboard.panels.slice(8).every(({ type, options }) => type === 'barchart' && options.orientation === 'horizontal'));
   assert.ok(dashboard.panels.every(({ targets }) => targets.length === 1));
