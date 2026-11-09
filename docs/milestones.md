@@ -152,22 +152,23 @@ Enquanto este marco estiver Planejado, não serão incluídas alterações em SQ
 
 ## Marco 5 — Dashboard gerencial e operacional de Projetos
 
-Status: Implementação e validação estática concluídas; validação integrada no Grafana e no ambiente TEST pendente.
+Status: Revisão do dashboard implementada; validação estática e integrada no Grafana e no ambiente TEST pendentes.
 
-As queries originais foram conferidas diretamente no banco em mais de um escopo de entidade. A segunda refatoração removeu o gráfico de prioridade e a tabela operacional e adicionou quatro métricas de tarefas. Esta mudança adiciona a distribuição de tarefas por membro User da equipe, baseada no discovery informado de TEST e sem registrar nomes ou IDs reais. A execução da query e a validação integrada do painel no Grafana de TEST permanecem pendentes.
+As queries originais foram conferidas diretamente no banco em mais de um escopo de entidade. Refatorações anteriores removeram o gráfico de prioridade e a tabela operacional, adicionaram indicadores de tarefas e a distribuição de tarefas por membro User da equipe. Esta revisão substitui os gráficos por estado por cards agrupados pelos rótulos **Em andamento** e **A Fazer**, inclui progresso médio somente dos itens em andamento e adiciona o cabeçalho **DESENVOLVIMENTO**. As queries revisadas ainda precisam de validação estática e execução em MariaDB, seguida da conferência integrada no Grafana de TEST.
 
 ### Escopo do dashboard de Projetos
 
 - Um dashboard independente para projetos do GLPI.
 - Um filtro `Entity` consistente com o dashboard atual.
-- Visões de projetos e tarefas, incluindo estados e progresso.
+- Cards de projetos e tarefas por grupo de estado e progresso médio dos itens em andamento.
+- Distribuição de tarefas por membro User da equipe.
 - Tratamento explícito de projetos e tarefas sem estado.
 - Possível identificação de projetos atrasados, somente após validar sua semântica.
-- Indicadores e distribui??es nativas para projetos e tarefas.
+- Cards nativos para projetos e tarefas agrupados por estado.
 
-Projetos e tarefas usam `projectstates_id`, relacionado a `glpi_projectstates`; o valor `0` representa ausência de estado, não um estado ativo. Use `glpi_projectstates.is_finished` para distinguir estados finalizados e não finalizados; `percent_done` não deve determinar conclusão sozinho. Métricas de projetos e tarefas válidos devem excluir deletados e templates (`is_deleted = 0` e `is_template = 0`). Métricas de tarefas devem filtrar a entidade pelo projeto pai e tratar a relação projeto-tarefa como 1:N.
+Projetos e tarefas usam `projectstates_id`, relacionado a `glpi_projectstates`; o valor `0` representa ausência de estado, não um estado ativo. Os cards usam os rótulos confirmados em TEST: **Em andamento** e **A Fazer**; estados finalizados são determinados por `glpi_projectstates.is_finished = 1`, e **Outros** inclui o estado `0`. Estados de projeto cujo nome contém `paus` entram no grupo de não inicializados/pausados. `percent_done` não determina conclusão. Métricas de projetos e tarefas válidos excluem deletados e templates (`is_deleted = 0` e `is_template = 0`); métricas de tarefas filtram a entidade pelo projeto pai e preservam a relação projeto-tarefa 1:N.
 
-As datas de projetos ainda nao permitem metricas de atraso; datas de tarefas tem cobertura parcial e exigem validacao especifica. O discovery estrutural inicial e as queries originais foram conferidos no banco. As novas metricas de tarefas usam o schema documentado, mas aguardam validacao no MariaDB de TEST; a composicao atual tambem aguarda validacao integrada no Grafana. Nao foram incluidas metricas de atraso, prazos, timeline ou Gantt.
+As datas de projetos ainda não permitem métricas de atraso; datas de tarefas têm cobertura parcial e exigem validação específica. O discovery estrutural inicial e as queries originais foram conferidos no banco. As queries revisadas e a composição atual aguardam validação estática, execução em MariaDB de TEST e validação integrada no Grafana. Não foram incluídas métricas de atraso, prazos, timeline ou Gantt.
 
 ### Melhoria futura: título principal por entidade
 

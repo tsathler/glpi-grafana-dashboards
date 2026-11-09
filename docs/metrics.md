@@ -37,21 +37,11 @@ Outros indicadores de SLA, métricas de TTO, categorias, métricas de técnicos,
 
 ## Dashboard de Projetos
 
-As queries read-only estão versionadas separadamente em `sql/projects/queries/`, sem correspondência com painéis do Service Desk. Elas cobrem:
+O dashboard de Projetos tem seis indicadores de projeto e seis de tarefas: total, em andamento, finalizados, não inicializados (projetos: não inicializados/pausados), outros e progresso médio dos itens em andamento. Os gráficos **Projetos por estado** e **Tarefas por estado** foram removidos.
 
-- total de projetos válidos;
-- projetos não finalizados, incluindo projetos sem estado;
-- projetos finalizados;
-- média de `percent_done` dos projetos válidos, que não representa uma taxa de conclusão;
-- projetos por estado;
-- tarefas por estado, filtradas pela entidade do projeto pai;
-- total de tarefas válidas em projetos válidos;
-- tarefas não finalizadas e finalizadas pelo campo `glpi_projectstates.is_finished`;
-- média de `percent_done` das tarefas válidas.
+As queries read-only estão versionadas em `sql/projects/queries/`. Todas filtram projetos válidos por `is_deleted = 0`, `is_template = 0` e `$entity`; consultas de tarefas também filtram registros válidos e usam a entidade do projeto pai. As categorias usam os rótulos confirmados em TEST: **Em andamento** para itens em andamento e **A Fazer** para itens não inicializados. Estados finalizados usam `glpi_projectstates.is_finished = 1`. Estados de projeto cujo nome contém `paus` entram no grupo de não inicializados/pausados. **Outros** inclui `projectstates_id = 0` (sem estado) e estados restantes não finalizados. `percent_done` não é usado para inferir conclusão; o progresso médio é calculado somente para os itens em **Em andamento**.
 
-Todas as consultas filtram projetos válidos por `is_deleted = 0`, `is_template = 0` e `$entity`; consultas de tarefas também filtram registros válidos e usam o escopo da entidade do projeto pai. `projectstates_id = 0` é rotulado como **Sem estado** e incluído entre os não finalizados; por isso, os indicadores de não finalizados e sem estado se sobrepõem intencionalmente. Estados finalizados são identificados por `glpi_projectstates.is_finished = 1`; `percent_done` não é usado para inferir conclusão.
-
-As oito queries originais foram validadas diretamente no banco em mais de um escopo de entidade. As quatro novas métricas de tarefas usam o schema documentado, mas ainda não foram executadas contra o MariaDB. As consultas contam cada tarefa uma vez usando relação N:1 para projeto e estado e aplicam Entity pelo projeto pai. A finalização depende exclusivamente de `is_finished`; `percent_done = 100` não é critério de finalização. `projectstates_id = 0` ou estado sem correspondência são incluídos como não finalizados. A validação integrada destas alterações no Grafana continua pendente. Não foram adicionadas métricas de atraso, prazos, timeline ou Gantt.
+O schema e os rótulos de estado foram verificados na instalação TEST GLPI 11, mas as queries revisadas ainda precisam ser executadas no MariaDB e validadas no Grafana. Validação estática não substitui validação de banco. Não foram adicionadas métricas de atraso, prazos, timeline ou Gantt.
 
 ### Membros da equipe em tarefas
 

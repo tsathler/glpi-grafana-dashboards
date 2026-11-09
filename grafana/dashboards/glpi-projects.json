@@ -2,7 +2,7 @@
   "annotations": {
     "list": []
   },
-  "description": "Indicadores de projetos e tarefas e suas distribui\u00e7\u00f5es por estado.",
+  "description": "Indicadores de desenvolvimento de projetos e tarefas e distribui\u00e7\u00e3o de tarefas por membro da equipe.",
   "editable": false,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
@@ -11,15 +11,42 @@
   "liveNow": false,
   "panels": [
     {
-      "id": 11,
-      "title": "Total de projetos",
-      "type": "stat",
-      "description": "Quantidade de projetos v\u00e1lidos na entidade selecionada.",
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
       "gridPos": {
         "x": 0,
         "y": 0,
-        "w": 6,
-        "h": 3
+        "w": 24,
+        "h": 4
+      },
+      "id": 17,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"font-size:72px;font-weight:700;letter-spacing:0.5px;line-height:1.0;margin:0;padding:0;\">DESENVOLVIMENTO</div>",
+        "disableSanitizeHtml": false,
+        "mode": "html"
+      },
+      "pluginVersion": "13.2.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "id": 11,
+      "title": "Total de projetos",
+      "type": "stat",
+      "description": "Projetos v\u00e1lidos na entidade selecionada.",
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 4,
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -63,14 +90,14 @@
     },
     {
       "id": 1,
-      "title": "Projetos n\u00e3o finalizados",
+      "title": "Projetos em andamento",
       "type": "stat",
-      "description": "Projetos v\u00e1lidos cujo estado n\u00e3o est\u00e1 marcado como finalizado, incluindo os sem estado.",
+      "description": "Projetos v\u00e1lidos no estado Em andamento.",
       "gridPos": {
-        "x": 6,
-        "y": 0,
-        "w": 6,
-        "h": 3
+        "x": 4,
+        "y": 5,
+        "w": 4,
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -79,7 +106,7 @@
       },
       "targets": [
         {
-          "rawSql": "-- Current snapshot: valid projects whose state is not marked finished.\n-- Projects without a state (projectstates_id = 0) are included as not finished.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND (\n      p.projectstates_id = 0\n      OR (ps.id IS NOT NULL AND ps.is_finished = 0)\n  );\n",
+          "rawSql": "-- Current snapshot: valid projects in the configured Em andamento state.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) = 'em andamento';\n",
           "refId": "A",
           "format": "table"
         }
@@ -118,10 +145,10 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
-        "x": 12,
-        "y": 0,
-        "w": 6,
-        "h": 3
+        "x": 8,
+        "y": 5,
+        "w": 4,
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -164,15 +191,15 @@
       }
     },
     {
-      "id": 4,
-      "title": "Progresso m\u00e9dio dos projetos",
+      "id": 3,
+      "title": "Projetos n\u00e3o inicializados/pausados",
       "type": "stat",
-      "description": "M\u00e9dia de percent_done dos projetos v\u00e1lidos; n\u00e3o representa taxa de conclus\u00e3o.",
+      "description": "Projetos v\u00e1lidos no estado A Fazer ou em estados pausados.",
       "gridPos": {
-        "x": 18,
-        "y": 0,
-        "w": 6,
-        "h": 3
+        "x": 12,
+        "y": 5,
+        "w": 4,
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -181,7 +208,109 @@
       },
       "targets": [
         {
-          "rawSql": "-- Average stored progress for valid projects; this is not a completion rate.\nSELECT AVG(p.percent_done) AS average_progress\nFROM glpi_projects AS p\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity);\n",
+          "rawSql": "-- Current snapshot: valid projects in A Fazer or a paused state.\n-- State 0 is intentionally excluded; it represents no state and is counted as Other.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND (\n      LOWER(TRIM(ps.name)) = 'a fazer'\n      OR LOWER(TRIM(ps.name)) LIKE '%paus%'\n  );\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 40
+        }
+      }
+    },
+    {
+      "id": 18,
+      "title": "Outros projetos",
+      "type": "stat",
+      "description": "Projetos v\u00e1lidos em outros estados, incluindo os sem estado.",
+      "gridPos": {
+        "x": 16,
+        "y": 5,
+        "w": 4,
+        "h": 4
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Current snapshot: valid projects outside the finished, in-progress, and unstarted/paused groups.\n-- Projects without a state and unmatched states are counted as Other.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND COALESCE(ps.is_finished, 0) = 0\n  AND (\n      p.projectstates_id = 0\n      OR ps.id IS NULL\n      OR ps.name IS NULL\n      OR (\n          LOWER(TRIM(ps.name)) NOT IN (\n              'em andamento',\n              'a fazer'\n          )\n          AND LOWER(TRIM(ps.name)) NOT LIKE '%paus%'\n      )\n  );\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 40
+        }
+      }
+    },
+    {
+      "id": 4,
+      "title": "M\u00e9dia dos projetos em andamento",
+      "type": "stat",
+      "description": "M\u00e9dia do percent_done dos projetos v\u00e1lidos em andamento.",
+      "gridPos": {
+        "x": 20,
+        "y": 5,
+        "w": 4,
+        "h": 4
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Average stored progress for valid projects in the configured Em andamento state.\nSELECT AVG(p.percent_done) AS average_progress\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) = 'em andamento';\n",
           "refId": "A",
           "format": "table"
         }
@@ -220,12 +349,12 @@
       "id": 12,
       "title": "Total de tarefas",
       "type": "stat",
-      "description": "Quantidade de tarefas v\u00e1lidas em projetos v\u00e1lidos na entidade selecionada.",
+      "description": "Tarefas v\u00e1lidas em projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 3,
-        "w": 6,
-        "h": 3
+        "y": 9,
+        "w": 4,
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -269,14 +398,14 @@
     },
     {
       "id": 13,
-      "title": "Tarefas n\u00e3o finalizadas",
+      "title": "Tarefas em andamento",
       "type": "stat",
-      "description": "Tarefas v\u00e1lidas cujo estado n\u00e3o est\u00e1 marcado como finalizado, incluindo tarefas sem estado.",
+      "description": "Tarefas v\u00e1lidas no estado Em andamento, pelo escopo da entidade do projeto pai.",
       "gridPos": {
-        "x": 6,
-        "y": 3,
-        "w": 6,
-        "h": 3
+        "x": 4,
+        "y": 9,
+        "w": 4,
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -285,7 +414,7 @@
       },
       "targets": [
         {
-          "rawSql": "-- Current snapshot: valid tasks whose state is not marked finished, including tasks with no state.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND COALESCE(ps.is_finished, 0) = 0;\n",
+          "rawSql": "-- Current snapshot: valid tasks in the configured Em andamento state.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) = 'em andamento';\n",
           "refId": "A",
           "format": "table"
         }
@@ -324,10 +453,10 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
-        "x": 12,
-        "y": 3,
-        "w": 6,
-        "h": 3
+        "x": 8,
+        "y": 9,
+        "w": 4,
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -370,15 +499,15 @@
       }
     },
     {
-      "id": 15,
-      "title": "Progresso m\u00e9dio das tarefas",
+      "id": 19,
+      "title": "Tarefas n\u00e3o inicializadas",
       "type": "stat",
-      "description": "M\u00e9dia de percent_done das tarefas v\u00e1lidas; n\u00e3o representa taxa de conclus\u00e3o.",
+      "description": "Tarefas v\u00e1lidas no estado A Fazer.",
       "gridPos": {
-        "x": 18,
-        "y": 3,
-        "w": 6,
-        "h": 3
+        "x": 12,
+        "y": 9,
+        "w": 4,
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -387,7 +516,109 @@
       },
       "targets": [
         {
-          "rawSql": "-- Average stored progress for valid tasks in the selected project entity scope.\nSELECT AVG(pt.percent_done) AS average_progress\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity);\n",
+          "rawSql": "-- Current snapshot: valid tasks in an unstarted state.\n-- State 0 has no configured state and is counted as Other.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) = 'a fazer';\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 40
+        }
+      }
+    },
+    {
+      "id": 20,
+      "title": "Outras tarefas",
+      "type": "stat",
+      "description": "Tarefas v\u00e1lidas em outros estados, incluindo as sem estado.",
+      "gridPos": {
+        "x": 16,
+        "y": 9,
+        "w": 4,
+        "h": 4
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Current snapshot: valid tasks outside the finished, in-progress, and unstarted groups.\n-- Tasks without a state and unmatched states are counted as Other.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND COALESCE(ps.is_finished, 0) = 0\n  AND (\n      pt.projectstates_id = 0\n      OR ps.id IS NULL\n      OR ps.name IS NULL\n      OR LOWER(TRIM(ps.name)) NOT IN (\n          'em andamento',\n          'a fazer'\n      )\n  );\n",
+          "refId": "A",
+          "format": "table"
+        }
+      ],
+      "fieldConfig": {
+        "defaults": {
+          "unit": "none",
+          "decimals": 0
+        },
+        "overrides": []
+      },
+      "options": {
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "orientation": "auto",
+        "textMode": "value",
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 40
+        }
+      }
+    },
+    {
+      "id": 15,
+      "title": "M\u00e9dia das tarefas em andamento",
+      "type": "stat",
+      "description": "M\u00e9dia do percent_done das tarefas v\u00e1lidas em andamento.",
+      "gridPos": {
+        "x": 20,
+        "y": 9,
+        "w": 4,
+        "h": 4
+      },
+      "pluginVersion": "13.2.2",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "targets": [
+        {
+          "rawSql": "-- Average stored progress for valid tasks in the configured Em andamento state.\nSELECT AVG(pt.percent_done) AS average_progress\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) = 'em andamento';\n",
           "refId": "A",
           "format": "table"
         }
@@ -423,169 +654,13 @@
       }
     },
     {
-      "id": 5,
-      "title": "Projetos por estado",
-      "type": "barchart",
-      "description": "Distribuição de projetos válidos por estado. Projetos sem estado aparecem como Sem estado.",
-      "gridPos": {
-        "x": 0,
-        "y": 6,
-        "w": 12,
-        "h": 7
-      },
-      "pluginVersion": "13.2.2",
-      "datasource": {
-        "type": "mysql",
-        "uid": "glpi-mysql"
-      },
-      "targets": [
-        {
-          "rawSql": "-- Distribution of valid projects by state; state 0 is labeled generically.\r\nSELECT CASE\r\n           WHEN p.projectstates_id = 0 THEN 'Sem estado'\r\n           ELSE ps.name\r\n       END AS state_name,\r\n       COUNT(DISTINCT p.id) AS project_count\r\nFROM glpi_projects AS p\r\nLEFT JOIN glpi_projectstates AS ps\r\n       ON ps.id = p.projectstates_id\r\nWHERE p.is_deleted = 0\r\n  AND p.is_template = 0\r\n  AND p.entities_id IN ($entity)\r\nGROUP BY state_name\r\nORDER BY (state_name = 'Sem estado'), state_name;\r\n",
-          "refId": "A",
-          "format": "table"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisColorMode": "text",
-            "axisBorderShow": false,
-            "axisGridShow": true,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "lineWidth": 0
-          },
-          "mappings": []
-        },
-        "overrides": []
-      },
-      "options": {
-        "orientation": "horizontal",
-        "xField": "state_name",
-        "showValue": "auto",
-        "stacking": "none",
-        "groupWidth": 0.7,
-        "barWidth": 0.85,
-        "barRadius": 0,
-        "fullHighlight": false,
-        "tooltip": {
-          "mode": "single",
-          "sort": "none",
-          "hideZeros": false
-        },
-        "legend": {
-          "showLegend": false,
-          "displayMode": "list",
-          "placement": "bottom",
-          "calcs": []
-        },
-        "yAxis": {
-          "axisLabel": "",
-          "axisPlacement": "auto",
-          "axisColorMode": "text",
-          "axisBorderShow": false,
-          "axisGridShow": true,
-          "scale": {
-            "type": "linear",
-            "log": false,
-            "logBase": 2
-          },
-          "axisSoftMin": 0
-        }
-      }
-    },
-    {
-      "id": 7,
-      "title": "Tarefas por estado",
-      "type": "barchart",
-      "description": "Distribuição de tarefas válidas por estado. O filtro Entity é aplicado pela entidade do projeto pai.",
-      "gridPos": {
-        "x": 12,
-        "y": 6,
-        "w": 12,
-        "h": 7
-      },
-      "pluginVersion": "13.2.2",
-      "datasource": {
-        "type": "mysql",
-        "uid": "glpi-mysql"
-      },
-      "targets": [
-        {
-          "rawSql": "-- Distribution of valid tasks by state, scoped through the parent project entity.\r\nSELECT CASE\r\n           WHEN pt.projectstates_id = 0 THEN 'Sem estado'\r\n           ELSE ps.name\r\n       END AS state_name,\r\n       COUNT(DISTINCT pt.id) AS task_count\r\nFROM glpi_projecttasks AS pt\r\nJOIN glpi_projects AS p\r\n     ON p.id = pt.projects_id\r\nLEFT JOIN glpi_projectstates AS ps\r\n       ON pt.projectstates_id = ps.id\r\nWHERE pt.is_deleted = 0\r\n  AND pt.is_template = 0\r\n  AND p.is_deleted = 0\r\n  AND p.is_template = 0\r\n  AND p.entities_id IN ($entity)\r\nGROUP BY state_name\r\nORDER BY (state_name = 'Sem estado'), state_name;\r\n",
-          "refId": "A",
-          "format": "table"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisColorMode": "text",
-            "axisBorderShow": false,
-            "axisGridShow": true,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "lineWidth": 0
-          },
-          "mappings": []
-        },
-        "overrides": []
-      },
-      "options": {
-        "orientation": "horizontal",
-        "xField": "state_name",
-        "showValue": "auto",
-        "stacking": "none",
-        "groupWidth": 0.7,
-        "barWidth": 0.85,
-        "barRadius": 0,
-        "fullHighlight": false,
-        "tooltip": {
-          "mode": "single",
-          "sort": "none",
-          "hideZeros": false
-        },
-        "legend": {
-          "showLegend": false,
-          "displayMode": "list",
-          "placement": "bottom",
-          "calcs": []
-        },
-        "yAxis": {
-          "axisLabel": "",
-          "axisPlacement": "auto",
-          "axisColorMode": "text",
-          "axisBorderShow": false,
-          "axisGridShow": true,
-          "scale": {
-            "type": "linear",
-            "log": false,
-            "logBase": 2
-          },
-          "axisSoftMin": 0
-        }
-      }
-    },
-    {
       "id": 16,
       "title": "Tarefas por membro da equipe",
       "type": "barchart",
       "description": "Count of valid tasks per User team member. This is not a productivity measure; groups are not expanded.",
       "gridPos": {
         "x": 0,
-        "y": 13,
+        "y": 14,
         "w": 24,
         "h": 14
       },
@@ -596,7 +671,7 @@
       },
       "targets": [
         {
-          "rawSql": "-- Valid tasks counted once per User team member; group memberships are not expanded.\nSELECT COALESCE(\n           NULLIF(TRIM(CONCAT_WS(' ', NULLIF(TRIM(u.firstname), ''), NULLIF(TRIM(u.realname), ''))), ''),\n           CONCAT('Usuário #', team.items_id)\n       ) AS member_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN (\n    SELECT DISTINCT projecttasks_id, items_id\n    FROM glpi_projecttaskteams\n    WHERE itemtype = 'User'\n) AS team\n     ON team.projecttasks_id = pt.id\nLEFT JOIN glpi_users AS u\n       ON u.id = team.items_id\n      AND u.is_deleted = 0\n      AND u.is_active = 1\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY team.items_id, u.firstname, u.realname\n\nUNION ALL\n\nSELECT 'Sem usuário na equipe' AS member_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND NOT EXISTS (\n      SELECT 1\n      FROM glpi_projecttaskteams AS team\n      WHERE team.projecttasks_id = pt.id\n        AND team.itemtype = 'User'\n  )\nORDER BY task_count DESC, member_name;\n",
+          "rawSql": "-- Valid tasks counted once per User team member; group memberships are not expanded.\nSELECT COALESCE(\n           NULLIF(TRIM(CONCAT_WS(' ', NULLIF(TRIM(u.firstname), ''), NULLIF(TRIM(u.realname), ''))), ''),\n           CONCAT('Usu\u00e1rio #', team.items_id)\n       ) AS member_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN (\n    SELECT DISTINCT projecttasks_id, items_id\n    FROM glpi_projecttaskteams\n    WHERE itemtype = 'User'\n) AS team\n     ON team.projecttasks_id = pt.id\nLEFT JOIN glpi_users AS u\n       ON u.id = team.items_id\n      AND u.is_deleted = 0\n      AND u.is_active = 1\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY team.items_id, u.firstname, u.realname\n\nUNION ALL\n\nSELECT 'Sem usu\u00e1rio na equipe' AS member_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND NOT EXISTS (\n      SELECT 1\n      FROM glpi_projecttaskteams AS team\n      WHERE team.projecttasks_id = pt.id\n        AND team.itemtype = 'User'\n  )\nORDER BY task_count DESC, member_name;\n",
           "refId": "A",
           "format": "table"
         }
