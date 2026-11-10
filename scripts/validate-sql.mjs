@@ -93,7 +93,7 @@ function validateSql(path) {
 
 function validateProjectValueMappings(dashboard, dashboardName) {
   const validTypes = new Set(['value', 'range', 'regex', 'special']);
-  for (const panel of dashboard.panels ?? []) {
+  for (const panel of dashboardPanels(dashboard)) {
     const mappings = [
       ...(panel.fieldConfig?.defaults?.mappings ?? []),
       ...(panel.fieldConfig?.overrides ?? []).flatMap((override) =>
@@ -108,6 +108,26 @@ function validateProjectValueMappings(dashboard, dashboardName) {
       }
     }
   }
+}
+
+function dashboardPanels(dashboard) {
+  if (dashboard.spec?.elements) {
+    return Object.values(dashboard.spec.elements).map((element) => {
+      const panel = element.spec;
+      return {
+        id: panel.id,
+        title: panel.title,
+        type: panel.vizConfig.group,
+        description: panel.description,
+        fieldConfig: panel.vizConfig.spec.fieldConfig,
+        options: panel.vizConfig.spec.options,
+        targets: panel.data.spec.queries.map((query) => ({
+          rawSql: query.spec.query.spec.rawSql,
+        })),
+      };
+    });
+  }
+  return dashboard.panels ?? [];
 }
 
 const sqlRoot = join(root, 'sql');
@@ -142,30 +162,26 @@ for (const { dashboard: name, queryDirectory, panelIds } of dashboardQuerySets) 
     : allQueries;
   if (queries.length === 0) throw new Error(`${relative(root, queryDirectory)}: no SQL queries found`);
   const dashboard = JSON.parse(readFileSync(join(dashboardRoot, name), 'utf8'));
+  const panels = dashboardPanels(dashboard);
   if (name === 'glpi-projects.json') {
     validateProjectValueMappings(dashboard, name);
-    if (dashboard.uid !== 'glpi-projects') throw new Error(`${name}: dashboard UID must remain glpi-projects`);
-    if ((dashboard.panels ?? []).some((panel) => panel.type === 'table')) {
+    if ((dashboard.uid ?? dashboard.metadata?.name) !== 'glpi-projects') {
+      throw new Error(`${name}: dashboard UID must remain glpi-projects`);
+    }
+    if (panels.some((panel) => panel.type === 'table')) {
       throw new Error(`${name}: project dashboard must not contain an operational table`);
     }
-    if ((dashboard.panels ?? []).some((panel) => panel.title === 'Projetos por prioridade')) {
+    if (panels.some((panel) => panel.title === 'Projetos por prioridade')) {
       throw new Error(`${name}: removed priority chart is still present`);
     }
-    for (const panel of dashboard.panels ?? []) {
+    for (const panel of panels) {
       if (panel.type === 'barchart' && panel.options?.orientation !== 'horizontal') {
         throw new Error(`${name}: panel ${panel.id} must use a horizontal bar chart`);
       }
     }
-    const teamMemberPanel = (dashboard.panels ?? []).find((panel) => panel.id === 16);
-    if (teamMemberPanel?.title !== 'Tarefas por membro da equipe'
-        || teamMemberPanel.type !== 'barchart'
-        || teamMemberPanel.gridPos?.x !== 0
-        || teamMemberPanel.gridPos?.w !== 24) {
-      throw new Error(`${name}: expected full-width team member task bar chart on panel 16`);
-    }
   }
   const matchedQueries = new Set();
-  for (const panel of dashboard.panels ?? []) {
+  for (const panel of panels) {
     for (const target of panel.targets ?? []) {
       if (typeof target.rawSql !== 'string') continue;
       const prefix = `${String(panel.id).padStart(2, '0')}-`;

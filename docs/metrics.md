@@ -37,14 +37,8 @@ Outros indicadores de SLA, métricas de TTO, categorias, métricas de técnicos,
 
 ## Dashboard de Projetos
 
-O dashboard de Projetos tem seis indicadores de projeto e seis de tarefas: total, em andamento, finalizados, não iniciados (projetos: não iniciados/pausados), outros e progresso médio dos itens em andamento. Os gráficos **Projetos por estado** e **Tarefas por estado** foram removidos.
+O dashboard de Projetos tem cinco cards de projeto e cinco de tarefas, além de dois gauges de progresso médio dos itens em andamento. Os cards mostram total, em andamento, finalizados, inativos/pausados (projetos) ou inativos (tarefas) e outros. Os gráficos **Projetos por estado** e **Tarefas por estado**, assim como a distribuição por membro da equipe, foram removidos.
 
 As queries read-only estão versionadas em `sql/projects/queries/`. Todas filtram projetos válidos por `is_deleted = 0`, `is_template = 0` e `$entity`; consultas de tarefas também filtram registros válidos e usam a entidade do projeto pai. As categorias usam os rótulos confirmados em TEST: **Em andamento** para itens em andamento e **A Fazer** para itens não iniciados. Estados finalizados usam `glpi_projectstates.is_finished = 1`. Estados de projeto cujo nome contém `paus` entram no grupo de não iniciados/pausados. **Outros** inclui `projectstates_id = 0` (sem estado) e estados restantes não finalizados. `percent_done` não é usado para inferir conclusão; o progresso médio é calculado somente para os itens em **Em andamento**.
 
 O schema e os rótulos de estado foram verificados na instalação TEST GLPI 11, mas as queries revisadas ainda precisam ser executadas no MariaDB e validadas no Grafana. Validação estática não substitui validação de banco. Não foram adicionadas métricas de atraso, prazos, timeline ou Gantt.
-
-### Membros da equipe em tarefas
-
-O painel **Tarefas por membro da equipe** usa `glpi_projecttaskteams.projecttasks_id`, `itemtype = 'User'` e `items_id`, conforme discovery validado na interface do GLPI. `glpi_projecttasks.users_id` não é usado, pois identifica o criador. Cada usuário da equipe recebe uma contagem distinta da tarefa; membros do tipo grupo não são expandidos. Tarefas sem vínculo `User` aparecem em **Sem usuário na equipe**. Os nomes usam `glpi_users.firstname` e `realname`; quando a conta não pode ser identificada como ativa, não excluída e com nome disponível, o painel mostra `Usuário #ID`. A contagem indica associações de tarefas, não produtividade. O filtro Entity é aplicado pela entidade do projeto pai.
-
-O discovery informado para TEST encontrou nove tarefas válidas: uma com usuário vinculado à equipe e oito sem vínculo `User`. Nenhum nome, ID real ou outro dado pessoal foi registrado. O resultado precisa ser reconfirmado em SQL e no Grafana de TEST antes da homologação integrada.
