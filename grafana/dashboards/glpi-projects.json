@@ -28,7 +28,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"border-left:4px solid #42c6d8;padding:3px 0 3px 18px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:2.2px;color:#42c6d8;line-height:1.5;\">PROJETOS &amp; TAREFAS</div><div style=\"font-size:clamp(28px, 3.7vw, 46px);font-weight:700;letter-spacing:0.5px;line-height:1.0;margin:0;color:#e7eef7;\">DESENVOLVIMENTO</div></div>",
+        "content": "<div style=\"padding:3px 0 12px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:2.2px;color:#42c6d8;line-height:1.5;\">PROJETOS &amp; TAREFAS</div><div style=\"font-size:clamp(38px, 4.5vw, 62px);font-weight:700;letter-spacing:0.5px;line-height:1.0;margin:0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"width:86px;height:3px;background:#42c6d8;margin-top:14px;\"></div></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
@@ -39,7 +39,7 @@
     },
     {
       "id": 11,
-      "title": "Total de projetos",
+      "title": "",
       "type": "stat",
       "description": "Projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
@@ -67,7 +67,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#3577C5"
-          }
+          },
+          "displayName": "Total de projetos"
         },
         "overrides": []
       },
@@ -80,7 +81,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -94,7 +95,7 @@
     },
     {
       "id": 1,
-      "title": "Projetos ativos",
+      "title": "",
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado Em andamento.",
       "gridPos": {
@@ -122,7 +123,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#11798A"
-          }
+          },
+          "displayName": "Projetos ativos"
         },
         "overrides": []
       },
@@ -135,7 +137,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -149,7 +151,7 @@
     },
     {
       "id": 2,
-      "title": "Projetos finalizados",
+      "title": "",
       "type": "stat",
       "description": "Projetos v\u00e1lidos cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
@@ -177,7 +179,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#27805F"
-          }
+          },
+          "displayName": "Projetos finalizados"
         },
         "overrides": []
       },
@@ -190,7 +193,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -204,7 +207,7 @@
     },
     {
       "id": 3,
-      "title": "Projetos inativos/pausados",
+      "title": "",
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado A Fazer ou em estados pausados.",
       "gridPos": {
@@ -232,7 +235,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#A05D12"
-          }
+          },
+          "displayName": "Projetos inativos/pausados"
         },
         "overrides": []
       },
@@ -245,7 +249,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -259,7 +263,7 @@
     },
     {
       "id": 18,
-      "title": "Outros projetos",
+      "title": "",
       "type": "stat",
       "description": "Projetos v\u00e1lidos em outros estados, incluindo os sem estado.",
       "gridPos": {
@@ -287,7 +291,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#626B87"
-          }
+          },
+          "displayName": "Outros projetos"
         },
         "overrides": []
       },
@@ -300,7 +305,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -314,7 +319,7 @@
     },
     {
       "id": 4,
-      "title": "M\u00e9dia dos projetos ativos",
+      "title": "",
       "type": "stat",
       "description": "M\u00e9dia do percent_done dos projetos v\u00e1lidos em andamento.",
       "gridPos": {
@@ -344,7 +349,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#7252B8"
-          }
+          },
+          "displayName": "M\u00e9dia dos projetos ativos"
         },
         "overrides": []
       },
@@ -357,7 +363,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -371,7 +377,7 @@
     },
     {
       "id": 12,
-      "title": "Total de tarefas",
+      "title": "",
       "type": "stat",
       "description": "Tarefas v\u00e1lidas em projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
@@ -399,7 +405,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#3577C5"
-          }
+          },
+          "displayName": "Total de tarefas"
         },
         "overrides": []
       },
@@ -412,7 +419,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -426,7 +433,7 @@
     },
     {
       "id": 13,
-      "title": "Tarefas ativas",
+      "title": "",
       "type": "stat",
       "description": "Tarefas v\u00e1lidas no estado Em andamento, pelo escopo da entidade do projeto pai.",
       "gridPos": {
@@ -454,7 +461,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#11798A"
-          }
+          },
+          "displayName": "Tarefas ativas"
         },
         "overrides": []
       },
@@ -467,7 +475,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -481,7 +489,7 @@
     },
     {
       "id": 14,
-      "title": "Tarefas finalizadas",
+      "title": "",
       "type": "stat",
       "description": "Tarefas v\u00e1lidas cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
@@ -509,7 +517,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#27805F"
-          }
+          },
+          "displayName": "Tarefas finalizadas"
         },
         "overrides": []
       },
@@ -522,7 +531,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -536,7 +545,7 @@
     },
     {
       "id": 19,
-      "title": "Tarefas inativas/pausadas",
+      "title": "",
       "type": "stat",
       "description": "Tarefas v\u00e1lidas no estado A Fazer.",
       "gridPos": {
@@ -564,7 +573,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#A05D12"
-          }
+          },
+          "displayName": "Tarefas inativas/pausadas"
         },
         "overrides": []
       },
@@ -577,7 +587,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -591,7 +601,7 @@
     },
     {
       "id": 20,
-      "title": "Outras tarefas",
+      "title": "",
       "type": "stat",
       "description": "Tarefas v\u00e1lidas em outros estados, incluindo as sem estado.",
       "gridPos": {
@@ -619,7 +629,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#626B87"
-          }
+          },
+          "displayName": "Outras tarefas"
         },
         "overrides": []
       },
@@ -632,7 +643,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -646,7 +657,7 @@
     },
     {
       "id": 15,
-      "title": "M\u00e9dia das tarefas ativas",
+      "title": "",
       "type": "stat",
       "description": "M\u00e9dia do percent_done das tarefas v\u00e1lidas em andamento.",
       "gridPos": {
@@ -676,7 +687,8 @@
           "color": {
             "mode": "fixed",
             "fixedColor": "#7252B8"
-          }
+          },
+          "displayName": "M\u00e9dia das tarefas ativas"
         },
         "overrides": []
       },
@@ -689,7 +701,7 @@
           "values": false
         },
         "orientation": "auto",
-        "textMode": "value",
+        "textMode": "value_and_name",
         "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
@@ -732,7 +744,7 @@
             "axisPlacement": "auto",
             "axisColorMode": "text",
             "axisBorderShow": false,
-            "axisGridShow": true,
+            "axisGridShow": false,
             "scaleDistribution": {
               "type": "linear"
             },
@@ -773,7 +785,7 @@
           "axisPlacement": "auto",
           "axisColorMode": "text",
           "axisBorderShow": false,
-          "axisGridShow": true,
+          "axisGridShow": false,
           "scale": {
             "type": "linear",
             "log": false,
