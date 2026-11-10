@@ -28,7 +28,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"border-left:4px solid #42c6d8;padding:3px 0 3px 18px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:2.2px;color:#42c6d8;line-height:1.5;\">PROJETOS &amp; TAREFAS</div><div style=\"font-size:clamp(28px, 3.7vw, 46px);font-weight:700;letter-spacing:0.5px;line-height:1.0;margin:0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"font-size:12px;letter-spacing:0.8px;color:#94a9be;margin-top:7px;\">STATUS \u00b7 PROGRESSO \u00b7 EQUIPE</div></div>",
+        "content": "<div style=\"border-left:4px solid #42c6d8;padding:3px 0 3px 18px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:2.2px;color:#42c6d8;line-height:1.5;\">PROJETOS &amp; TAREFAS</div><div style=\"font-size:clamp(28px, 3.7vw, 46px);font-weight:700;letter-spacing:0.5px;line-height:1.0;margin:0;color:#e7eef7;\">DESENVOLVIMENTO</div></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
@@ -66,7 +66,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#8b9fff"
+            "fixedColor": "#3577C5"
           }
         },
         "overrides": []
@@ -81,7 +81,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
@@ -121,7 +121,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#42c6d8"
+            "fixedColor": "#11798A"
           }
         },
         "overrides": []
@@ -136,7 +136,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
@@ -176,7 +176,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#67c8a8"
+            "fixedColor": "#27805F"
           }
         },
         "overrides": []
@@ -191,7 +191,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
@@ -231,7 +231,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#e4ae5b"
+            "fixedColor": "#A05D12"
           }
         },
         "overrides": []
@@ -246,7 +246,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
@@ -286,7 +286,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#a9a6c8"
+            "fixedColor": "#626B87"
           }
         },
         "overrides": []
@@ -301,7 +301,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
@@ -343,7 +343,7 @@
           "max": 100,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#a78bfa"
+            "fixedColor": "#7252B8"
           }
         },
         "overrides": []
@@ -358,7 +358,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
@@ -398,7 +398,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#8b9fff"
+            "fixedColor": "#3577C5"
           }
         },
         "overrides": []
@@ -413,7 +413,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
@@ -453,7 +453,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#42c6d8"
+            "fixedColor": "#11798A"
           }
         },
         "overrides": []
@@ -468,7 +468,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
@@ -508,7 +508,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#67c8a8"
+            "fixedColor": "#27805F"
           }
         },
         "overrides": []
@@ -523,7 +523,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
@@ -563,7 +563,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#e4ae5b"
+            "fixedColor": "#A05D12"
           }
         },
         "overrides": []
@@ -578,7 +578,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
@@ -618,7 +618,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#a9a6c8"
+            "fixedColor": "#626B87"
           }
         },
         "overrides": []
@@ -633,7 +633,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
@@ -675,7 +675,7 @@
           "max": 100,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#a78bfa"
+            "fixedColor": "#7252B8"
           }
         },
         "overrides": []
@@ -690,7 +690,7 @@
         },
         "orientation": "auto",
         "textMode": "value",
-        "colorMode": "value",
+        "colorMode": "background",
         "graphMode": "none",
         "justifyMode": "auto",
         "wideLayout": false,
