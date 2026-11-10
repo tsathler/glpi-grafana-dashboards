@@ -43,9 +43,9 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
-        "x": 0,
+        "x": 2,
         "y": 6,
-        "w": 5,
+        "w": 4,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -99,9 +99,9 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado Em andamento.",
       "gridPos": {
-        "x": 5,
+        "x": 6,
         "y": 6,
-        "w": 5,
+        "w": 4,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -213,7 +213,7 @@
       "gridPos": {
         "x": 14,
         "y": 6,
-        "w": 5,
+        "w": 4,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -267,9 +267,9 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos em outros estados, incluindo os sem estado.",
       "gridPos": {
-        "x": 19,
+        "x": 18,
         "y": 6,
-        "w": 5,
+        "w": 4,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -387,9 +387,9 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas em projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
-        "x": 0,
+        "x": 2,
         "y": 13,
-        "w": 5,
+        "w": 4,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -443,9 +443,9 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas no estado Em andamento, pelo escopo da entidade do projeto pai.",
       "gridPos": {
-        "x": 5,
+        "x": 6,
         "y": 13,
-        "w": 5,
+        "w": 4,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -557,7 +557,7 @@
       "gridPos": {
         "x": 14,
         "y": 13,
-        "w": 5,
+        "w": 4,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -611,9 +611,9 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas em outros estados, incluindo as sem estado.",
       "gridPos": {
-        "x": 19,
+        "x": 18,
         "y": 13,
-        "w": 5,
+        "w": 4,
         "h": 5
       },
       "pluginVersion": "13.2.2",
