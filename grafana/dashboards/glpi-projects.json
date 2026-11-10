@@ -44,9 +44,9 @@
       "description": "Projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 7,
+        "y": 8,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -100,9 +100,9 @@
       "description": "Projetos v\u00e1lidos no estado Em andamento.",
       "gridPos": {
         "x": 4,
-        "y": 7,
+        "y": 8,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -156,9 +156,9 @@
       "description": "Projetos v\u00e1lidos cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
         "x": 8,
-        "y": 7,
+        "y": 8,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -212,9 +212,9 @@
       "description": "Projetos v\u00e1lidos no estado A Fazer ou em estados pausados.",
       "gridPos": {
         "x": 12,
-        "y": 7,
+        "y": 8,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -268,9 +268,9 @@
       "description": "Projetos v\u00e1lidos em outros estados, incluindo os sem estado.",
       "gridPos": {
         "x": 16,
-        "y": 7,
+        "y": 8,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -324,9 +324,9 @@
       "description": "M\u00e9dia do percent_done dos projetos v\u00e1lidos em andamento.",
       "gridPos": {
         "x": 20,
-        "y": 7,
+        "y": 8,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -382,9 +382,9 @@
       "description": "Tarefas v\u00e1lidas em projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 15,
+        "y": 18,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -438,9 +438,9 @@
       "description": "Tarefas v\u00e1lidas no estado Em andamento, pelo escopo da entidade do projeto pai.",
       "gridPos": {
         "x": 4,
-        "y": 15,
+        "y": 18,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -494,9 +494,9 @@
       "description": "Tarefas v\u00e1lidas cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
         "x": 8,
-        "y": 15,
+        "y": 18,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -550,9 +550,9 @@
       "description": "Tarefas v\u00e1lidas no estado A Fazer.",
       "gridPos": {
         "x": 12,
-        "y": 15,
+        "y": 18,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -606,9 +606,9 @@
       "description": "Tarefas v\u00e1lidas em outros estados, incluindo as sem estado.",
       "gridPos": {
         "x": 16,
-        "y": 15,
+        "y": 18,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -662,9 +662,9 @@
       "description": "M\u00e9dia do percent_done das tarefas v\u00e1lidas em andamento.",
       "gridPos": {
         "x": 20,
-        "y": 15,
+        "y": 18,
         "w": 4,
-        "h": 5
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -731,7 +731,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:10px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">01</span><span style=\"font-size:12px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">PROJETOS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:12px;\"></span></div><div style=\"font-size:13px;color:#a8b4c2;margin-top:7px;\">Volume por situa\u00e7\u00e3o e progresso m\u00e9dio dos projetos ativos.</div></div>",
+        "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:12px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">01</span><span style=\"font-size:16px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">PROJETOS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:14px;\"></span></div><div style=\"font-size:14px;color:#a8b4c2;margin-top:8px;\">Volume por situa\u00e7\u00e3o e progresso m\u00e9dio dos projetos ativos.</div></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
@@ -747,7 +747,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 12,
+        "y": 14,
         "w": 24,
         "h": 3
       },
@@ -758,7 +758,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:10px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">02</span><span style=\"font-size:12px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">TAREFAS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:12px;\"></span></div><div style=\"font-size:13px;color:#a8b4c2;margin-top:7px;\">Volume por situa\u00e7\u00e3o e progresso m\u00e9dio das tarefas ativas.</div></div>",
+        "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:12px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">02</span><span style=\"font-size:16px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">TAREFAS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:14px;\"></span></div><div style=\"font-size:14px;color:#a8b4c2;margin-top:8px;\">Volume por situa\u00e7\u00e3o e progresso m\u00e9dio das tarefas ativas.</div></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
