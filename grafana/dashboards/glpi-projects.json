@@ -19,7 +19,7 @@
         "x": 0,
         "y": 0,
         "w": 24,
-        "h": 3
+        "h": 4
       },
       "id": 17,
       "options": {
@@ -28,7 +28,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"padding:0 0 4px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:1.8px;color:#42c6d8;line-height:1.4;\">PAINEL DE ENGENHARIA</div><div style=\"font-size:clamp(38px, 4.2vw, 52px);font-weight:700;letter-spacing:-0.5px;line-height:1.1;margin:2px 0 0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"width:82px;height:2px;background:#42c6d8;margin-top:8px;\"></div></div>",
+        "content": "<div style=\"padding:0 0 8px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:1.8px;color:#42c6d8;line-height:1.4;\">PAINEL DE ENGENHARIA</div><div style=\"font-size:clamp(38px, 4.2vw, 52px);font-weight:700;letter-spacing:-0.5px;line-height:1.1;margin:2px 0 0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"width:82px;height:2px;background:#42c6d8;margin-top:8px;\"></div><div style=\"font-size:14px;color:#a8b4c2;margin-top:8px;\">Indicadores consolidados de volume, situa\u00e7\u00e3o e progresso; vis\u00e3o geral sem acompanhamento operacional.</div></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
@@ -44,9 +44,9 @@
       "description": "Projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 5,
+        "y": 6,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -66,7 +66,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#3B6692"
+            "fixedColor": "#3B8FE3"
           },
           "displayName": "Total de projetos"
         },
@@ -88,8 +88,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -100,9 +100,9 @@
       "description": "Projetos v\u00e1lidos no estado Em andamento.",
       "gridPos": {
         "x": 4,
-        "y": 5,
+        "y": 6,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -122,7 +122,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#286F7A"
+            "fixedColor": "#2F9CA3"
           },
           "displayName": "Projetos ativos"
         },
@@ -144,8 +144,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -156,9 +156,9 @@
       "description": "Projetos v\u00e1lidos cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
         "x": 8,
-        "y": 5,
+        "y": 6,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -178,7 +178,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#2E6C67"
+            "fixedColor": "#4F9A5C"
           },
           "displayName": "Projetos finalizados"
         },
@@ -200,8 +200,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -212,9 +212,9 @@
       "description": "Projetos v\u00e1lidos no estado A Fazer ou em estados pausados.",
       "gridPos": {
         "x": 12,
-        "y": 5,
+        "y": 6,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -234,7 +234,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#8E6A35"
+            "fixedColor": "#C57A2D"
           },
           "displayName": "Projetos inativos/pausados"
         },
@@ -256,8 +256,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -268,9 +268,9 @@
       "description": "Projetos v\u00e1lidos em outros estados, incluindo os sem estado.",
       "gridPos": {
         "x": 16,
-        "y": 5,
+        "y": 6,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -290,7 +290,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#53647A"
+            "fixedColor": "#7892A8"
           },
           "displayName": "Outros projetos"
         },
@@ -312,8 +312,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -324,9 +324,9 @@
       "description": "M\u00e9dia do percent_done dos projetos v\u00e1lidos em andamento.",
       "gridPos": {
         "x": 20,
-        "y": 5,
+        "y": 6,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -348,7 +348,7 @@
           "max": 100,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#566B9C"
+            "fixedColor": "#8657D8"
           },
           "displayName": "M\u00e9dia dos projetos ativos"
         },
@@ -370,8 +370,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -382,9 +382,9 @@
       "description": "Tarefas v\u00e1lidas em projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 10,
+        "y": 12,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -404,7 +404,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#3B6692"
+            "fixedColor": "#3B8FE3"
           },
           "displayName": "Total de tarefas"
         },
@@ -426,8 +426,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -438,9 +438,9 @@
       "description": "Tarefas v\u00e1lidas no estado Em andamento, pelo escopo da entidade do projeto pai.",
       "gridPos": {
         "x": 4,
-        "y": 10,
+        "y": 12,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -460,7 +460,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#286F7A"
+            "fixedColor": "#2F9CA3"
           },
           "displayName": "Tarefas ativas"
         },
@@ -482,8 +482,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -494,9 +494,9 @@
       "description": "Tarefas v\u00e1lidas cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
         "x": 8,
-        "y": 10,
+        "y": 12,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -516,7 +516,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#2E6C67"
+            "fixedColor": "#4F9A5C"
           },
           "displayName": "Tarefas finalizadas"
         },
@@ -538,8 +538,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -550,9 +550,9 @@
       "description": "Tarefas v\u00e1lidas no estado A Fazer.",
       "gridPos": {
         "x": 12,
-        "y": 10,
+        "y": 12,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -572,7 +572,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#8E6A35"
+            "fixedColor": "#C57A2D"
           },
           "displayName": "Tarefas inativas/pausadas"
         },
@@ -594,8 +594,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -606,9 +606,9 @@
       "description": "Tarefas v\u00e1lidas em outros estados, incluindo as sem estado.",
       "gridPos": {
         "x": 16,
-        "y": 10,
+        "y": 12,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -628,7 +628,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#53647A"
+            "fixedColor": "#7892A8"
           },
           "displayName": "Outras tarefas"
         },
@@ -650,8 +650,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -662,9 +662,9 @@
       "description": "M\u00e9dia do percent_done das tarefas v\u00e1lidas em andamento.",
       "gridPos": {
         "x": 20,
-        "y": 10,
+        "y": 12,
         "w": 4,
-        "h": 3
+        "h": 4
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -686,7 +686,7 @@
           "max": 100,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#566B9C"
+            "fixedColor": "#8657D8"
           },
           "displayName": "M\u00e9dia das tarefas ativas"
         },
@@ -708,90 +708,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 42
-        }
-      }
-    },
-    {
-      "id": 16,
-      "title": "Tarefas por membro da equipe",
-      "type": "barchart",
-      "description": "Count of valid tasks per User team member. This is not a productivity measure; groups are not expanded.",
-      "gridPos": {
-        "x": 0,
-        "y": 13,
-        "w": 24,
-        "h": 13
-      },
-      "pluginVersion": "13.2.2",
-      "datasource": {
-        "type": "mysql",
-        "uid": "glpi-mysql"
-      },
-      "targets": [
-        {
-          "rawSql": "-- Valid tasks counted once per User team member; group memberships are not expanded.\nSELECT COALESCE(\n           NULLIF(TRIM(CONCAT_WS(' ', NULLIF(TRIM(u.firstname), ''), NULLIF(TRIM(u.realname), ''))), ''),\n           CONCAT('Usu\u00e1rio #', team.items_id)\n       ) AS member_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN (\n    SELECT DISTINCT projecttasks_id, items_id\n    FROM glpi_projecttaskteams\n    WHERE itemtype = 'User'\n) AS team\n     ON team.projecttasks_id = pt.id\nLEFT JOIN glpi_users AS u\n       ON u.id = team.items_id\n      AND u.is_deleted = 0\n      AND u.is_active = 1\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\nGROUP BY team.items_id, u.firstname, u.realname\n\nUNION ALL\n\nSELECT 'Sem usu\u00e1rio na equipe' AS member_name,\n       COUNT(DISTINCT pt.id) AS task_count\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND NOT EXISTS (\n      SELECT 1\n      FROM glpi_projecttaskteams AS team\n      WHERE team.projecttasks_id = pt.id\n        AND team.itemtype = 'User'\n  )\nORDER BY task_count DESC, member_name;\n",
-          "refId": "A",
-          "format": "table"
-        }
-      ],
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "axisColorMode": "text",
-            "axisBorderShow": false,
-            "axisGridShow": false,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "fillOpacity": 80,
-            "gradientMode": "none",
-            "lineWidth": 0
-          },
-          "mappings": [],
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#42c6d8"
-          }
-        },
-        "overrides": []
-      },
-      "options": {
-        "orientation": "horizontal",
-        "xField": "member_name",
-        "showValue": "auto",
-        "stacking": "none",
-        "groupWidth": 0.7,
-        "barWidth": 0.7,
-        "barRadius": 0,
-        "fullHighlight": false,
-        "tooltip": {
-          "mode": "single",
-          "sort": "none",
-          "hideZeros": false
-        },
-        "legend": {
-          "showLegend": false,
-          "displayMode": "list",
-          "placement": "bottom",
-          "calcs": []
-        },
-        "yAxis": {
-          "axisLabel": "",
-          "axisPlacement": "auto",
-          "axisColorMode": "text",
-          "axisBorderShow": false,
-          "axisGridShow": false,
-          "scale": {
-            "type": "linear",
-            "log": false,
-            "logBase": 2
-          },
-          "axisSoftMin": 0
+          "titleSize": 17,
+          "valueSize": 60
         }
       }
     },
@@ -802,7 +720,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 3,
+        "y": 4,
         "w": 24,
         "h": 2
       },
@@ -829,7 +747,7 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 8,
+        "y": 10,
         "w": 24,
         "h": 2
       },
