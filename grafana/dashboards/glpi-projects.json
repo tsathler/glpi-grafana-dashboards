@@ -731,9 +731,9 @@
         "overrides": []
       },
       "gridPos": {
-        "x": 0,
+        "x": 2,
         "y": 4,
-        "w": 24,
+        "w": 20,
         "h": 2
       },
       "id": 21,
@@ -743,7 +743,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:12px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">01</span><span style=\"font-size:16px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">PROJETOS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:14px;\"></span></div></div>",
+        "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:14px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">01</span><span style=\"font-size:20px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">PROJETOS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:14px;\"></span></div></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
@@ -758,9 +758,9 @@
         "overrides": []
       },
       "gridPos": {
-        "x": 0,
+        "x": 2,
         "y": 11,
-        "w": 24,
+        "w": 20,
         "h": 2
       },
       "id": 22,
@@ -770,7 +770,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:12px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">02</span><span style=\"font-size:16px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">TAREFAS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:14px;\"></span></div></div>",
+        "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:14px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">02</span><span style=\"font-size:20px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">TAREFAS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:14px;\"></span></div></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },

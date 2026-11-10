@@ -1,6 +1,6 @@
 # GLPI Projects layout
 
-The `glpi-projects` dashboard has its own technical identity: a compact borderless **DESENVOLVIMENTO** heading with a short cyan underline, two numbered sections, ten enlarged, equal-width Stat cards centered in two rows of five, and two enlarged percentage Gauges below the cards. The Gauges use the Service Desk visual style with fixed purple coloring; SLA thresholds are not reused. The brighter palette follows the Service Desk colors while retaining project and task status meanings. The team distribution chart is removed so the dashboard focuses on consolidated numeric indicators rather than operational tracking. The state distribution charts are removed.
+The `glpi-projects` dashboard has its own technical identity: a compact borderless **DESENVOLVIMENTO** heading with a short cyan underline, two numbered sections with enlarged headings aligned with the centered card rows, ten enlarged, equal-width Stat cards centered in two rows of five, and two enlarged percentage Gauges below the cards. The Gauges use the Service Desk visual style with fixed purple coloring; SLA thresholds are not reused. The brighter palette follows the Service Desk colors while retaining project and task status meanings. The team distribution chart is removed so the dashboard focuses on consolidated numeric indicators rather than operational tracking. The state distribution charts are removed.
 
 | Section | Panel IDs | `x, y, w, h` |
 | --- | --- | --- |
