@@ -43,7 +43,7 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
-        "x": 2,
+        "x": 0,
         "y": 6,
         "w": 4,
         "h": 5
@@ -99,7 +99,7 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado Em andamento.",
       "gridPos": {
-        "x": 6,
+        "x": 5,
         "y": 6,
         "w": 4,
         "h": 5
@@ -211,7 +211,7 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado A Fazer ou em estados pausados.",
       "gridPos": {
-        "x": 14,
+        "x": 15,
         "y": 6,
         "w": 4,
         "h": 5
@@ -267,7 +267,7 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos em outros estados, incluindo os sem estado.",
       "gridPos": {
-        "x": 18,
+        "x": 20,
         "y": 6,
         "w": 4,
         "h": 5
@@ -387,7 +387,7 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas em projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
-        "x": 2,
+        "x": 0,
         "y": 13,
         "w": 4,
         "h": 5
@@ -443,7 +443,7 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas no estado Em andamento, pelo escopo da entidade do projeto pai.",
       "gridPos": {
-        "x": 6,
+        "x": 5,
         "y": 13,
         "w": 4,
         "h": 5
@@ -555,7 +555,7 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas no estado A Fazer.",
       "gridPos": {
-        "x": 14,
+        "x": 15,
         "y": 13,
         "w": 4,
         "h": 5
@@ -611,7 +611,7 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas em outros estados, incluindo as sem estado.",
       "gridPos": {
-        "x": 18,
+        "x": 20,
         "y": 13,
         "w": 4,
         "h": 5
@@ -731,9 +731,9 @@
         "overrides": []
       },
       "gridPos": {
-        "x": 2,
+        "x": 0,
         "y": 4,
-        "w": 20,
+        "w": 24,
         "h": 2
       },
       "id": 21,
@@ -758,9 +758,9 @@
         "overrides": []
       },
       "gridPos": {
-        "x": 2,
+        "x": 0,
         "y": 11,
-        "w": 20,
+        "w": 24,
         "h": 2
       },
       "id": 22,
