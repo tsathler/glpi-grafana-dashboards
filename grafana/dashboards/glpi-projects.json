@@ -722,7 +722,7 @@
         "x": 0,
         "y": 13,
         "w": 24,
-        "h": 8
+        "h": 13
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -766,7 +766,7 @@
         "showValue": "auto",
         "stacking": "none",
         "groupWidth": 0.7,
-        "barWidth": 0.55,
+        "barWidth": 0.7,
         "barRadius": 0,
         "fullHighlight": false,
         "tooltip": {
