@@ -19,7 +19,7 @@
         "x": 0,
         "y": 0,
         "w": 24,
-        "h": 5
+        "h": 3
       },
       "id": 17,
       "options": {
@@ -28,7 +28,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"padding:0 0 8px;\"><div style=\"font-size:12px;font-weight:700;letter-spacing:2px;color:#42c6d8;line-height:1.5;\">PAINEL DE ENGENHARIA</div><div style=\"font-size:clamp(52px, 6vw, 72px);font-weight:700;letter-spacing:-1px;line-height:0.95;margin:2px 0 0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"width:112px;height:3px;background:#42c6d8;margin-top:14px;\"></div></div>",
+        "content": "<div style=\"padding:0 0 4px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:1.8px;color:#42c6d8;line-height:1.4;\">PAINEL DE ENGENHARIA</div><div style=\"font-size:clamp(38px, 4.2vw, 52px);font-weight:700;letter-spacing:-0.5px;line-height:1.1;margin:2px 0 0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"width:82px;height:2px;background:#42c6d8;margin-top:8px;\"></div></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
@@ -44,9 +44,9 @@
       "description": "Projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 7,
-        "w": 8,
-        "h": 5
+        "y": 4,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -66,7 +66,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#3577C5"
+            "fixedColor": "#446B97"
           },
           "displayName": "Total de projetos"
         },
@@ -88,8 +88,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -99,10 +99,10 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado Em andamento.",
       "gridPos": {
-        "x": 8,
-        "y": 7,
-        "w": 8,
-        "h": 5
+        "x": 4,
+        "y": 4,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -122,7 +122,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#11798A"
+            "fixedColor": "#3A7883"
           },
           "displayName": "Projetos ativos"
         },
@@ -144,8 +144,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -155,10 +155,10 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
-        "x": 16,
-        "y": 7,
-        "w": 8,
-        "h": 5
+        "x": 8,
+        "y": 4,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -178,7 +178,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#27805F"
+            "fixedColor": "#4F806F"
           },
           "displayName": "Projetos finalizados"
         },
@@ -200,8 +200,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -211,10 +211,10 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado A Fazer ou em estados pausados.",
       "gridPos": {
-        "x": 0,
-        "y": 12,
-        "w": 8,
-        "h": 5
+        "x": 12,
+        "y": 4,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -234,7 +234,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#A05D12"
+            "fixedColor": "#8B682F"
           },
           "displayName": "Projetos inativos/pausados"
         },
@@ -256,8 +256,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -267,10 +267,10 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos em outros estados, incluindo os sem estado.",
       "gridPos": {
-        "x": 8,
-        "y": 12,
-        "w": 8,
-        "h": 5
+        "x": 16,
+        "y": 4,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -290,7 +290,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#626B87"
+            "fixedColor": "#687184"
           },
           "displayName": "Outros projetos"
         },
@@ -312,8 +312,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -323,10 +323,10 @@
       "type": "stat",
       "description": "M\u00e9dia do percent_done dos projetos v\u00e1lidos em andamento.",
       "gridPos": {
-        "x": 16,
-        "y": 12,
-        "w": 8,
-        "h": 5
+        "x": 20,
+        "y": 4,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -348,7 +348,7 @@
           "max": 100,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#7252B8"
+            "fixedColor": "#71668F"
           },
           "displayName": "M\u00e9dia dos projetos ativos"
         },
@@ -370,8 +370,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -382,9 +382,9 @@
       "description": "Tarefas v\u00e1lidas em projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 19,
-        "w": 8,
-        "h": 5
+        "y": 8,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -404,7 +404,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#3577C5"
+            "fixedColor": "#446B97"
           },
           "displayName": "Total de tarefas"
         },
@@ -426,8 +426,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -437,10 +437,10 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas no estado Em andamento, pelo escopo da entidade do projeto pai.",
       "gridPos": {
-        "x": 8,
-        "y": 19,
-        "w": 8,
-        "h": 5
+        "x": 4,
+        "y": 8,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -460,7 +460,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#11798A"
+            "fixedColor": "#3A7883"
           },
           "displayName": "Tarefas ativas"
         },
@@ -482,8 +482,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -493,10 +493,10 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
-        "x": 16,
-        "y": 19,
-        "w": 8,
-        "h": 5
+        "x": 8,
+        "y": 8,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -516,7 +516,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#27805F"
+            "fixedColor": "#4F806F"
           },
           "displayName": "Tarefas finalizadas"
         },
@@ -538,8 +538,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -549,10 +549,10 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas no estado A Fazer.",
       "gridPos": {
-        "x": 0,
-        "y": 24,
-        "w": 8,
-        "h": 5
+        "x": 12,
+        "y": 8,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -572,7 +572,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#A05D12"
+            "fixedColor": "#8B682F"
           },
           "displayName": "Tarefas inativas/pausadas"
         },
@@ -594,8 +594,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -605,10 +605,10 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas em outros estados, incluindo as sem estado.",
       "gridPos": {
-        "x": 8,
-        "y": 24,
-        "w": 8,
-        "h": 5
+        "x": 16,
+        "y": 8,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -628,7 +628,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#626B87"
+            "fixedColor": "#687184"
           },
           "displayName": "Outras tarefas"
         },
@@ -650,8 +650,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -661,10 +661,10 @@
       "type": "stat",
       "description": "M\u00e9dia do percent_done das tarefas v\u00e1lidas em andamento.",
       "gridPos": {
-        "x": 16,
-        "y": 24,
-        "w": 8,
-        "h": 5
+        "x": 20,
+        "y": 8,
+        "w": 4,
+        "h": 3
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -686,7 +686,7 @@
           "max": 100,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#7252B8"
+            "fixedColor": "#71668F"
           },
           "displayName": "M\u00e9dia das tarefas ativas"
         },
@@ -708,8 +708,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 18,
-          "valueSize": 72
+          "titleSize": 14,
+          "valueSize": 36
         }
       }
     },
@@ -720,9 +720,9 @@
       "description": "Count of valid tasks per User team member. This is not a productivity measure; groups are not expanded.",
       "gridPos": {
         "x": 0,
-        "y": 29,
+        "y": 11,
         "w": 24,
-        "h": 14
+        "h": 10
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -802,9 +802,9 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 5,
+        "y": 3,
         "w": 24,
-        "h": 2
+        "h": 1
       },
       "id": 21,
       "options": {
@@ -813,7 +813,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display:flex;align-items:center;padding:4px 0 8px;\"><span style=\"font-size:11px;color:#42c6d8;letter-spacing:1.8px;font-weight:700;\">01</span><span style=\"font-size:14px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:12px;\">PROJETOS</span><span style=\"font-size:11px;color:#75869a;letter-spacing:0.8px;margin-left:12px;\">PLANEJAMENTO E STATUS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:16px;\"></span></div>",
+        "content": "<div style=\"display:flex;align-items:center;padding:3px 0;\"><span style=\"font-size:10px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">01</span><span style=\"font-size:12px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">PROJETOS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:12px;\"></span></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
@@ -829,9 +829,9 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 17,
+        "y": 7,
         "w": 24,
-        "h": 2
+        "h": 1
       },
       "id": 22,
       "options": {
@@ -840,7 +840,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"display:flex;align-items:center;padding:4px 0 8px;\"><span style=\"font-size:11px;color:#42c6d8;letter-spacing:1.8px;font-weight:700;\">02</span><span style=\"font-size:14px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:12px;\">TAREFAS</span><span style=\"font-size:11px;color:#75869a;letter-spacing:0.8px;margin-left:12px;\">ENTREGA E EXECU\u00c7\u00c3O</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:16px;\"></span></div>",
+        "content": "<div style=\"display:flex;align-items:center;padding:3px 0;\"><span style=\"font-size:10px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">02</span><span style=\"font-size:12px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">TAREFAS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:12px;\"></span></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
