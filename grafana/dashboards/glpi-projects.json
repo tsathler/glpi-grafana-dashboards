@@ -45,7 +45,7 @@
       "gridPos": {
         "x": 0,
         "y": 6,
-        "w": 4,
+        "w": 5,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -101,7 +101,7 @@
       "gridPos": {
         "x": 5,
         "y": 6,
-        "w": 4,
+        "w": 5,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -211,9 +211,9 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado A Fazer ou em estados pausados.",
       "gridPos": {
-        "x": 15,
+        "x": 14,
         "y": 6,
-        "w": 4,
+        "w": 5,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -267,9 +267,9 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos em outros estados, incluindo os sem estado.",
       "gridPos": {
-        "x": 20,
+        "x": 19,
         "y": 6,
-        "w": 4,
+        "w": 5,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -389,7 +389,7 @@
       "gridPos": {
         "x": 0,
         "y": 13,
-        "w": 4,
+        "w": 5,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -445,7 +445,7 @@
       "gridPos": {
         "x": 5,
         "y": 13,
-        "w": 4,
+        "w": 5,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -555,9 +555,9 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas no estado A Fazer.",
       "gridPos": {
-        "x": 15,
+        "x": 14,
         "y": 13,
-        "w": 4,
+        "w": 5,
         "h": 5
       },
       "pluginVersion": "13.2.2",
@@ -611,9 +611,9 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas em outros estados, incluindo as sem estado.",
       "gridPos": {
-        "x": 20,
+        "x": 19,
         "y": 13,
-        "w": 4,
+        "w": 5,
         "h": 5
       },
       "pluginVersion": "13.2.2",
