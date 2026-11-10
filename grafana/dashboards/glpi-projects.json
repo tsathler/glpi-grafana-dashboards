@@ -90,7 +90,7 @@
     },
     {
       "id": 1,
-      "title": "Projetos em andamento",
+      "title": "Projetos ativos",
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado Em andamento.",
       "gridPos": {
@@ -192,7 +192,7 @@
     },
     {
       "id": 3,
-      "title": "Projetos n\u00e3o iniciados/pausados",
+      "title": "Projetos inativos/pausados",
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado A Fazer ou em estados pausados.",
       "gridPos": {
@@ -294,7 +294,7 @@
     },
     {
       "id": 4,
-      "title": "M\u00e9dia dos projetos em andamento",
+      "title": "M\u00e9dia dos projetos ativos",
       "type": "stat",
       "description": "M\u00e9dia do percent_done dos projetos v\u00e1lidos em andamento.",
       "gridPos": {
@@ -398,7 +398,7 @@
     },
     {
       "id": 13,
-      "title": "Tarefas em andamento",
+      "title": "Tarefas ativas",
       "type": "stat",
       "description": "Tarefas v\u00e1lidas no estado Em andamento, pelo escopo da entidade do projeto pai.",
       "gridPos": {
@@ -602,7 +602,7 @@
     },
     {
       "id": 15,
-      "title": "M\u00e9dia das tarefas em andamento",
+      "title": "M\u00e9dia das tarefas ativas",
       "type": "stat",
       "description": "M\u00e9dia do percent_done das tarefas v\u00e1lidas em andamento.",
       "gridPos": {
