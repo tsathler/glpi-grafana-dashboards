@@ -28,7 +28,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"padding:0 0 8px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:1.8px;color:#42c6d8;line-height:1.4;\">PAINEL DE ENGENHARIA</div><div style=\"font-size:clamp(38px, 4.2vw, 52px);font-weight:700;letter-spacing:-0.5px;line-height:1.1;margin:2px 0 0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"width:82px;height:2px;background:#42c6d8;margin-top:8px;\"></div><div style=\"font-size:14px;color:#a8b4c2;margin-top:8px;\">Indicadores consolidados de volume, situa\u00e7\u00e3o e progresso; vis\u00e3o geral sem acompanhamento operacional.</div></div>",
+        "content": "<div style=\"padding:0 0 8px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:1.8px;color:#42c6d8;line-height:1.4;\">PAINEL DE ENGENHARIA</div><div style=\"font-size:clamp(38px, 4.2vw, 52px);font-weight:700;letter-spacing:-0.5px;line-height:1.1;margin:2px 0 0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"width:82px;height:2px;background:#42c6d8;margin-top:8px;\"></div></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
