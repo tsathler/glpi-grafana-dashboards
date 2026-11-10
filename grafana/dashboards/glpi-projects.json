@@ -19,7 +19,7 @@
         "x": 0,
         "y": 0,
         "w": 24,
-        "h": 4
+        "h": 5
       },
       "id": 17,
       "options": {
@@ -28,7 +28,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"padding:3px 0 12px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:2.2px;color:#42c6d8;line-height:1.5;\">PROJETOS &amp; TAREFAS</div><div style=\"font-size:clamp(38px, 4.5vw, 62px);font-weight:700;letter-spacing:0.5px;line-height:1.0;margin:0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"width:86px;height:3px;background:#42c6d8;margin-top:14px;\"></div></div>",
+        "content": "<div style=\"padding:0 0 8px;\"><div style=\"font-size:12px;font-weight:700;letter-spacing:2px;color:#42c6d8;line-height:1.5;\">PAINEL DE ENGENHARIA</div><div style=\"font-size:clamp(52px, 6vw, 72px);font-weight:700;letter-spacing:-1px;line-height:0.95;margin:2px 0 0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"width:112px;height:3px;background:#42c6d8;margin-top:14px;\"></div></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
@@ -44,9 +44,9 @@
       "description": "Projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 5,
-        "w": 4,
-        "h": 4
+        "y": 7,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -88,8 +88,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -99,10 +99,10 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado Em andamento.",
       "gridPos": {
-        "x": 4,
-        "y": 5,
-        "w": 4,
-        "h": 4
+        "x": 8,
+        "y": 7,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -144,8 +144,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -155,10 +155,10 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
-        "x": 8,
-        "y": 5,
-        "w": 4,
-        "h": 4
+        "x": 16,
+        "y": 7,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -200,8 +200,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -211,10 +211,10 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos no estado A Fazer ou em estados pausados.",
       "gridPos": {
-        "x": 12,
-        "y": 5,
-        "w": 4,
-        "h": 4
+        "x": 0,
+        "y": 12,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -256,8 +256,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -267,10 +267,10 @@
       "type": "stat",
       "description": "Projetos v\u00e1lidos em outros estados, incluindo os sem estado.",
       "gridPos": {
-        "x": 16,
-        "y": 5,
-        "w": 4,
-        "h": 4
+        "x": 8,
+        "y": 12,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -312,8 +312,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -323,10 +323,10 @@
       "type": "stat",
       "description": "M\u00e9dia do percent_done dos projetos v\u00e1lidos em andamento.",
       "gridPos": {
-        "x": 20,
-        "y": 5,
-        "w": 4,
-        "h": 4
+        "x": 16,
+        "y": 12,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -370,8 +370,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -382,9 +382,9 @@
       "description": "Tarefas v\u00e1lidas em projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 9,
-        "w": 4,
-        "h": 4
+        "y": 19,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -426,8 +426,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -437,10 +437,10 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas no estado Em andamento, pelo escopo da entidade do projeto pai.",
       "gridPos": {
-        "x": 4,
-        "y": 9,
-        "w": 4,
-        "h": 4
+        "x": 8,
+        "y": 19,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -482,8 +482,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -493,10 +493,10 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
-        "x": 8,
-        "y": 9,
-        "w": 4,
-        "h": 4
+        "x": 16,
+        "y": 19,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -538,8 +538,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -549,10 +549,10 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas no estado A Fazer.",
       "gridPos": {
-        "x": 12,
-        "y": 9,
-        "w": 4,
-        "h": 4
+        "x": 0,
+        "y": 24,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -594,8 +594,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -605,10 +605,10 @@
       "type": "stat",
       "description": "Tarefas v\u00e1lidas em outros estados, incluindo as sem estado.",
       "gridPos": {
-        "x": 16,
-        "y": 9,
-        "w": 4,
-        "h": 4
+        "x": 8,
+        "y": 24,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -650,8 +650,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -661,10 +661,10 @@
       "type": "stat",
       "description": "M\u00e9dia do percent_done das tarefas v\u00e1lidas em andamento.",
       "gridPos": {
-        "x": 20,
-        "y": 9,
-        "w": 4,
-        "h": 4
+        "x": 16,
+        "y": 24,
+        "w": 8,
+        "h": 5
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -708,8 +708,8 @@
         "wideLayout": false,
         "showPercentChange": false,
         "text": {
-          "titleSize": 16,
-          "valueSize": 40
+          "titleSize": 18,
+          "valueSize": 72
         }
       }
     },
@@ -720,7 +720,7 @@
       "description": "Count of valid tasks per User team member. This is not a productivity measure; groups are not expanded.",
       "gridPos": {
         "x": 0,
-        "y": 14,
+        "y": 29,
         "w": 24,
         "h": 14
       },
@@ -794,6 +794,60 @@
           "axisSoftMin": 0
         }
       }
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 5,
+        "w": 24,
+        "h": 2
+      },
+      "id": 21,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"display:flex;align-items:center;padding:4px 0 8px;\"><span style=\"font-size:11px;color:#42c6d8;letter-spacing:1.8px;font-weight:700;\">01</span><span style=\"font-size:14px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:12px;\">PROJETOS</span><span style=\"font-size:11px;color:#75869a;letter-spacing:0.8px;margin-left:12px;\">PLANEJAMENTO E STATUS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:16px;\"></span></div>",
+        "disableSanitizeHtml": false,
+        "mode": "html"
+      },
+      "pluginVersion": "13.2.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
+    },
+    {
+      "fieldConfig": {
+        "defaults": {},
+        "overrides": []
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 17,
+        "w": 24,
+        "h": 2
+      },
+      "id": 22,
+      "options": {
+        "code": {
+          "language": "plaintext",
+          "showLineNumbers": false,
+          "showMiniMap": false
+        },
+        "content": "<div style=\"display:flex;align-items:center;padding:4px 0 8px;\"><span style=\"font-size:11px;color:#42c6d8;letter-spacing:1.8px;font-weight:700;\">02</span><span style=\"font-size:14px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:12px;\">TAREFAS</span><span style=\"font-size:11px;color:#75869a;letter-spacing:0.8px;margin-left:12px;\">ENTREGA E EXECU\u00c7\u00c3O</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:16px;\"></span></div>",
+        "disableSanitizeHtml": false,
+        "mode": "html"
+      },
+      "pluginVersion": "13.2.2",
+      "title": "",
+      "transparent": true,
+      "type": "text"
     }
   ],
   "refresh": "",

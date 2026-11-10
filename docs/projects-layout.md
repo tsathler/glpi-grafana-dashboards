@@ -1,6 +1,6 @@
 # GLPI Projects layout
 
-The `glpi-projects` dashboard has its own technical identity: a borderless **DESENVOLVIMENTO** heading with a short cyan underline, gradient Stat cards with their labels and white values together, and a cyan team chart with grid lines hidden. It has two rows of six native Stat panels and one full-width horizontal Bar chart for task team members. The state distribution charts are removed.
+The `glpi-projects` dashboard has its own technical identity: a large borderless **DESENVOLVIMENTO** heading with a short cyan underline, separate numbered sections for Projects and Tasks, and twelve gradient Stat cards arranged in three columns with large white values. A full-width horizontal Bar chart presents task team members with cyan bars and hidden grid lines. The state distribution charts are removed.
 
 | Section | Panel IDs | `x, y, w, h` |
 | --- | --- | --- |
