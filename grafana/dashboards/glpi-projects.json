@@ -326,7 +326,7 @@
         "x": 0,
         "y": 18,
         "w": 12,
-        "h": 6
+        "h": 8
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -670,7 +670,7 @@
         "x": 12,
         "y": 18,
         "w": 12,
-        "h": 6
+        "h": 8
       },
       "pluginVersion": "13.2.2",
       "datasource": {
