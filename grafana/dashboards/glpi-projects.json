@@ -28,7 +28,7 @@
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"font-size:72px;font-weight:700;letter-spacing:0.5px;line-height:1.0;margin:0;padding:0;\">DESENVOLVIMENTO</div>",
+        "content": "<div style=\"border-left:4px solid #42c6d8;padding:3px 0 3px 18px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:2.2px;color:#42c6d8;line-height:1.5;\">PROJETOS &amp; TAREFAS</div><div style=\"font-size:clamp(28px, 3.7vw, 46px);font-weight:700;letter-spacing:0.5px;line-height:1.0;margin:0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"font-size:12px;letter-spacing:0.8px;color:#94a9be;margin-top:7px;\">STATUS \u00b7 PROGRESSO \u00b7 EQUIPE</div></div>",
         "disableSanitizeHtml": false,
         "mode": "html"
       },
@@ -63,7 +63,11 @@
       "fieldConfig": {
         "defaults": {
           "unit": "none",
-          "decimals": 0
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#8b9fff"
+          }
         },
         "overrides": []
       },
@@ -114,7 +118,11 @@
       "fieldConfig": {
         "defaults": {
           "unit": "none",
-          "decimals": 0
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#42c6d8"
+          }
         },
         "overrides": []
       },
@@ -165,7 +173,11 @@
       "fieldConfig": {
         "defaults": {
           "unit": "none",
-          "decimals": 0
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#67c8a8"
+          }
         },
         "overrides": []
       },
@@ -216,7 +228,11 @@
       "fieldConfig": {
         "defaults": {
           "unit": "none",
-          "decimals": 0
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#e4ae5b"
+          }
         },
         "overrides": []
       },
@@ -267,7 +283,11 @@
       "fieldConfig": {
         "defaults": {
           "unit": "none",
-          "decimals": 0
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#a9a6c8"
+          }
         },
         "overrides": []
       },
@@ -320,7 +340,11 @@
           "unit": "percent",
           "decimals": 1,
           "min": 0,
-          "max": 100
+          "max": 100,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#a78bfa"
+          }
         },
         "overrides": []
       },
@@ -371,7 +395,11 @@
       "fieldConfig": {
         "defaults": {
           "unit": "none",
-          "decimals": 0
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#8b9fff"
+          }
         },
         "overrides": []
       },
@@ -422,7 +450,11 @@
       "fieldConfig": {
         "defaults": {
           "unit": "none",
-          "decimals": 0
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#42c6d8"
+          }
         },
         "overrides": []
       },
@@ -473,7 +505,11 @@
       "fieldConfig": {
         "defaults": {
           "unit": "none",
-          "decimals": 0
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#67c8a8"
+          }
         },
         "overrides": []
       },
@@ -524,7 +560,11 @@
       "fieldConfig": {
         "defaults": {
           "unit": "none",
-          "decimals": 0
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#e4ae5b"
+          }
         },
         "overrides": []
       },
@@ -575,7 +615,11 @@
       "fieldConfig": {
         "defaults": {
           "unit": "none",
-          "decimals": 0
+          "decimals": 0,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#a9a6c8"
+          }
         },
         "overrides": []
       },
@@ -628,7 +672,11 @@
           "unit": "percent",
           "decimals": 1,
           "min": 0,
-          "max": 100
+          "max": 100,
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#a78bfa"
+          }
         },
         "overrides": []
       },
@@ -692,7 +740,11 @@
             "gradientMode": "none",
             "lineWidth": 0
           },
-          "mappings": []
+          "mappings": [],
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#42c6d8"
+          }
         },
         "overrides": []
       },
@@ -702,7 +754,7 @@
         "showValue": "auto",
         "stacking": "none",
         "groupWidth": 0.7,
-        "barWidth": 0.85,
+        "barWidth": 0.55,
         "barRadius": 0,
         "fullHighlight": false,
         "tooltip": {

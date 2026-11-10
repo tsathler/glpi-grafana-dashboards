@@ -1,6 +1,6 @@
 # GLPI Projects layout
 
-The `glpi-projects` dashboard starts with a full-width **DESENVOLVIMENTO** heading styled like the Service Desk heading. It has two rows of six native Stat panels and one full-width horizontal Bar chart for task team members. The state distribution charts are removed.
+The `glpi-projects` dashboard has its own technical identity: a compact **DESENVOLVIMENTO** heading with a cyan marker, status-colored KPI values in a blue/violet palette, and cyan team bars. It has two rows of six native Stat panels and one full-width horizontal Bar chart for task team members. The state distribution charts are removed.
 
 | Section | Panel IDs | `x, y, w, h` |
 | --- | --- | --- |
