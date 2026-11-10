@@ -44,7 +44,7 @@
       "description": "Projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 4,
+        "y": 5,
         "w": 4,
         "h": 3
       },
@@ -66,7 +66,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#446B97"
+            "fixedColor": "#3B6692"
           },
           "displayName": "Total de projetos"
         },
@@ -100,7 +100,7 @@
       "description": "Projetos v\u00e1lidos no estado Em andamento.",
       "gridPos": {
         "x": 4,
-        "y": 4,
+        "y": 5,
         "w": 4,
         "h": 3
       },
@@ -122,7 +122,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#3A7883"
+            "fixedColor": "#286F7A"
           },
           "displayName": "Projetos ativos"
         },
@@ -156,7 +156,7 @@
       "description": "Projetos v\u00e1lidos cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
         "x": 8,
-        "y": 4,
+        "y": 5,
         "w": 4,
         "h": 3
       },
@@ -178,7 +178,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#4F806F"
+            "fixedColor": "#2E6C67"
           },
           "displayName": "Projetos finalizados"
         },
@@ -212,7 +212,7 @@
       "description": "Projetos v\u00e1lidos no estado A Fazer ou em estados pausados.",
       "gridPos": {
         "x": 12,
-        "y": 4,
+        "y": 5,
         "w": 4,
         "h": 3
       },
@@ -234,7 +234,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#8B682F"
+            "fixedColor": "#8E6A35"
           },
           "displayName": "Projetos inativos/pausados"
         },
@@ -268,7 +268,7 @@
       "description": "Projetos v\u00e1lidos em outros estados, incluindo os sem estado.",
       "gridPos": {
         "x": 16,
-        "y": 4,
+        "y": 5,
         "w": 4,
         "h": 3
       },
@@ -290,7 +290,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#687184"
+            "fixedColor": "#53647A"
           },
           "displayName": "Outros projetos"
         },
@@ -324,7 +324,7 @@
       "description": "M\u00e9dia do percent_done dos projetos v\u00e1lidos em andamento.",
       "gridPos": {
         "x": 20,
-        "y": 4,
+        "y": 5,
         "w": 4,
         "h": 3
       },
@@ -348,7 +348,7 @@
           "max": 100,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#71668F"
+            "fixedColor": "#566B9C"
           },
           "displayName": "M\u00e9dia dos projetos ativos"
         },
@@ -382,7 +382,7 @@
       "description": "Tarefas v\u00e1lidas em projetos v\u00e1lidos na entidade selecionada.",
       "gridPos": {
         "x": 0,
-        "y": 8,
+        "y": 10,
         "w": 4,
         "h": 3
       },
@@ -404,7 +404,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#446B97"
+            "fixedColor": "#3B6692"
           },
           "displayName": "Total de tarefas"
         },
@@ -438,7 +438,7 @@
       "description": "Tarefas v\u00e1lidas no estado Em andamento, pelo escopo da entidade do projeto pai.",
       "gridPos": {
         "x": 4,
-        "y": 8,
+        "y": 10,
         "w": 4,
         "h": 3
       },
@@ -460,7 +460,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#3A7883"
+            "fixedColor": "#286F7A"
           },
           "displayName": "Tarefas ativas"
         },
@@ -494,7 +494,7 @@
       "description": "Tarefas v\u00e1lidas cujo estado est\u00e1 marcado como finalizado.",
       "gridPos": {
         "x": 8,
-        "y": 8,
+        "y": 10,
         "w": 4,
         "h": 3
       },
@@ -516,7 +516,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#4F806F"
+            "fixedColor": "#2E6C67"
           },
           "displayName": "Tarefas finalizadas"
         },
@@ -550,7 +550,7 @@
       "description": "Tarefas v\u00e1lidas no estado A Fazer.",
       "gridPos": {
         "x": 12,
-        "y": 8,
+        "y": 10,
         "w": 4,
         "h": 3
       },
@@ -572,7 +572,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#8B682F"
+            "fixedColor": "#8E6A35"
           },
           "displayName": "Tarefas inativas/pausadas"
         },
@@ -606,7 +606,7 @@
       "description": "Tarefas v\u00e1lidas em outros estados, incluindo as sem estado.",
       "gridPos": {
         "x": 16,
-        "y": 8,
+        "y": 10,
         "w": 4,
         "h": 3
       },
@@ -628,7 +628,7 @@
           "decimals": 0,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#687184"
+            "fixedColor": "#53647A"
           },
           "displayName": "Outras tarefas"
         },
@@ -662,7 +662,7 @@
       "description": "M\u00e9dia do percent_done das tarefas v\u00e1lidas em andamento.",
       "gridPos": {
         "x": 20,
-        "y": 8,
+        "y": 10,
         "w": 4,
         "h": 3
       },
@@ -686,7 +686,7 @@
           "max": 100,
           "color": {
             "mode": "fixed",
-            "fixedColor": "#71668F"
+            "fixedColor": "#566B9C"
           },
           "displayName": "M\u00e9dia das tarefas ativas"
         },
@@ -720,9 +720,9 @@
       "description": "Count of valid tasks per User team member. This is not a productivity measure; groups are not expanded.",
       "gridPos": {
         "x": 0,
-        "y": 11,
+        "y": 13,
         "w": 24,
-        "h": 10
+        "h": 8
       },
       "pluginVersion": "13.2.2",
       "datasource": {
@@ -804,7 +804,7 @@
         "x": 0,
         "y": 3,
         "w": 24,
-        "h": 1
+        "h": 2
       },
       "id": 21,
       "options": {
@@ -829,9 +829,9 @@
       },
       "gridPos": {
         "x": 0,
-        "y": 7,
+        "y": 8,
         "w": 24,
-        "h": 1
+        "h": 2
       },
       "id": 22,
       "options": {
