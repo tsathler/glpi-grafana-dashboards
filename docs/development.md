@@ -137,6 +137,7 @@ O `.env` local do ambiente de testes usa os nomes de variáveis abaixo; os valor
 ```env
 GRAFANA_ADMIN_USER=...
 GRAFANA_ADMIN_PASSWORD=...
+GF_SERVER_ROOT_URL=http://<endereco-do-proxy>:<porta>/
 
 GLPI_DB_HOST=<host-do-banco>
 GLPI_DB_PORT=<porta-do-banco>
@@ -144,6 +145,8 @@ GLPI_DB_NAME=<banco-glpi>
 GLPI_DB_USER=...
 GLPI_DB_PASSWORD=...
 ```
+
+`GF_SERVER_ROOT_URL` é o endereço que os usuários abrem no navegador, passando pelo reverse proxy, e não o endereço local do Grafana. O Compose o repassa ao container pelo `env_file`. Sem ele, o Grafana assume `http://localhost:3000/` e recusa conexões do Grafana Live vindas do proxy, registrando `Request Origin is not authorized` no log; os dashboards continuam funcionando, porque o auto-refresh usa requisições HTTP comuns. Cada ambiente define o próprio valor no `.env` local. Se o aviso persistir depois de configurar a variável, o reverse proxy também precisa repassar conexões WebSocket em `/api/live/`.
 
 As credenciais administrativas do Grafana e as credenciais do MariaDB são independentes. `GRAFANA_ADMIN_USER` identifica o administrador da aplicação Grafana; `GLPI_DB_USER` é a conta leitora do banco. Não reutilize as credenciais de uma conta na outra.
 
