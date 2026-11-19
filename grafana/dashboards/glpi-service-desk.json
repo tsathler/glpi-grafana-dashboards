@@ -5,7 +5,20 @@
   "editable": false,
   "graphTooltip": 0,
   "id": null,
-  "links": [],
+  "links": [
+    {
+      "title": "Desde o primeiro chamado",
+      "type": "link",
+      "icon": "calendar",
+      "tooltip": "Define o período a partir do primeiro chamado da entidade selecionada até agora",
+      "url": "/d/glpi-service-desk/glpi-service-desk?from=${first_ticket}&to=now",
+      "includeVars": true,
+      "keepTime": false,
+      "targetBlank": false,
+      "asDropdown": false,
+      "tags": []
+    }
+  ],
   "panels": [
     {
       "id": 10,
@@ -592,7 +605,7 @@
       "id": 6,
       "type": "stat",
       "title": "",
-      "description": "Snapshot atual: total de tickets não deletados. Independente do time picker.",
+      "description": "Snapshot atual: chamados em aberto (Novos, Atribuídos, Planejados e Pendentes), não deletados. Independente do time picker.",
       "datasource": {
         "type": "mysql",
         "uid": "glpi-mysql"
@@ -608,7 +621,7 @@
           "decimals": 0,
           "unit": "none",
           "mappings": [],
-          "displayName": "Total de chamados",
+          "displayName": "Total em aberto",
           "color": {
             "mode": "fixed",
             "fixedColor": "#56687A"
@@ -645,7 +658,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: all tickets not logically deleted.\n-- Formatted in SQL (60,900) so the thousands separator does not depend on the browser locale.\nSELECT FORMAT(COUNT(*), 0) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.entities_id IN ($entity);\n",
+          "rawSql": "-- Current snapshot: open tickets (New, Processing assigned/planned, Pending), not logically deleted.\n-- Formatted in SQL (1,234) so the thousands separator does not depend on the browser locale.\nSELECT FORMAT(COUNT(*), 0) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status IN (1, 2, 3, 4)\n  AND t.entities_id IN ($entity);\n",
           "refId": "A"
         }
       ]
@@ -769,6 +782,26 @@
         "regex": "",
         "sort": 1,
         "skipUrlSync": false
+      },
+      {
+        "name": "first_ticket",
+        "label": "Primeiro chamado",
+        "type": "query",
+        "datasource": {
+          "type": "mysql",
+          "uid": "glpi-mysql"
+        },
+        "query": "SELECT UNIX_TIMESTAMP(MIN(t.date)) * 1000 AS __value FROM glpi_tickets AS t WHERE t.is_deleted = 0 AND t.date IS NOT NULL AND t.entities_id IN ($entity)",
+        "definition": "SELECT UNIX_TIMESTAMP(MIN(t.date)) * 1000 AS __value FROM glpi_tickets AS t WHERE t.is_deleted = 0 AND t.date IS NOT NULL AND t.entities_id IN ($entity)",
+        "refresh": 1,
+        "hide": 2,
+        "includeAll": false,
+        "multi": false,
+        "current": {},
+        "options": [],
+        "regex": "",
+        "sort": 0,
+        "skipUrlSync": true
       }
     ]
   },
