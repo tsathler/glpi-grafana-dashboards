@@ -39,7 +39,7 @@
                   "showLineNumbers": false,
                   "showMiniMap": false
                 },
-                "content": "<div style=\"padding:0 0 8px;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:1.8px;color:#42c6d8;line-height:1.4;\">PAINEL DE ENGENHARIA</div><div style=\"font-size:clamp(38px, 4.2vw, 52px);font-weight:700;letter-spacing:-0.5px;line-height:1.1;margin:2px 0 0;color:#e7eef7;\">DESENVOLVIMENTO</div><div style=\"width:82px;height:2px;background:#42c6d8;margin-top:8px;\"></div></div>",
+                "content": "<div style=\"padding:2px 0 0;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:1.8px;color:#42c6d8;line-height:1.4;\">PAINEL DE ENGENHARIA</div><div style=\"font-size:clamp(32px, 3.4vw, 44px);font-weight:700;letter-spacing:-0.5px;line-height:1.1;margin:2px 0 0;\">DESENVOLVIMENTO</div><div style=\"width:56px;height:3px;background:#42c6d8;border-radius:2px;margin-top:8px;\"></div></div>",
                 "disableSanitizeHtml": false,
                 "mode": "html"
               },
@@ -74,7 +74,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Current snapshot: all valid projects in the selected entity scope.\r\nSELECT COUNT(DISTINCT p.id) AS value\r\nFROM glpi_projects AS p\r\nWHERE p.is_deleted = 0\r\n  AND p.is_template = 0\r\n  AND p.entities_id IN ($entity);\r\n",
+                        "rawSql": "-- Current snapshot: all valid projects in the selected entity scope.\nSELECT COUNT(*) AS value\nFROM glpi_projects AS p\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity);\n",
                         "format": "table"
                       }
                     },
@@ -102,25 +102,26 @@
                 },
                 "orientation": "auto",
                 "textMode": "value_and_name",
-                "colorMode": "background",
+                "colorMode": "background_solid",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "wideLayout": false,
                 "showPercentChange": false,
                 "text": {
-                  "titleSize": 18,
-                  "valueSize": 64
+                  "titleSize": 16,
+                  "valueSize": 56
                 }
               },
               "fieldConfig": {
                 "defaults": {
                   "unit": "none",
                   "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Total",
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#3B8FE3"
-                  },
-                  "displayName": "Total de projetos"
+                    "fixedColor": "#3F7FC1"
+                  }
                 },
                 "overrides": []
               }
@@ -133,7 +134,7 @@
         "spec": {
           "id": 1,
           "title": "",
-          "description": "Projetos válidos no estado Em andamento.",
+          "description": "Projetos em estados não finalizados que não são de não iniciados nem pausados, incluindo fases intermediárias.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -150,7 +151,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Current snapshot: valid projects in the configured Em andamento state.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) = 'em andamento';\n",
+                        "rawSql": "-- Current snapshot: valid projects in progress, including intermediate phases.\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT COUNT(*) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND p.projectstates_id <> 0\n  AND ps.is_finished = 0\n  AND COALESCE(LOWER(TRIM(ps.name)), '') NOT IN ('a fazer', 'não inicializado')\n  AND COALESCE(LOWER(TRIM(ps.name)), '') NOT LIKE '%paus%';\n",
                         "format": "table"
                       }
                     },
@@ -178,25 +179,26 @@
                 },
                 "orientation": "auto",
                 "textMode": "value_and_name",
-                "colorMode": "background",
+                "colorMode": "background_solid",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "wideLayout": false,
                 "showPercentChange": false,
                 "text": {
-                  "titleSize": 18,
-                  "valueSize": 64
+                  "titleSize": 16,
+                  "valueSize": 56
                 }
               },
               "fieldConfig": {
                 "defaults": {
                   "unit": "none",
                   "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Em andamento",
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#2F9CA3"
-                  },
-                  "displayName": "Projetos ativos"
+                    "fixedColor": "#2F8F8A"
+                  }
                 },
                 "overrides": []
               }
@@ -209,7 +211,7 @@
         "spec": {
           "id": 2,
           "title": "",
-          "description": "Projetos válidos cujo estado está marcado como finalizado.",
+          "description": "Projetos cujo estado está marcado como finalizado.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -226,7 +228,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Current snapshot: valid projects whose state is marked finished.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 1;\n",
+                        "rawSql": "-- Current snapshot: valid projects whose state is marked finished.\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT COUNT(*) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND p.projectstates_id <> 0\n  AND ps.is_finished = 1;\n",
                         "format": "table"
                       }
                     },
@@ -254,25 +256,26 @@
                 },
                 "orientation": "auto",
                 "textMode": "value_and_name",
-                "colorMode": "background",
+                "colorMode": "background_solid",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "wideLayout": false,
                 "showPercentChange": false,
                 "text": {
-                  "titleSize": 18,
-                  "valueSize": 64
+                  "titleSize": 16,
+                  "valueSize": 56
                 }
               },
               "fieldConfig": {
                 "defaults": {
                   "unit": "none",
                   "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Finalizados",
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#4F9A5C"
-                  },
-                  "displayName": "Projetos finalizados"
+                    "fixedColor": "#3F8F5A"
+                  }
                 },
                 "overrides": []
               }
@@ -285,7 +288,7 @@
         "spec": {
           "id": 3,
           "title": "",
-          "description": "Projetos válidos no estado A Fazer ou em estados pausados.",
+          "description": "Projetos no estado A Fazer ou Não Inicializado.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -302,7 +305,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Current snapshot: valid projects in A Fazer or a paused state.\n-- State 0 is intentionally excluded; it represents no state and is counted as Other.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND (\n      LOWER(TRIM(ps.name)) = 'a fazer'\n      OR LOWER(TRIM(ps.name)) LIKE '%paus%'\n  );\n",
+                        "rawSql": "-- Current snapshot: valid projects not started yet.\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT COUNT(*) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND p.projectstates_id <> 0\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) IN ('a fazer', 'não inicializado');\n",
                         "format": "table"
                       }
                     },
@@ -330,25 +333,26 @@
                 },
                 "orientation": "auto",
                 "textMode": "value_and_name",
-                "colorMode": "background",
+                "colorMode": "background_solid",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "wideLayout": false,
                 "showPercentChange": false,
                 "text": {
-                  "titleSize": 18,
-                  "valueSize": 64
+                  "titleSize": 16,
+                  "valueSize": 56
                 }
               },
               "fieldConfig": {
                 "defaults": {
                   "unit": "none",
                   "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Não iniciados",
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#C57A2D"
-                  },
-                  "displayName": "Projetos inativos/pausados"
+                    "fixedColor": "#7562BE"
+                  }
                 },
                 "overrides": []
               }
@@ -361,7 +365,7 @@
         "spec": {
           "id": 18,
           "title": "",
-          "description": "Projetos válidos em outros estados, incluindo os sem estado.",
+          "description": "Projetos sem estado definido.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -378,7 +382,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Current snapshot: valid projects outside the finished, in-progress, and unstarted/paused groups.\n-- Projects without a state and unmatched states are counted as Other.\nSELECT COUNT(DISTINCT p.id) AS value\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND COALESCE(ps.is_finished, 0) = 0\n  AND (\n      p.projectstates_id = 0\n      OR ps.id IS NULL\n      OR ps.name IS NULL\n      OR (\n          LOWER(TRIM(ps.name)) NOT IN (\n              'em andamento',\n              'a fazer'\n          )\n          AND LOWER(TRIM(ps.name)) NOT LIKE '%paus%'\n      )\n  );\n",
+                        "rawSql": "-- Current snapshot: valid projects without a state (projectstates_id 0 or a missing state).\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT COUNT(*) AS value\nFROM glpi_projects AS p\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.id IS NULL;\n",
                         "format": "table"
                       }
                     },
@@ -406,25 +410,26 @@
                 },
                 "orientation": "auto",
                 "textMode": "value_and_name",
-                "colorMode": "background",
+                "colorMode": "background_solid",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "wideLayout": false,
                 "showPercentChange": false,
                 "text": {
-                  "titleSize": 18,
-                  "valueSize": 64
+                  "titleSize": 16,
+                  "valueSize": 56
                 }
               },
               "fieldConfig": {
                 "defaults": {
                   "unit": "none",
                   "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Sem estado",
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#7892A8"
-                  },
-                  "displayName": "Outros projetos"
+                    "fixedColor": "#56687A"
+                  }
                 },
                 "overrides": []
               }
@@ -437,7 +442,7 @@
         "spec": {
           "id": 4,
           "title": "",
-          "description": "Média do percent_done dos projetos válidos em andamento.",
+          "description": "Média do percent_done dos projetos em andamento. Não é uma taxa de conclusão.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -454,7 +459,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Average stored progress for valid projects in the configured Em andamento state.\nSELECT AVG(p.percent_done) AS average_progress\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) = 'em andamento';\n",
+                        "rawSql": "-- Average stored progress (percent_done) of valid projects in progress.\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT AVG(p.percent_done) AS average_progress\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND p.projectstates_id <> 0\n  AND ps.is_finished = 0\n  AND COALESCE(LOWER(TRIM(ps.name)), '') NOT IN ('a fazer', 'não inicializado')\n  AND COALESCE(LOWER(TRIM(ps.name)), '') NOT LIKE '%paus%';\n",
                         "format": "table"
                       }
                     },
@@ -491,11 +496,12 @@
                   "centerGlow": false
                 },
                 "barShape": "rounded",
-                "barWidthFactor": 0.65,
+                "barWidthFactor": 0.8,
                 "endpointMarker": "glow",
                 "textMode": "value_and_name",
                 "text": {
-                  "titleSize": 20
+                  "titleSize": 16,
+                  "valueSize": 44
                 }
               },
               "fieldConfig": {
@@ -506,9 +512,9 @@
                   "max": 100,
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#8657D8"
+                    "fixedColor": "#7562BE"
                   },
-                  "displayName": "Média dos projetos ativos"
+                  "displayName": "Progresso médio dos projetos em andamento"
                 },
                 "overrides": []
               }
@@ -521,7 +527,7 @@
         "spec": {
           "id": 12,
           "title": "",
-          "description": "Tarefas válidas em projetos válidos na entidade selecionada.",
+          "description": "Tarefas válidas de projetos válidos na entidade selecionada.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -538,7 +544,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Current snapshot: valid tasks belonging to valid projects in the selected project entity scope.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity);\n",
+                        "rawSql": "-- Current snapshot: valid tasks of valid projects in the selected project entity scope.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity);\n",
                         "format": "table"
                       }
                     },
@@ -566,25 +572,26 @@
                 },
                 "orientation": "auto",
                 "textMode": "value_and_name",
-                "colorMode": "background",
+                "colorMode": "background_solid",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "wideLayout": false,
                 "showPercentChange": false,
                 "text": {
-                  "titleSize": 18,
-                  "valueSize": 64
+                  "titleSize": 16,
+                  "valueSize": 56
                 }
               },
               "fieldConfig": {
                 "defaults": {
                   "unit": "none",
                   "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Total",
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#3B8FE3"
-                  },
-                  "displayName": "Total de tarefas"
+                    "fixedColor": "#3F7FC1"
+                  }
                 },
                 "overrides": []
               }
@@ -597,7 +604,7 @@
         "spec": {
           "id": 13,
           "title": "",
-          "description": "Tarefas válidas no estado Em andamento, pelo escopo da entidade do projeto pai.",
+          "description": "Tarefas em estados não finalizados que não são de não iniciados nem pausados, incluindo fases intermediárias. Usa a entidade do projeto pai.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -614,7 +621,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Current snapshot: valid tasks in the configured Em andamento state.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) = 'em andamento';\n",
+                        "rawSql": "-- Current snapshot: valid tasks in progress, including intermediate phases.\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND pt.projectstates_id <> 0\n  AND ps.is_finished = 0\n  AND COALESCE(LOWER(TRIM(ps.name)), '') NOT IN ('a fazer', 'não inicializado')\n  AND COALESCE(LOWER(TRIM(ps.name)), '') NOT LIKE '%paus%';\n",
                         "format": "table"
                       }
                     },
@@ -642,25 +649,26 @@
                 },
                 "orientation": "auto",
                 "textMode": "value_and_name",
-                "colorMode": "background",
+                "colorMode": "background_solid",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "wideLayout": false,
                 "showPercentChange": false,
                 "text": {
-                  "titleSize": 18,
-                  "valueSize": 64
+                  "titleSize": 16,
+                  "valueSize": 56
                 }
               },
               "fieldConfig": {
                 "defaults": {
                   "unit": "none",
                   "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Em andamento",
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#2F9CA3"
-                  },
-                  "displayName": "Tarefas ativas"
+                    "fixedColor": "#2F8F8A"
+                  }
                 },
                 "overrides": []
               }
@@ -673,7 +681,7 @@
         "spec": {
           "id": 14,
           "title": "",
-          "description": "Tarefas válidas cujo estado está marcado como finalizado.",
+          "description": "Tarefas cujo estado está marcado como finalizado.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -690,7 +698,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Current snapshot: valid tasks whose state is marked finished.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 1;\n",
+                        "rawSql": "-- Current snapshot: valid tasks whose state is marked finished.\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND pt.projectstates_id <> 0\n  AND ps.is_finished = 1;\n",
                         "format": "table"
                       }
                     },
@@ -718,25 +726,26 @@
                 },
                 "orientation": "auto",
                 "textMode": "value_and_name",
-                "colorMode": "background",
+                "colorMode": "background_solid",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "wideLayout": false,
                 "showPercentChange": false,
                 "text": {
-                  "titleSize": 18,
-                  "valueSize": 64
+                  "titleSize": 16,
+                  "valueSize": 56
                 }
               },
               "fieldConfig": {
                 "defaults": {
                   "unit": "none",
                   "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Finalizadas",
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#4F9A5C"
-                  },
-                  "displayName": "Tarefas finalizadas"
+                    "fixedColor": "#3F8F5A"
+                  }
                 },
                 "overrides": []
               }
@@ -749,7 +758,7 @@
         "spec": {
           "id": 19,
           "title": "",
-          "description": "Tarefas válidas no estado A Fazer.",
+          "description": "Tarefas no estado A Fazer ou Não Inicializado.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -766,7 +775,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Current snapshot: valid tasks in an unstarted state.\n-- State 0 has no configured state and is counted as Other.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) = 'a fazer';\n",
+                        "rawSql": "-- Current snapshot: valid tasks not started yet.\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND pt.projectstates_id <> 0\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) IN ('a fazer', 'não inicializado');\n",
                         "format": "table"
                       }
                     },
@@ -794,25 +803,26 @@
                 },
                 "orientation": "auto",
                 "textMode": "value_and_name",
-                "colorMode": "background",
+                "colorMode": "background_solid",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "wideLayout": false,
                 "showPercentChange": false,
                 "text": {
-                  "titleSize": 18,
-                  "valueSize": 64
+                  "titleSize": 16,
+                  "valueSize": 56
                 }
               },
               "fieldConfig": {
                 "defaults": {
                   "unit": "none",
                   "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Não iniciadas",
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#C57A2D"
-                  },
-                  "displayName": "Tarefas inativas/pausadas"
+                    "fixedColor": "#7562BE"
+                  }
                 },
                 "overrides": []
               }
@@ -825,7 +835,7 @@
         "spec": {
           "id": 20,
           "title": "",
-          "description": "Tarefas válidas em outros estados, incluindo as sem estado.",
+          "description": "Tarefas sem estado definido.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -842,7 +852,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Current snapshot: valid tasks outside the finished, in-progress, and unstarted groups.\n-- Tasks without a state and unmatched states are counted as Other.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND COALESCE(ps.is_finished, 0) = 0\n  AND (\n      pt.projectstates_id = 0\n      OR ps.id IS NULL\n      OR ps.name IS NULL\n      OR LOWER(TRIM(ps.name)) NOT IN (\n          'em andamento',\n          'a fazer'\n      )\n  );\n",
+                        "rawSql": "-- Current snapshot: valid tasks without a state (projectstates_id 0 or a missing state).\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nLEFT JOIN glpi_projectstates AS ps\n       ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.id IS NULL;\n",
                         "format": "table"
                       }
                     },
@@ -870,25 +880,26 @@
                 },
                 "orientation": "auto",
                 "textMode": "value_and_name",
-                "colorMode": "background",
+                "colorMode": "background_solid",
                 "graphMode": "none",
                 "justifyMode": "auto",
                 "wideLayout": false,
                 "showPercentChange": false,
                 "text": {
-                  "titleSize": 18,
-                  "valueSize": 64
+                  "titleSize": 16,
+                  "valueSize": 56
                 }
               },
               "fieldConfig": {
                 "defaults": {
                   "unit": "none",
                   "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Sem estado",
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#7892A8"
-                  },
-                  "displayName": "Outras tarefas"
+                    "fixedColor": "#56687A"
+                  }
                 },
                 "overrides": []
               }
@@ -901,7 +912,7 @@
         "spec": {
           "id": 15,
           "title": "",
-          "description": "Média do percent_done das tarefas válidas em andamento.",
+          "description": "Média do percent_done das tarefas em andamento. Não é uma taxa de conclusão.",
           "links": [],
           "data": {
             "kind": "QueryGroup",
@@ -918,7 +929,7 @@
                         "name": "glpi-mysql"
                       },
                       "spec": {
-                        "rawSql": "-- Average stored progress for valid tasks in the configured Em andamento state.\nSELECT AVG(pt.percent_done) AS average_progress\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) = 'em andamento';\n",
+                        "rawSql": "-- Average stored progress (percent_done) of valid tasks in progress.\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT AVG(pt.percent_done) AS average_progress\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND pt.projectstates_id <> 0\n  AND ps.is_finished = 0\n  AND COALESCE(LOWER(TRIM(ps.name)), '') NOT IN ('a fazer', 'não inicializado')\n  AND COALESCE(LOWER(TRIM(ps.name)), '') NOT LIKE '%paus%';\n",
                         "format": "table"
                       }
                     },
@@ -955,11 +966,12 @@
                   "centerGlow": false
                 },
                 "barShape": "rounded",
-                "barWidthFactor": 0.65,
+                "barWidthFactor": 0.8,
                 "endpointMarker": "glow",
                 "textMode": "value_and_name",
                 "text": {
-                  "titleSize": 20
+                  "titleSize": 16,
+                  "valueSize": 44
                 }
               },
               "fieldConfig": {
@@ -970,9 +982,9 @@
                   "max": 100,
                   "color": {
                     "mode": "fixed",
-                    "fixedColor": "#8657D8"
+                    "fixedColor": "#7562BE"
                   },
-                  "displayName": "Média das tarefas ativas"
+                  "displayName": "Progresso médio das tarefas em andamento"
                 },
                 "overrides": []
               }
@@ -1005,7 +1017,7 @@
                   "showLineNumbers": false,
                   "showMiniMap": false
                 },
-                "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:14px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">01</span><span style=\"font-size:20px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">PROJETOS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:14px;\"></span></div></div>",
+                "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:14px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">01</span><span style=\"font-size:18px;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">PROJETOS</span><span style=\"height:1px;background:rgba(128,128,128,0.35);flex:1;margin-left:14px;\"></span></div></div>",
                 "disableSanitizeHtml": false,
                 "mode": "html"
               },
@@ -1043,7 +1055,7 @@
                   "showLineNumbers": false,
                   "showMiniMap": false
                 },
-                "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:14px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">02</span><span style=\"font-size:20px;color:#e7eef7;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">TAREFAS</span><span style=\"height:1px;background:#303a46;flex:1;margin-left:14px;\"></span></div></div>",
+                "content": "<div style=\"padding:3px 0 4px;\"><div style=\"display:flex;align-items:center;\"><span style=\"font-size:14px;color:#42c6d8;letter-spacing:1.5px;font-weight:700;\">02</span><span style=\"font-size:18px;letter-spacing:1.2px;font-weight:700;margin-left:10px;\">TAREFAS</span><span style=\"height:1px;background:rgba(128,128,128,0.35);flex:1;margin-left:14px;\"></span></div></div>",
                 "disableSanitizeHtml": false,
                 "mode": "html"
               },
@@ -1054,6 +1066,160 @@
             }
           },
           "transparent": true
+        }
+      },
+      "panel-5": {
+        "kind": "Panel",
+        "spec": {
+          "id": 5,
+          "title": "",
+          "description": "Projetos em estados cujo nome contém \"paus\".",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "mysql",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "glpi-mysql"
+                      },
+                      "spec": {
+                        "rawSql": "-- Current snapshot: valid paused projects.\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT COUNT(*) AS value\nFROM glpi_projects AS p\nJOIN glpi_projectstates AS ps\n     ON ps.id = p.projectstates_id\nWHERE p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND p.projectstates_id <> 0\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) LIKE '%paus%';\n",
+                        "format": "table"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.2.2",
+            "spec": {
+              "options": {
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "orientation": "auto",
+                "textMode": "value_and_name",
+                "colorMode": "background_solid",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "wideLayout": false,
+                "showPercentChange": false,
+                "text": {
+                  "titleSize": 16,
+                  "valueSize": 56
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none",
+                  "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Pausados",
+                  "color": {
+                    "mode": "fixed",
+                    "fixedColor": "#B97A35"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
+        }
+      },
+      "panel-16": {
+        "kind": "Panel",
+        "spec": {
+          "id": 16,
+          "title": "",
+          "description": "Tarefas em estados cujo nome contém \"paus\".",
+          "links": [],
+          "data": {
+            "kind": "QueryGroup",
+            "spec": {
+              "queries": [
+                {
+                  "kind": "PanelQuery",
+                  "spec": {
+                    "query": {
+                      "kind": "DataQuery",
+                      "group": "mysql",
+                      "version": "v0",
+                      "datasource": {
+                        "name": "glpi-mysql"
+                      },
+                      "spec": {
+                        "rawSql": "-- Current snapshot: valid paused tasks.\n-- Status groups (verified in TEST and production): finished = is_finished = 1;\n-- not started = A Fazer (TEST) or Não Inicializado (production); paused = name contains 'paus';\n-- in progress = any other non-finished state; no state = projectstates_id 0 or missing state.\nSELECT COUNT(*) AS value\nFROM glpi_projecttasks AS pt\nJOIN glpi_projects AS p\n     ON p.id = pt.projects_id\nJOIN glpi_projectstates AS ps\n     ON ps.id = pt.projectstates_id\nWHERE pt.is_deleted = 0\n  AND pt.is_template = 0\n  AND p.is_deleted = 0\n  AND p.is_template = 0\n  AND p.entities_id IN ($entity)\n  AND pt.projectstates_id <> 0\n  AND ps.is_finished = 0\n  AND LOWER(TRIM(ps.name)) LIKE '%paus%';\n",
+                        "format": "table"
+                      }
+                    },
+                    "refId": "A",
+                    "hidden": false
+                  }
+                }
+              ],
+              "transformations": [],
+              "queryOptions": {}
+            }
+          },
+          "vizConfig": {
+            "kind": "VizConfig",
+            "group": "stat",
+            "version": "13.2.2",
+            "spec": {
+              "options": {
+                "reduceOptions": {
+                  "calcs": [
+                    "lastNotNull"
+                  ],
+                  "fields": "",
+                  "values": false
+                },
+                "orientation": "auto",
+                "textMode": "value_and_name",
+                "colorMode": "background_solid",
+                "graphMode": "none",
+                "justifyMode": "auto",
+                "wideLayout": false,
+                "showPercentChange": false,
+                "text": {
+                  "titleSize": 16,
+                  "valueSize": 56
+                }
+              },
+              "fieldConfig": {
+                "defaults": {
+                  "unit": "none",
+                  "decimals": 0,
+                  "mappings": [],
+                  "displayName": "Pausadas",
+                  "color": {
+                    "mode": "fixed",
+                    "fixedColor": "#B97A35"
+                  }
+                },
+                "overrides": []
+              }
+            }
+          }
         }
       }
     },
@@ -1121,18 +1287,16 @@
               "collapse": false,
               "hideHeader": true,
               "layout": {
-                "kind": "AutoGridLayout",
+                "kind": "GridLayout",
                 "spec": {
-                  "maxColumnCount": 5,
-                  "columnWidthMode": "custom",
-                  "columnWidth": 250,
-                  "rowHeightMode": "custom",
-                  "rowHeight": 180,
-                  "fillScreen": false,
                   "items": [
                     {
-                      "kind": "AutoGridLayoutItem",
+                      "kind": "GridLayoutItem",
                       "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 5,
+                        "height": 4,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-11"
@@ -1140,8 +1304,12 @@
                       }
                     },
                     {
-                      "kind": "AutoGridLayoutItem",
+                      "kind": "GridLayoutItem",
                       "spec": {
+                        "x": 5,
+                        "y": 0,
+                        "width": 5,
+                        "height": 4,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-1"
@@ -1149,17 +1317,12 @@
                       }
                     },
                     {
-                      "kind": "AutoGridLayoutItem",
+                      "kind": "GridLayoutItem",
                       "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-2"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "AutoGridLayoutItem",
-                      "spec": {
+                        "x": 10,
+                        "y": 0,
+                        "width": 5,
+                        "height": 4,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-3"
@@ -1167,11 +1330,54 @@
                       }
                     },
                     {
-                      "kind": "AutoGridLayoutItem",
+                      "kind": "GridLayoutItem",
                       "spec": {
+                        "x": 0,
+                        "y": 4,
+                        "width": 5,
+                        "height": 4,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-5"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 5,
+                        "y": 4,
+                        "width": 5,
+                        "height": 4,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-2"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 10,
+                        "y": 4,
+                        "width": 5,
+                        "height": 4,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-18"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 15,
+                        "y": 0,
+                        "width": 9,
+                        "height": 8,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-4"
                         }
                       }
                     }
@@ -1213,18 +1419,16 @@
               "collapse": false,
               "hideHeader": true,
               "layout": {
-                "kind": "AutoGridLayout",
+                "kind": "GridLayout",
                 "spec": {
-                  "maxColumnCount": 5,
-                  "columnWidthMode": "custom",
-                  "columnWidth": 250,
-                  "rowHeightMode": "custom",
-                  "rowHeight": 180,
-                  "fillScreen": false,
                   "items": [
                     {
-                      "kind": "AutoGridLayoutItem",
+                      "kind": "GridLayoutItem",
                       "spec": {
+                        "x": 0,
+                        "y": 0,
+                        "width": 5,
+                        "height": 4,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-12"
@@ -1232,8 +1436,12 @@
                       }
                     },
                     {
-                      "kind": "AutoGridLayoutItem",
+                      "kind": "GridLayoutItem",
                       "spec": {
+                        "x": 5,
+                        "y": 0,
+                        "width": 5,
+                        "height": 4,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-13"
@@ -1241,17 +1449,12 @@
                       }
                     },
                     {
-                      "kind": "AutoGridLayoutItem",
+                      "kind": "GridLayoutItem",
                       "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-14"
-                        }
-                      }
-                    },
-                    {
-                      "kind": "AutoGridLayoutItem",
-                      "spec": {
+                        "x": 10,
+                        "y": 0,
+                        "width": 5,
+                        "height": 4,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-19"
@@ -1259,46 +1462,51 @@
                       }
                     },
                     {
-                      "kind": "AutoGridLayoutItem",
+                      "kind": "GridLayoutItem",
                       "spec": {
+                        "x": 0,
+                        "y": 4,
+                        "width": 5,
+                        "height": 4,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-16"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 5,
+                        "y": 4,
+                        "width": 5,
+                        "height": 4,
+                        "element": {
+                          "kind": "ElementReference",
+                          "name": "panel-14"
+                        }
+                      }
+                    },
+                    {
+                      "kind": "GridLayoutItem",
+                      "spec": {
+                        "x": 10,
+                        "y": 4,
+                        "width": 5,
+                        "height": 4,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-20"
                         }
                       }
-                    }
-                  ]
-                }
-              }
-            }
-          },
-          {
-            "kind": "RowsLayoutRow",
-            "spec": {
-              "collapse": false,
-              "hideHeader": true,
-              "layout": {
-                "kind": "AutoGridLayout",
-                "spec": {
-                  "maxColumnCount": 2,
-                  "columnWidthMode": "custom",
-                  "columnWidth": 600,
-                  "rowHeightMode": "custom",
-                  "rowHeight": 260,
-                  "fillScreen": false,
-                  "items": [
-                    {
-                      "kind": "AutoGridLayoutItem",
-                      "spec": {
-                        "element": {
-                          "kind": "ElementReference",
-                          "name": "panel-4"
-                        }
-                      }
                     },
                     {
-                      "kind": "AutoGridLayoutItem",
+                      "kind": "GridLayoutItem",
                       "spec": {
+                        "x": 15,
+                        "y": 0,
+                        "width": 9,
+                        "height": 8,
                         "element": {
                           "kind": "ElementReference",
                           "name": "panel-15"
@@ -1345,7 +1553,7 @@
           "options": [],
           "multi": false,
           "includeAll": true,
-          "allowCustomValue": true
+          "allowCustomValue": false
         }
       }
     ],
@@ -1355,8 +1563,8 @@
       "from": "now-30d",
       "to": "now",
       "timezone": "browser",
-      "autoRefresh": "",
-      "hideTimepicker": false
+      "autoRefresh": "5m",
+      "hideTimepicker": true
     },
     "fiscalYearStartMonth": 0,
     "weekStart": "monday",

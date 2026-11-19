@@ -1,4 +1,4 @@
--- Current snapshot: valid tasks belonging to valid projects in the selected project entity scope.
+-- Current snapshot: valid tasks of valid projects in the selected project entity scope.
 SELECT COUNT(*) AS value
 FROM glpi_projecttasks AS pt
 JOIN glpi_projects AS p

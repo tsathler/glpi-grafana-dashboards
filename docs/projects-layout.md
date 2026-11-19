@@ -1,22 +1,23 @@
 # GLPI Projects layout
 
-Status: Congelado para novas funcionalidades; a validação integrada do layout V2 e das queries revisadas em TEST está pendente.
+Status: Congelado para novas funcionalidades; a validação integrada dos grupos de estado revisados e do layout em TEST está pendente.
 
-The `glpi-projects` dashboard has its own technical identity: a compact borderless **DESENVOLVIMENTO** heading with a short cyan underline, two numbered sections, ten equal-width Stat cards, and two percentage Gauges. Each five-card row uses Grafana V2 Auto grid so the cards fill the available width with consistent gutters instead of explicit blank grid columns. The Gauges use the Service Desk visual style with fixed purple coloring; SLA thresholds are not reused. The brighter palette follows the Service Desk colors while retaining project and task status meanings. The team distribution chart is removed so the dashboard focuses on consolidated numeric indicators rather than operational tracking. The state distribution charts are removed.
+The `glpi-projects` dashboard follows the Service Desk appearance: a compact **PAINEL DE ENGENHARIA / DESENVOLVIMENTO** heading in the theme text color with a short cyan underline, two numbered section labels (**01 PROJETOS**, **02 TAREFAS**), twelve solid-color Stat cards, and two percentage Gauges. Headings and section labels use the theme text color, so they are readable in light and dark themes. Like the Service Desk, each section puts its main content on the left two thirds and its Gauge on the right third, so the progress indicator sits next to the cards it summarizes. The whole dashboard fits a 1920×1080 screen without scrolling.
 
-| Section | Panel IDs | Layout |
+| Section | Panel IDs | Layout (24-column grid inside the row) |
 | --- | --- | --- |
-| Heading | 17 | Full-width grid row |
-| Project section label | 21 | Full-width grid row |
-| Project KPIs | 11, 1, 2, 3, 18 | Auto grid, up to five equal columns |
-| Task section label | 22 | Full-width grid row |
-| Task KPIs | 12, 13, 14, 19, 20 | Auto grid, up to five equal columns |
-| Progress Gauges | 4, 15 | Auto grid, up to two equal columns |
+| Heading | 17 | Full width |
+| Project section label | 21 | Full width |
+| Project KPIs and Gauge | 11, 1, 3 / 5, 2, 18 and 4 | Cards in a 3 × 2 grid, 5 columns × 4 rows each; Gauge at x 15, 9 columns × 8 rows |
+| Task section label | 22 | Full width |
+| Task KPIs and Gauge | 12, 13, 19 / 16, 14, 20 and 15 | Same as projects |
 
-The dashboard file uses Grafana's `dashboard.grafana.app/v2` resource format because Auto grid is not represented by the classic 24-column `gridPos` layout. Grafana 13.2.2 supports provisioning dashboards in this resource format.
+Each card grid reads Total, Em andamento, Não iniciados in the first row and Pausados, Finalizados, Sem estado in the second, using the Service Desk palette: blue, teal, purple, amber, green and slate. The Gauges use a fixed purple color with a thick arc (`barWidthFactor` 0.8); SLA thresholds are not reused.
 
-All indicators are current snapshots independent of the time picker and use the selected **Entity**. Task queries use the parent project's entity scope. Project and task records must be valid (`is_deleted = 0`, `is_template = 0`); task joins preserve one row per task.
+The dashboard file uses Grafana's `dashboard.grafana.app/v2` resource format, with a `RowsLayout` whose rows hold `GridLayout` items. Grafana 13.2.2 provisions dashboards in this resource format. When loading it, Grafana 13.2.2 logs `[SHOULD NOT HAPPEN] failed to update managedFields` for `glpi-projects`; the dashboard still loads and renders, so the message is treated as a known Grafana issue.
 
-The status cards use the labels confirmed in the TEST dashboard: **Em andamento** identifies ongoing work, **A Fazer** identifies not-started work, and `glpi_projectstates.is_finished = 1` identifies finished work. Paused projects are grouped with not-started projects when their state label contains `paus`. The **Outros** cards include state `0` (no state) and any remaining non-finished states. A project or task with no state is never treated as ongoing. Average progress uses `percent_done` only for records in **Em andamento**; it is not a completion rate.
+All indicators are current snapshots independent of the time range, so the time picker is hidden; the dashboard refreshes every 5 minutes. They use the selected **Entity**, which accepts only values from its list. Task queries use the parent project's entity scope. Project and task records must be valid (`is_deleted = 0`, `is_template = 0`); task joins preserve one row per task.
 
-The project-task discovery was supplied as verified against TEST GLPI 11. The revised status queries and dashboard layout still require static and integrated validation; the new queries have not been executed against TEST MariaDB. Static SQL validation is not database validation.
+The status groups partition the records, so the five group cards add up to **Total**. **Finalizados** uses `glpi_projectstates.is_finished = 1`. **Não iniciados** matches `A Fazer` (TEST) and `Não Inicializado` (production). **Pausados** matches states whose name contains `paus`. **Em andamento** is every other non-finished state, including intermediate phases such as Design, Revisão de código and Fase de teste. **Sem estado** covers `projectstates_id = 0` and missing states; a record with no state is never treated as ongoing. Average progress uses `percent_done` only for records in **Em andamento**; it is not a completion rate.
+
+The production state list was checked on 2026-11-19. The revised queries were executed only in a local preview with synthetic data and the production states, where the group cards added up to the totals. Integrated validation with real data in TEST is pending.

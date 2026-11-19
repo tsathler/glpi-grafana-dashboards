@@ -152,21 +152,21 @@ Enquanto este marco estiver Planejado, não serão incluídas alterações em SQ
 
 ## Marco 5 — Dashboard gerencial e operacional de Projetos
 
-Status: Congelado para novas funcionalidades; validação integrada no Grafana e no ambiente TEST pendente.
+Status: Congelado para novas funcionalidades; correção dos grupos de estado e alinhamento visual ao Service Desk aplicados em 2026-11-19, com validação integrada em homologação pendente.
 
-O dashboard **DESENVOLVIMENTO** fica congelado no estado versionado atual: cinco cards de projetos, cinco cards de tarefas e dois gauges de progresso médio; a grade Auto grid distribui os cards de forma uniforme. Novas funcionalidades ficam pausadas. Correções de bugs, segurança e compatibilidade continuam permitidas; para retomar a evolução, o marco precisa ser reaberto explicitamente. As queries originais foram conferidas diretamente no banco em mais de um escopo de entidade, mas esta revisão de layout e das queries ainda aguarda execução em MariaDB e validação integrada no Grafana de TEST.
+O dashboard **DESENVOLVIMENTO** fica congelado no estado versionado atual: em cada seção, seis cards em grade 3 × 2 ao lado do gauge de progresso médio da seção. Novas funcionalidades ficam pausadas. Correções de bugs, segurança e compatibilidade continuam permitidas; para retomar a evolução, o marco precisa ser reaberto explicitamente. A revisão de 2026-11-19 corrigiu os grupos de estado, que não reconheciam o estado `Não Inicializado` de produção, e aplicou a aparência do Service Desk a pedido do responsável pelo projeto.
 
 ### Escopo do dashboard de Projetos
 
 - Um dashboard independente para projetos do GLPI.
 - Um filtro `Entity` consistente com o dashboard atual.
 - Cards de projetos e tarefas por grupo de estado e progresso médio dos itens em andamento.
-- Layout V2 com Auto grid para distribuir igualmente os indicadores.
+- Layout V2 com cada seção em grade: cards à esquerda e gauge de progresso à direita.
 - Tratamento explícito de projetos e tarefas sem estado.
 - Possível identificação de projetos atrasados, somente após validar sua semântica.
 - Cards nativos para projetos e tarefas agrupados por estado.
 
-Projetos e tarefas usam `projectstates_id`, relacionado a `glpi_projectstates`; o valor `0` representa ausência de estado, não um estado ativo. Os cards usam os rótulos confirmados em TEST: **Em andamento** e **A Fazer**; estados finalizados são determinados por `glpi_projectstates.is_finished = 1`, e **Outros** inclui o estado `0`. Estados de projeto cujo nome contém `paus` entram no grupo de não iniciados/pausados. `percent_done` não determina conclusão. Métricas de projetos e tarefas válidos excluem deletados e templates (`is_deleted = 0` e `is_template = 0`); métricas de tarefas filtram a entidade pelo projeto pai e preservam a relação projeto-tarefa 1:N.
+Projetos e tarefas usam `projectstates_id`, relacionado a `glpi_projectstates`; o valor `0` representa ausência de estado, não um estado ativo. Os grupos de estado formam uma partição: cada projeto ou tarefa válido entra em exatamente um card, e os cinco cards de grupo somam o Total. **Finalizados** usa `glpi_projectstates.is_finished = 1`. **Não iniciados** reconhece os nomes `A Fazer` (TEST) e `Não Inicializado` (produção). **Pausados** reconhece estados cujo nome contém `paus`. **Em andamento** é qualquer outro estado não finalizado, inclusive fases intermediárias como Design, Revisão de código, Fase de teste, Melhoria/Alteração, Banco de Dados e Documentação; um estado novo criado no GLPI entra nesse grupo automaticamente. **Sem estado** reúne `projectstates_id = 0` e referências a estados inexistentes; o estado `0` nunca é tratado como ativo. Os nomes são comparados com `LOWER(TRIM(name))`; renomear o estado de não iniciados ou de pausa no GLPI exige atualizar as queries. `percent_done` não determina conclusão. Métricas de projetos e tarefas válidos excluem deletados e templates (`is_deleted = 0` e `is_template = 0`); métricas de tarefas filtram a entidade pelo projeto pai e preservam a relação projeto-tarefa 1:N.
 
 As datas de projetos ainda não permitem métricas de atraso; datas de tarefas têm cobertura parcial e exigem validação específica. O discovery estrutural inicial e as queries originais foram conferidos no banco. As queries revisadas e a composição atual aguardam validação estática, execução em MariaDB de TEST e validação integrada no Grafana. Não foram incluídas métricas de atraso, prazos, timeline ou Gantt.
 

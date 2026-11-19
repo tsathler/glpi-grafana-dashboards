@@ -36,16 +36,19 @@ test('project dashboard is a V2 resource with a stable identity', () => {
   assert.equal(spec.layout.kind, 'RowsLayout');
 });
 
-test('rows follow the documented heading, KPI and gauge layout', () => {
-  assert.deepEqual(rowPanelIds, [[17], [21], [11, 1, 2, 3, 18], [22], [12, 13, 14, 19, 20], [4, 15]]);
-  assert.deepEqual(rows.map(({ kind }) => kind), [
-    'GridLayout', 'GridLayout', 'AutoGridLayout', 'GridLayout', 'AutoGridLayout', 'AutoGridLayout',
-  ]);
-  assert.equal(rows[2].spec.maxColumnCount, 5);
-  assert.equal(rows[4].spec.maxColumnCount, 5);
-  assert.equal(rows[5].spec.maxColumnCount, 2);
+test('rows follow the documented heading and section layout', () => {
+  assert.deepEqual(rowPanelIds, [[17], [21], [11, 1, 3, 5, 2, 18, 4], [22], [12, 13, 19, 16, 14, 20, 15]]);
+  assert.ok(rows.every(({ kind }) => kind === 'GridLayout'));
   for (const index of [0, 1, 3]) {
     assert.equal(rows[index].spec.items[0].spec.width, 24);
+  }
+  for (const index of [2, 4]) {
+    const boxes = rows[index].spec.items.map(({ spec: { x, y, width, height } }) => [x, y, width, height]);
+    assert.deepEqual(boxes, [
+      [0, 0, 5, 4], [5, 0, 5, 4], [10, 0, 5, 4],
+      [0, 4, 5, 4], [5, 4, 5, 4], [10, 4, 5, 4],
+      [15, 0, 9, 8],
+    ]);
   }
 });
 
@@ -57,7 +60,7 @@ test('every element is referenced by the layout exactly once', () => {
 test('panel types match their role', () => {
   assert.match(panelById(17).vizConfig.spec.options.content, /DESENVOLVIMENTO/);
   for (const id of [17, 21, 22]) assert.equal(panelById(id).vizConfig.group, 'text');
-  for (const id of [11, 1, 2, 3, 18, 12, 13, 14, 19, 20]) assert.equal(panelById(id).vizConfig.group, 'stat');
+  for (const id of [11, 1, 3, 5, 2, 18, 12, 13, 19, 16, 14, 20]) assert.equal(panelById(id).vizConfig.group, 'stat');
   for (const id of [4, 15]) {
     const panel = panelById(id);
     assert.equal(panel.vizConfig.group, 'gauge');
@@ -112,4 +115,27 @@ test('removed panels stay absent', () => {
   const panels = Object.values(spec.elements).map(({ spec: panel }) => panel);
   assert.ok(panels.every((panel) => !['table', 'barchart', 'piechart'].includes(panel.vizConfig.group)));
   assert.ok(panels.every(({ title }) => !/prioridade|por estado|membro/i.test(title)));
+});
+
+test('snapshot dashboard hides the time picker and rejects custom entity values', () => {
+  assert.equal(spec.timeSettings.hideTimepicker, true);
+  assert.equal(spec.variables[0].spec.allowCustomValue, false);
+});
+
+test('status groups partition records without treating state 0 as active', async () => {
+  const read = async (name) => normalizeLineEndings(await readFile(path.join(sqlDirectory, name), 'utf8'));
+  const notStarted = /IN \('a fazer', 'não inicializado'\)/;
+  for (const [inProgress, notStartedFile, paused, noState] of [
+    ['01-in-progress-projects.sql', '03-not-started-projects.sql', '05-paused-projects.sql', '18-no-state-projects.sql'],
+    ['13-in-progress-tasks.sql', '19-not-started-tasks.sql', '16-paused-tasks.sql', '20-no-state-tasks.sql'],
+  ]) {
+    const active = await read(inProgress);
+    assert.match(active, /projectstates_id <> 0/);
+    assert.match(active, /is_finished = 0/);
+    assert.match(active, /NOT IN \('a fazer', 'não inicializado'\)/);
+    assert.match(active, /NOT LIKE '%paus%'/);
+    assert.match(await read(notStartedFile), notStarted);
+    assert.match(await read(paused), /LIKE '%paus%'/);
+    assert.match(await read(noState), /LEFT JOIN glpi_projectstates[\s\S]*ps\.id IS NULL/);
+  }
 });
