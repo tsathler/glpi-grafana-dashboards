@@ -84,7 +84,8 @@ Acompanhar operações apenas pelas telas transacionais do GLPI pode dificultar 
 ### GLPI Service Desk — estável
 
 - Sete indicadores de estado dos chamados, com filtro por **Entity**.
-- Série temporal **Fluxo de chamados**, comparando criados e solucionados.
+- Série temporal **Fluxo de chamados**, com barras de criados e solucionados por dia e a linha de saldo.
+- Atualização automática a cada 5 minutos.
 - Gauge **Eficiência de resolução (SLA)** com base no prazo TTR do GLPI.
 - Provisionamento de dashboard e datasource com SQL somente para leitura.
 

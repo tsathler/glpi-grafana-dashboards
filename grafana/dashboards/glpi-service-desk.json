@@ -8,59 +8,56 @@
   "links": [],
   "panels": [
     {
-      "fieldConfig": {
-        "defaults": {},
-        "overrides": []
-      },
+      "id": 10,
+      "type": "text",
+      "title": "",
+      "transparent": true,
       "gridPos": {
         "x": 0,
         "y": 0,
         "w": 24,
         "h": 4
       },
-      "id": 10,
       "options": {
+        "mode": "html",
         "code": {
           "language": "plaintext",
           "showLineNumbers": false,
           "showMiniMap": false
         },
-        "content": "<div style=\"font-size:72px;font-weight:700;letter-spacing:0.5px;line-height:1.0;margin:0;padding:0;\">SUPORTE TÉCNICO</div>",
-        "disableSanitizeHtml": false,
-        "mode": "html"
-      },
-      "pluginVersion": "13.2.2",
+        "content": "<div style=\"padding:2px 0 0;\"><div style=\"font-size:11px;font-weight:700;letter-spacing:1.8px;color:#42c6d8;line-height:1.4;\">PAINEL DE ATENDIMENTO</div><div style=\"font-size:clamp(32px, 3.4vw, 44px);font-weight:700;letter-spacing:-0.5px;line-height:1.1;margin:2px 0 0;\">SUPORTE TÉCNICO</div><div style=\"width:56px;height:3px;background:#42c6d8;border-radius:2px;margin-top:8px;\"></div></div>"
+      }
+    },
+    {
+      "id": 1,
+      "type": "stat",
       "title": "",
-      "transparent": true,
-      "type": "text"
-    },    {
+      "description": "Snapshot atual: status New, não deletados. Independente do time picker.",
       "datasource": {
         "type": "mysql",
         "uid": "glpi-mysql"
-      },
-      "description": "Snapshot atual: status New, não deletados. Independente do time picker.",
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "mappings": [],
-          "unit": "none",
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#3B8FE3"
-          },
-          "displayName": "Chamados novos"
-        },
-        "overrides": []
       },
       "gridPos": {
         "x": 0,
-        "y": 5,
-        "w": 6,
+        "y": 4,
+        "w": 4,
         "h": 5
       },
-      "id": 1,
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "unit": "none",
+          "mappings": [],
+          "displayName": "Novos",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#3F7FC1"
+          }
+        },
+        "overrides": []
+      },
       "options": {
-        "colorMode": "background",
+        "colorMode": "background_solid",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -72,9 +69,13 @@
           "values": false
         },
         "textMode": "value_and_name",
-        "wideLayout": false
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 56
+        }
       },
-      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {
@@ -84,41 +85,41 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is New.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 1\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);",
+          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is New.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 1\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);\n",
           "refId": "A"
         }
-      ],
-      "title": "",
-      "type": "stat"
+      ]
     },
     {
+      "id": 2,
+      "type": "stat",
+      "title": "",
+      "description": "Snapshot atual: status Processing (assigned), não deletados. Independente do time picker.",
       "datasource": {
         "type": "mysql",
         "uid": "glpi-mysql"
-      },
-      "description": "Snapshot atual: status Processing (assigned), não deletados. Independente do time picker.",
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "mappings": [],
-          "unit": "none",
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#2F9CA3"
-          },
-          "displayName": "Chamados atribuídos"
-        },
-        "overrides": []
       },
       "gridPos": {
-        "x": 6,
-        "y": 5,
-        "w": 6,
+        "x": 4,
+        "y": 4,
+        "w": 4,
         "h": 5
       },
-      "id": 2,
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "unit": "none",
+          "mappings": [],
+          "displayName": "Atribuídos",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#2F8F8A"
+          }
+        },
+        "overrides": []
+      },
       "options": {
-        "colorMode": "background",
+        "colorMode": "background_solid",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -130,9 +131,13 @@
           "values": false
         },
         "textMode": "value_and_name",
-        "wideLayout": false
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 56
+        }
       },
-      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {
@@ -142,41 +147,103 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Processing (assigned).\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 2\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);",
+          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Processing (assigned).\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 2\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);\n",
           "refId": "A"
         }
-      ],
-      "title": "",
-      "type": "stat"
+      ]
     },
     {
+      "id": 9,
+      "type": "stat",
+      "title": "",
+      "description": "Snapshot atual: status Processing (planned), não deletados. Independente do time picker.",
       "datasource": {
         "type": "mysql",
         "uid": "glpi-mysql"
       },
-      "description": "Snapshot atual: status Processing (planned), não deletados. Independente do time picker.",
+      "gridPos": {
+        "x": 8,
+        "y": 4,
+        "w": 4,
+        "h": 5
+      },
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
-          "mappings": [],
           "unit": "none",
+          "mappings": [],
+          "displayName": "Planejados",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#8657D8"
-          },
-          "displayName": "Chamados planejados"
+            "fixedColor": "#7562BE"
+          }
         },
         "overrides": []
+      },
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name",
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 56
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Processing (planned).\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 3\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);\n",
+          "refId": "A"
+        }
+      ]
+    },
+    {
+      "id": 5,
+      "type": "stat",
+      "title": "",
+      "description": "Snapshot atual: status Pending, não deletados. Independente do time picker.",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
       },
       "gridPos": {
         "x": 12,
-        "y": 5,
-        "w": 6,
+        "y": 4,
+        "w": 4,
         "h": 5
       },
-      "id": 9,
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "unit": "none",
+          "mappings": [],
+          "displayName": "Pendentes",
+          "color": {
+            "mode": "fixed",
+            "fixedColor": "#B97A35"
+          }
+        },
+        "overrides": []
+      },
       "options": {
-        "colorMode": "background",
+        "colorMode": "background_solid",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -188,9 +255,13 @@
           "values": false
         },
         "textMode": "value_and_name",
-        "wideLayout": false
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 56
+        }
       },
-      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {
@@ -200,157 +271,41 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Processing (planned).\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 3\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);",
+          "rawSql": "-- Current snapshot: intentionally independent of the Grafana time picker.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status = 4\n  AND t.entities_id IN ($entity);\n",
           "refId": "A"
         }
-      ],
-      "title": "",
-      "type": "stat"
+      ]
     },
     {
-      "datasource": {
-        "type": "mysql",
-        "uid": "glpi-mysql"
-      },
-      "description": "Tickets abertos e não deletados cujo deadline TTR calculado pelo GLPI já passou. Sem deadline, não conta como atrasado.",
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "mappings": [],
-          "unit": "none",
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#C4515D"
-          },
-          "displayName": "Chamados atrasados"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "x": 18,
-        "y": 5,
-        "w": 6,
-        "h": 5
-      },
-      "id": 3,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": false
-      },
-      "pluginVersion": "13.2.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "mysql",
-            "uid": "glpi-mysql"
-          },
-          "editorMode": "code",
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "-- Current snapshot: open tickets past the GLPI-calculated TTR deadline.\n-- A missing deadline is not counted as overdue; no SLA deadline is reconstructed here.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status NOT IN (4, 5, 6)\n  AND t.time_to_resolve IS NOT NULL\n  AND t.solvedate IS NULL\n  AND t.entities_id IN ($entity)\n  AND t.time_to_resolve < NOW();",
-          "refId": "A"
-        }
-      ],
-      "title": "",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "mysql",
-        "uid": "glpi-mysql"
-      },
-      "description": "Snapshot atual: status Solved, não deletados. Independente do time picker.",
-      "fieldConfig": {
-        "defaults": {
-          "decimals": 0,
-          "mappings": [],
-          "unit": "none",
-          "color": {
-            "mode": "fixed",
-            "fixedColor": "#4F9A5C"
-          },
-          "displayName": "Chamados solucionados"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "x": 0,
-        "y": 10,
-        "w": 6,
-        "h": 5
-      },
       "id": 4,
-      "options": {
-        "colorMode": "background",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": "",
-          "values": false
-        },
-        "textMode": "value_and_name",
-        "wideLayout": false
-      },
-      "pluginVersion": "13.2.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "mysql",
-            "uid": "glpi-mysql"
-          },
-          "editorMode": "code",
-          "format": "table",
-          "rawQuery": true,
-          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Solved.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 5\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);",
-          "refId": "A"
-        }
-      ],
+      "type": "stat",
       "title": "",
-      "type": "stat"
-    },
-    {
+      "description": "Snapshot atual: status Solved, não deletados. Independente do time picker.",
       "datasource": {
         "type": "mysql",
         "uid": "glpi-mysql"
       },
-      "description": "Snapshot atual: status Pending, não deletados. Independente do time picker.",
+      "gridPos": {
+        "x": 16,
+        "y": 4,
+        "w": 4,
+        "h": 5
+      },
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
-          "mappings": [],
           "unit": "none",
+          "mappings": [],
+          "displayName": "Solucionados",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#C57A2D"
-          },
-          "displayName": "Chamados pendentes"
+            "fixedColor": "#3F8F5A"
+          }
         },
         "overrides": []
       },
-      "gridPos": {
-        "x": 6,
-        "y": 10,
-        "w": 6,
-        "h": 5
-      },
-      "id": 5,
       "options": {
-        "colorMode": "background",
+        "colorMode": "background_solid",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -362,9 +317,13 @@
           "values": false
         },
         "textMode": "value_and_name",
-        "wideLayout": false
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 56
+        }
       },
-      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {
@@ -374,41 +333,291 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: intentionally independent of the Grafana time picker.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status = 4\n  AND t.entities_id IN ($entity);",
+          "rawSql": "-- Current snapshot: tickets whose confirmed GLPI status is Solved.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.status = 5\n  AND t.is_deleted = 0\n  AND t.entities_id IN ($entity);\n",
           "refId": "A"
         }
-      ],
+      ]
+    },
+    {
+      "id": 3,
+      "type": "stat",
       "title": "",
-      "type": "stat"
+      "description": "Tickets abertos e não deletados cujo deadline TTR calculado pelo GLPI já passou. Sem deadline, não conta como atrasado.",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "gridPos": {
+        "x": 20,
+        "y": 4,
+        "w": 4,
+        "h": 5
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "unit": "none",
+          "mappings": [],
+          "displayName": "Atrasados",
+          "color": {
+            "mode": "thresholds"
+          },
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "#3F8F5A",
+                "value": null
+              },
+              {
+                "color": "#C2414B",
+                "value": 1
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "options": {
+        "colorMode": "background_solid",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "textMode": "value_and_name",
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 56
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "-- Current snapshot: open tickets past the GLPI-calculated TTR deadline.\n-- A missing deadline is not counted as overdue; no SLA deadline is reconstructed here.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.status NOT IN (4, 5, 6)\n  AND t.time_to_resolve IS NOT NULL\n  AND t.solvedate IS NULL\n  AND t.entities_id IN ($entity)\n  AND t.time_to_resolve < NOW();\n",
+          "refId": "A"
+        }
+      ]
     },
     {
       "datasource": {
         "type": "mysql",
         "uid": "glpi-mysql"
       },
-      "description": "Snapshot atual: total de tickets não deletados. Independente do time picker.",
+      "description": "Criados e solucionados por intervalo no período selecionado. Saldo = Criados - Solucionados; positivo indica que entraram mais chamados do que foram solucionados.",
       "fieldConfig": {
         "defaults": {
-          "decimals": 1,
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "fillOpacity": 85,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            },
+            "drawStyle": "bars",
+            "barAlignment": 0,
+            "barWidthFactor": 0.4,
+            "axisSoftMin": 0
+          },
           "mappings": [],
           "unit": "short",
+          "decimals": 0
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Criados"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#3F7FC1"
+                }
+              },
+              {
+                "id": "custom.barAlignment",
+                "value": -1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Solucionados"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#3F8F5A"
+                }
+              },
+              {
+                "id": "custom.barAlignment",
+                "value": 1
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "Saldo"
+            },
+            "properties": [
+              {
+                "id": "color",
+                "value": {
+                  "mode": "fixed",
+                  "fixedColor": "#E0B04A"
+                }
+              },
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 2
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.showPoints",
+                "value": "always"
+              },
+              {
+                "id": "custom.pointSize",
+                "value": 6
+              },
+              {
+                "id": "custom.lineStyle",
+                "value": {
+                  "fill": "dash",
+                  "dash": [
+                    6,
+                    4
+                  ]
+                }
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "x": 0,
+        "y": 9,
+        "w": 16,
+        "h": 12
+      },
+      "id": 7,
+      "options": {
+        "legend": {
+          "calcs": [
+            "sum"
+          ],
+          "displayMode": "table",
+          "placement": "right",
+          "showLegend": true
+        },
+        "tooltip": {
+          "hideZeros": false,
+          "mode": "multi",
+          "sort": "none"
+        }
+      },
+      "pluginVersion": "13.2.2",
+      "targets": [
+        {
+          "datasource": {
+            "type": "mysql",
+            "uid": "glpi-mysql"
+          },
+          "editorMode": "code",
+          "format": "time_series",
+          "rawQuery": true,
+          "rawSql": "-- Event series follow the selected Grafana time range and adaptive bucket interval.\n-- Return one timestamp and one numeric column per series, ordered by time.\n-- Empty buckets are filled with 0 so days without events are shown, not interpolated.\nSELECT ticket_totals.time,\n       ticket_totals.Criados,\n       ticket_totals.Solucionados,\n       ticket_totals.Criados - ticket_totals.Solucionados AS Saldo\nFROM (\n    SELECT ticket_events.time,\n           SUM(CASE WHEN ticket_events.metric = 'Created' THEN ticket_events.value ELSE 0 END) AS Criados,\n           SUM(CASE WHEN ticket_events.metric = 'Solved' THEN ticket_events.value ELSE 0 END) AS Solucionados\n    FROM (\n        SELECT $__timeGroupAlias(t.date, '$__interval', 0),\n               COUNT(*) AS value,\n               'Created' AS metric\n        FROM glpi_tickets AS t\n        WHERE t.is_deleted = 0\n          AND t.entities_id IN ($entity)\n          AND t.date IS NOT NULL\n          AND $__timeFilter(t.date)\n        GROUP BY time\n\n        UNION ALL\n\n        SELECT $__timeGroupAlias(t.solvedate, '$__interval', 0),\n               COUNT(*) AS value,\n               'Solved' AS metric\n        FROM glpi_tickets AS t\n        WHERE t.is_deleted = 0\n          AND t.entities_id IN ($entity)\n          AND t.solvedate IS NOT NULL\n          AND $__timeFilter(t.solvedate)\n        GROUP BY time\n    ) AS ticket_events\n    GROUP BY ticket_events.time\n) AS ticket_totals\nORDER BY ticket_totals.time;\n",
+          "refId": "A"
+        }
+      ],
+      "title": "Fluxo de chamados",
+      "transparent": false,
+      "type": "timeseries",
+      "interval": "1d",
+      "maxDataPoints": 60
+    },
+    {
+      "id": 6,
+      "type": "stat",
+      "title": "",
+      "description": "Snapshot atual: total de tickets não deletados. Independente do time picker.",
+      "datasource": {
+        "type": "mysql",
+        "uid": "glpi-mysql"
+      },
+      "gridPos": {
+        "x": 16,
+        "y": 9,
+        "w": 8,
+        "h": 4
+      },
+      "fieldConfig": {
+        "defaults": {
+          "decimals": 0,
+          "unit": "locale",
+          "mappings": [],
+          "displayName": "Total de chamados",
           "color": {
             "mode": "fixed",
-            "fixedColor": "#7892A8"
-          },
-          "displayName": "Chamados"
+            "fixedColor": "#56687A"
+          }
         },
         "overrides": []
       },
-      "gridPos": {
-        "x": 12,
-        "y": 10,
-        "w": 6,
-        "h": 5
-      },
-      "id": 6,
       "options": {
-        "colorMode": "background",
+        "colorMode": "background_solid",
         "graphMode": "none",
         "justifyMode": "auto",
         "orientation": "auto",
@@ -420,9 +629,13 @@
           "values": false
         },
         "textMode": "value_and_name",
-        "wideLayout": false
+        "wideLayout": false,
+        "showPercentChange": false,
+        "text": {
+          "titleSize": 16,
+          "valueSize": 44
+        }
       },
-      "pluginVersion": "13.2.2",
       "targets": [
         {
           "datasource": {
@@ -432,12 +645,10 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: all tickets not logically deleted.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.entities_id IN ($entity);",
+          "rawSql": "-- Current snapshot: all tickets not logically deleted.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.entities_id IN ($entity);\n",
           "refId": "A"
         }
-      ],
-      "title": "",
-      "type": "stat"
+      ]
     },
     {
       "datasource": {
@@ -477,10 +688,10 @@
         "overrides": []
       },
       "gridPos": {
-        "x": 18,
-        "y": 10,
-        "w": 6,
-        "h": 15
+        "x": 16,
+        "y": 13,
+        "w": 8,
+        "h": 8
       },
       "id": 8,
       "options": {
@@ -506,7 +717,7 @@
         "endpointMarker": "glow",
         "textMode": "value_and_name",
         "text": {
-          "titleSize": 22
+          "titleSize": 16
         }
       },
       "pluginVersion": "13.2.2",
@@ -519,199 +730,12 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Resolution compliance for solved tickets with a GLPI-calculated TTR deadline.\n-- Uses the stored deadline; SLA calendars are not reconstructed.\nSELECT 100.0 * SUM(CASE WHEN t.solvedate <= t.time_to_resolve THEN 1 ELSE 0 END)\n       / NULLIF(COUNT(*), 0) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.solvedate IS NOT NULL\n  AND t.time_to_resolve IS NOT NULL\n  AND t.entities_id IN ($entity)\n  AND $__timeFilter(t.solvedate);",
+          "rawSql": "-- Resolution compliance for solved tickets with a GLPI-calculated TTR deadline.\n-- Uses the stored deadline; SLA calendars are not reconstructed.\nSELECT 100.0 * SUM(CASE WHEN t.solvedate <= t.time_to_resolve THEN 1 ELSE 0 END)\n       / NULLIF(COUNT(*), 0) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.solvedate IS NOT NULL\n  AND t.time_to_resolve IS NOT NULL\n  AND t.entities_id IN ($entity)\n  AND $__timeFilter(t.solvedate);\n",
           "refId": "A"
         }
       ],
       "title": "",
       "type": "gauge"
-    },
-    {
-      "datasource": {
-        "type": "mysql",
-        "uid": "glpi-mysql"
-      },
-      "description": "Compara chamados criados e solucionados no período selecionado e mostra o saldo líquido entre entrada e saída.",
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisBorderShow": false,
-            "axisCenteredZero": false,
-            "axisColorMode": "text",
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "viz": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 2,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "unit": "short"
-        },
-        "overrides": [
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Criados"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#62D98B"
-                }
-              },
-              {
-                "id": "custom.drawStyle",
-                "value": "line"
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 2
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              },
-              {
-                "id": "custom.showPoints",
-                "value": "never"
-              },
-              {
-                "id": "custom.stacking",
-                "value": {
-                  "mode": "none",
-                  "group": "A"
-                }
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "smooth"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Solucionados"
-            },
-            "properties": [
-              {
-                "id": "color",
-                "value": {
-                  "mode": "fixed",
-                  "fixedColor": "#FFD052"
-                }
-              },
-              {
-                "id": "custom.drawStyle",
-                "value": "line"
-              },
-              {
-                "id": "custom.lineWidth",
-                "value": 2
-              },
-              {
-                "id": "custom.fillOpacity",
-                "value": 0
-              },
-              {
-                "id": "custom.showPoints",
-                "value": "never"
-              },
-              {
-                "id": "custom.stacking",
-                "value": {
-                  "mode": "none",
-                  "group": "A"
-                }
-              },
-              {
-                "id": "custom.lineInterpolation",
-                "value": "smooth"
-              }
-            ]
-          },
-          {
-            "matcher": {
-              "id": "byName",
-              "options": "Saldo"
-            },
-            "properties": [
-              {
-                "id": "custom.hideFrom",
-                "value": {
-                  "viz": true,
-                  "tooltip": true,
-                  "legend": true
-                }
-              }
-            ]
-          }
-        ]
-      },
-      "gridPos": {
-        "x": 0,
-        "y": 15,
-        "w": 18,
-        "h": 10
-      },
-      "id": 7,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom",
-          "showLegend": true
-        },
-        "tooltip": {
-          "hideZeros": false,
-          "mode": "multi",
-          "sort": "asc"
-        }
-      },
-      "pluginVersion": "13.2.2",
-      "targets": [
-        {
-          "datasource": {
-            "type": "mysql",
-            "uid": "glpi-mysql"
-          },
-          "editorMode": "code",
-          "format": "time_series",
-          "rawQuery": true,
-          "rawSql": "-- Event series follow the selected Grafana time range and adaptive bucket interval.\n-- Return one timestamp and one numeric column per series, ordered by time.\nSELECT ticket_totals.time,\n       ticket_totals.Criados,\n       ticket_totals.Solucionados,\n       ticket_totals.Criados - ticket_totals.Solucionados AS Saldo\nFROM (\n    SELECT ticket_events.time,\n           SUM(CASE WHEN ticket_events.metric = 'Created' THEN ticket_events.value ELSE 0 END) AS Criados,\n           SUM(CASE WHEN ticket_events.metric = 'Solved' THEN ticket_events.value ELSE 0 END) AS Solucionados\n    FROM (\n        SELECT $__timeGroupAlias(t.date, '$__interval'),\n               COUNT(*) AS value,\n               'Created' AS metric\n        FROM glpi_tickets AS t\n        WHERE t.is_deleted = 0\n          AND t.entities_id IN ($entity)\n          AND t.date IS NOT NULL\n          AND $__timeFilter(t.date)\n        GROUP BY time\n\n        UNION ALL\n\n        SELECT $__timeGroupAlias(t.solvedate, '$__interval'),\n               COUNT(*) AS value,\n               'Solved' AS metric\n        FROM glpi_tickets AS t\n        WHERE t.is_deleted = 0\n          AND t.entities_id IN ($entity)\n          AND t.solvedate IS NOT NULL\n          AND $__timeFilter(t.solvedate)\n        GROUP BY time\n    ) AS ticket_events\n    GROUP BY ticket_events.time\n) AS ticket_totals\nORDER BY ticket_totals.time;",
-          "refId": "A"
-        }
-      ],
-      "title": "Fluxo de chamados",
-      "description": "Criados x solucionados no período selecionado",
-      "transparent": false,
-      "type": "timeseries",
-      "interval": "1d",
-      "maxDataPoints": 120
     }
   ],
   "schemaVersion": 41,
@@ -756,5 +780,6 @@
   "timezone": "browser",
   "title": "GLPI Service Desk",
   "uid": "glpi-service-desk",
-  "version": 3
+  "version": 4,
+  "refresh": "5m"
 }

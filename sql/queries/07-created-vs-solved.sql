@@ -1,5 +1,6 @@
 ﻿-- Event series follow the selected Grafana time range and adaptive bucket interval.
 -- Return one timestamp and one numeric column per series, ordered by time.
+-- Empty buckets are filled with 0 so days without events are shown, not interpolated.
 SELECT ticket_totals.time,
        ticket_totals.Criados,
        ticket_totals.Solucionados,
@@ -9,7 +10,7 @@ FROM (
            SUM(CASE WHEN ticket_events.metric = 'Created' THEN ticket_events.value ELSE 0 END) AS Criados,
            SUM(CASE WHEN ticket_events.metric = 'Solved' THEN ticket_events.value ELSE 0 END) AS Solucionados
     FROM (
-        SELECT $__timeGroupAlias(t.date, '$__interval'),
+        SELECT $__timeGroupAlias(t.date, '$__interval', 0),
                COUNT(*) AS value,
                'Created' AS metric
         FROM glpi_tickets AS t
@@ -21,7 +22,7 @@ FROM (
 
         UNION ALL
 
-        SELECT $__timeGroupAlias(t.solvedate, '$__interval'),
+        SELECT $__timeGroupAlias(t.solvedate, '$__interval', 0),
                COUNT(*) AS value,
                'Solved' AS metric
         FROM glpi_tickets AS t
