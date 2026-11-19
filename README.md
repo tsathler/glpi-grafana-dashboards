@@ -41,7 +41,7 @@ docker compose up -d
 
 ### Validation and limitations
 
-Service Desk was checked against GLPI and deployed. The original read-only Projects queries were checked directly against the database. The Projects dashboard has native project/task KPI cards grouped by status and in-progress averages. The status groups use the TEST labels **Em andamento** and **A Fazer**; the state distribution charts were removed. Its Grafana V2 resource uses Auto grid to keep each five-card row evenly distributed. The revised queries and Grafana layout still require validation in TEST.
+Service Desk was checked against GLPI and deployed. The **DESENVOLVIMENTO** dashboard is frozen for new features at its current version: project/task KPI cards and progress gauges use Grafana V2 Auto grid. The original read-only Projects queries were checked directly against the database; this dashboard's revised queries and layout still require integrated validation in TEST.
 
 **Technical documentation:** [Architecture](docs/architecture.md) · [Database discovery](docs/database.md) · [Metrics](docs/metrics.md) · [Development and deployment](docs/development.md) · [Security](docs/security.md) · [Readiness](docs/production-readiness.md) · [Milestones](docs/milestones.md).
 
@@ -92,7 +92,7 @@ Acompanhar operações apenas pelas telas transacionais do GLPI pode dificultar 
 
 ### GLPI Projects — em desenvolvimento
 
-O dashboard usa cinco cards de projetos, cinco de tarefas e dois gauges de progresso médio. Os cards distinguem **Em andamento**, **A Fazer**, finalizados e outros; o progresso médio considera apenas itens em andamento. Os gráficos por estado e a distribuição por membro da equipe foram removidos. O arquivo usa o formato de recurso V2 do Grafana, com Auto grid para distribuir igualmente os cinco cards em cada linha. A revisão atual das consultas e do layout ainda precisa de validação estática e integrada no Grafana de TEST.
+O dashboard **DESENVOLVIMENTO** está congelado para novas funcionalidades na versão atual: cinco cards de projetos, cinco de tarefas e dois gauges de progresso médio, distribuídos com Auto grid no formato V2 do Grafana. Os cards distinguem **Em andamento**, **A Fazer**, finalizados e outros; o progresso médio considera apenas itens em andamento. A validação integrada desta revisão ainda está pendente em TEST. Correções de bugs, segurança e compatibilidade permanecem permitidas; novas funcionalidades exigem reabrir o marco.
 
 Consulte [Layout do GLPI Projects](docs/projects-layout.md), [Desenvolvimento e implantação](docs/development.md) e [Marcos e roadmap](docs/milestones.md) para detalhes e limitações.
 
@@ -154,7 +154,7 @@ Para instruções completas, leia [Desenvolvimento e implantação](docs/develop
 | --- | --- |
 | **CI / validação estática** | Compose, JSON, YAML, Markdown, SQL read-only, correspondência SQL/dashboard, arquivos de ambiente e whitespace |
 | **Runtime — Service Desk** | Comparação com a interface GLPI e implantação validada |
-| **Runtime — Projects** | Consultas originais verificadas no banco; nova consulta de membros e integração dos painéis pendentes |
+| **Runtime — Projects** | Consultas originais verificadas no banco; queries revisadas e integração dos painéis pendentes em TEST |
 
 As consultas dependem do schema e de valores de domínio da instalação de referência. Versões, estados, relacionamentos, seleção de entidades e comportamento temporal podem variar. Antes de reutilizar o projeto, faça o discovery do banco, confira charset/collation/timezone e compare os resultados com a interface correspondente. A versão do MariaDB não é fixada pelo repositório.
 

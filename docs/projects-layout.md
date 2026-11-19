@@ -1,5 +1,7 @@
 # GLPI Projects layout
 
+Status: Congelado para novas funcionalidades; a validação integrada do layout V2 e das queries revisadas em TEST está pendente.
+
 The `glpi-projects` dashboard has its own technical identity: a compact borderless **DESENVOLVIMENTO** heading with a short cyan underline, two numbered sections, ten equal-width Stat cards, and two percentage Gauges. Each five-card row uses Grafana V2 Auto grid so the cards fill the available width with consistent gutters instead of explicit blank grid columns. The Gauges use the Service Desk visual style with fixed purple coloring; SLA thresholds are not reused. The brighter palette follows the Service Desk colors while retaining project and task status meanings. The team distribution chart is removed so the dashboard focuses on consolidated numeric indicators rather than operational tracking. The state distribution charts are removed.
 
 | Section | Panel IDs | Layout |

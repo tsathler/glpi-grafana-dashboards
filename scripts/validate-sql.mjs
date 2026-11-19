@@ -12,6 +12,10 @@ function sqlFiles(directory) {
   });
 }
 
+function normalizeLineEndings(text) {
+  return text.replace(/\r\n?/g, '\n');
+}
+
 function maskCommentsAndQuotes(source, path) {
   let masked = '';
   let mode = 'code';
@@ -189,8 +193,8 @@ for (const { dashboard: name, queryDirectory, panelIds } of dashboardQuerySets) 
       if (matches.length !== 1) {
         throw new Error(`${name}: panel ${panel.id} must map to exactly one ${prefix}*.sql file`);
       }
-      const expected = readFileSync(matches[0], 'utf8').replace(/^\uFEFF/, '').replace(/\r\n/g, '\n').trim();
-      const embedded = target.rawSql.replace(/\r\n/g, '\n').trim();
+      const expected = normalizeLineEndings(readFileSync(matches[0], 'utf8').replace(/^\uFEFF/, '')).trim();
+      const embedded = normalizeLineEndings(target.rawSql).trim();
       if (embedded !== expected) {
         throw new Error(`${name}: panel ${panel.id} SQL differs from ${relative(root, matches[0])}`);
       }

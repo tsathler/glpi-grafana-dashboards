@@ -152,16 +152,16 @@ Enquanto este marco estiver Planejado, não serão incluídas alterações em SQ
 
 ## Marco 5 — Dashboard gerencial e operacional de Projetos
 
-Status: Revisão do dashboard implementada; validação estática e integrada no Grafana e no ambiente TEST pendentes.
+Status: Congelado para novas funcionalidades; validação integrada no Grafana e no ambiente TEST pendente.
 
-As queries originais foram conferidas diretamente no banco em mais de um escopo de entidade. Refatorações anteriores removeram o gráfico de prioridade e a tabela operacional, adicionaram indicadores de tarefas e a distribuição de tarefas por membro User da equipe. Esta revisão substitui os gráficos por estado por cards agrupados pelos rótulos **Em andamento** e **A Fazer**, inclui progresso médio somente dos itens em andamento e adiciona o cabeçalho **DESENVOLVIMENTO**. As queries revisadas ainda precisam de validação estática e execução em MariaDB, seguida da conferência integrada no Grafana de TEST.
+O dashboard **DESENVOLVIMENTO** fica congelado no estado versionado atual: cinco cards de projetos, cinco cards de tarefas e dois gauges de progresso médio; a grade Auto grid distribui os cards de forma uniforme. Novas funcionalidades ficam pausadas. Correções de bugs, segurança e compatibilidade continuam permitidas; para retomar a evolução, o marco precisa ser reaberto explicitamente. As queries originais foram conferidas diretamente no banco em mais de um escopo de entidade, mas esta revisão de layout e das queries ainda aguarda execução em MariaDB e validação integrada no Grafana de TEST.
 
 ### Escopo do dashboard de Projetos
 
 - Um dashboard independente para projetos do GLPI.
 - Um filtro `Entity` consistente com o dashboard atual.
 - Cards de projetos e tarefas por grupo de estado e progresso médio dos itens em andamento.
-- Distribuição de tarefas por membro User da equipe.
+- Layout V2 com Auto grid para distribuir igualmente os indicadores.
 - Tratamento explícito de projetos e tarefas sem estado.
 - Possível identificação de projetos atrasados, somente após validar sua semântica.
 - Cards nativos para projetos e tarefas agrupados por estado.

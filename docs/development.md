@@ -155,12 +155,13 @@ As credenciais administrativas do Grafana e as credenciais do MariaDB são indep
 
 ## Máquina de desenvolvimento: validação estática
 
-O GitHub Actions executa estas verificações estáticas em pushes e pull requests: `docker compose config` com valores copiados de `.env.example`, análise do JSON dos dashboards, análise de YAML, lint de Markdown, inspeção de SQL read-only, paridade entre queries versionadas e os dashboards, espaços em branco do Git e confirmação de que arquivos locais de ambiente não são versionados. Não inicia containers, não usa secrets do ambiente de testes e não se conecta ao MySQL/GLPI. As credenciais devem permanecer fora do Git; `.env` não deve ser versionado. Uma ferramenta dedicada para detectar secrets poderá ser considerada separadamente no futuro.
+O GitHub Actions executa estas verificações estáticas em pushes e pull requests: `docker compose config` com valores copiados de `.env.example`, análise do JSON dos dashboards, análise de YAML, lint de Markdown, testes de estrutura do dashboard de Projetos (formato V2), inspeção de SQL read-only, paridade entre queries versionadas e os dashboards, espaços em branco do Git e confirmação de que arquivos locais de ambiente não são versionados. Não inicia containers, não usa secrets do ambiente de testes e não se conecta ao MySQL/GLPI. As credenciais devem permanecer fora do Git; `.env` não deve ser versionado. Uma ferramenta dedicada para detectar secrets poderá ser considerada separadamente no futuro.
 
 Valide o que não depende do ambiente integrado:
 
 ```sh
 docker compose config
+node --test scripts/*.test.mjs
 node scripts/validate-sql.mjs
 ```
 
