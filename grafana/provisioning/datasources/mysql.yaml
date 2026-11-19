@@ -11,6 +11,9 @@ datasources:
     isDefault: true
     editable: false
     jsonData:
+      # GLPI date columns are TIMESTAMP; a UTC session returns them (and NOW()) in UTC,
+      # matching the UTC values Grafana reads and uses in time filters.
+      timezone: "+00:00"
       tlsAuth: false
       tlsSkipVerify: false
     secureJsonData:

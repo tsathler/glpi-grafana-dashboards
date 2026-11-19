@@ -6,6 +6,10 @@ O Marco 1 provisiona o datasource **GLPI MySQL** usando variáveis de ambiente. 
 
 O discovery foi executado contra uma instalação específica e não define uma versão mínima ou uma matriz de compatibilidade do GLPI/MariaDB. `sql/discovery/01-environment.sql` consulta versão do servidor, banco atual, charset, collation e timezone para apoiar cada nova validação; os resultados específicos do ambiente não são registrados aqui.
 
+## Fuso horário
+
+O discovery em homologação confirmou que o host e o MariaDB usam America/Sao_Paulo (`@@time_zone = SYSTEM`, -03), que o GLPI não define `timezone` em `glpi_configs` e que `glpi_tickets.date`, `solvedate` e `time_to_resolve` são do tipo `TIMESTAMP`. Colunas `TIMESTAMP` são armazenadas em UTC e convertidas para o fuso da sessão na leitura. O Grafana interpreta datas retornadas pelo MySQL como UTC e gera `$__timeFilter` em UTC; com a sessão no fuso do sistema, os eventos apareciam deslocados em 3 horas e a janela do período ficava deslocada da mesma forma. Por isso o datasource define o fuso de sessão `+00:00` (`jsonData.timezone`). Com ele, colunas `TIMESTAMP` e `NOW()` são retornadas em UTC, e a comparação do card de atrasados permanece consistente. O deslocamento corrigido ainda precisa ser conferido no Grafana de homologação, e o fuso de produção deve ser confirmado antes da promoção. Colunas `DATETIME` não são convertidas pela sessão; reavalie esta decisão se uma métrica futura usar esse tipo.
+
 ## Acesso
 
 Use uma conta dedicada com acesso somente `SELECT`. Ela não deve ter privilégios `INSERT`, `UPDATE`, `DELETE`, `CREATE`, `ALTER` ou `DROP`. A concessão de privilégios é administrada fora deste projeto; o repositório não altera as permissões nem a configuração do MariaDB. Mantenha o serviço de banco inacessível externamente e adapte a conectividade à topologia autorizada de cada ambiente.

@@ -215,6 +215,7 @@ As verificações de runtime no ambiente de testes confirmaram que o Grafana est
 Datasource: GLPI MySQL
 Type: MySQL
 Access: proxy
+Session timezone: +00:00
 Database privileges: SELECT only
 Connection health: OK
 ```
