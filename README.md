@@ -19,7 +19,7 @@ This project provides operational dashboards without modifying source data in GL
 | Dashboard | Status | Scope |
 | --- | --- | --- |
 | GLPI Service Desk | **Stable; validated in production** | Ticket status indicators, created/resolved time series, SLA/TTR resolution efficiency |
-| GLPI Projects | **In development** | Project/task KPIs by status group (in progress, not started, paused, finished, no state) and average progress; pending TEST validation |
+| GLPI Projects | **Validated; deployed; frozen for new features** | Project/task KPIs by status group (in progress, not started, paused, finished, no state) and average progress |
 | Backlog | Planned | Not implemented |
 
 **Architecture:** authorized user → Nginx reverse proxy → Grafana → external GLPI MariaDB (read-only). GitHub Actions performs static checks of Compose, JSON, YAML, SQL and related configuration; CI does **not** query live systems or deploy.
@@ -41,7 +41,7 @@ docker compose up -d
 
 ### Validation and limitations
 
-Service Desk was checked against GLPI and deployed. The **DESENVOLVIMENTO** dashboard is frozen for new features at its current version: each section shows project or task KPI cards by status group beside its progress gauge, in the Grafana V2 format with the Service Desk appearance. The original read-only Projects queries were checked directly against the database; this dashboard's revised queries and layout still require integrated validation in TEST.
+Service Desk was checked against GLPI and deployed. The **DESENVOLVIMENTO** dashboard is frozen for new features at its current version: each section shows project or task KPI cards by status group beside its progress gauge, in the Grafana V2 format with the Service Desk appearance. On 2026-11-19 the revised Projects dashboard was deployed to TEST and production, and its status cards matched equivalent SQL counts in both environments.
 
 **Technical documentation:** [Architecture](docs/architecture.md) · [Database discovery](docs/database.md) · [Metrics](docs/metrics.md) · [Development and deployment](docs/development.md) · [Security](docs/security.md) · [Readiness](docs/production-readiness.md) · [Milestones](docs/milestones.md).
 
@@ -66,7 +66,7 @@ Este projeto transforma dados de chamados do GLPI em dashboards do Grafana, com 
 | Dashboard | Situação | O que apresenta |
 | --- | --- | --- |
 | **GLPI Service Desk** | **Estável e validado** | Indicadores de chamados, fluxo de criados × solucionados e eficiência de resolução por SLA/TTR |
-| **GLPI Projects** | **Em desenvolvimento** | Cards de projetos e tarefas por grupo de status (em andamento, não iniciados, pausados, finalizados e sem estado) e progresso médio em andamento; aguardando validação em TEST |
+| **GLPI Projects** | **Validado; implantado; congelado para novas funcionalidades** | Cards de projetos e tarefas por grupo de status (em andamento, não iniciados, pausados, finalizados e sem estado) e progresso médio em andamento |
 | **Backlog** | **Planejado** | Escopo ainda não implementado |
 
 ## O problema e a abordagem
@@ -91,9 +91,9 @@ Acompanhar operações apenas pelas telas transacionais do GLPI pode dificultar 
 
 **Evidência:** a visualização e os indicadores do Service Desk foram conferidos na interface do GLPI e implantados em produção.
 
-### GLPI Projects — em desenvolvimento
+### GLPI Projects — validado e congelado
 
-O dashboard **DESENVOLVIMENTO** está congelado para novas funcionalidades na versão atual: em cada seção, seis cards (projetos ou tarefas) em grade 3 × 2 ao lado do gauge de progresso médio, no formato V2 do Grafana e com a mesma aparência do Service Desk. Os cards separam **Em andamento** (incluindo fases intermediárias), **Não iniciados**, **Pausados**, **Finalizados** e **Sem estado**, e somam o total; o progresso médio considera apenas itens em andamento. A validação integrada desta revisão ainda está pendente em TEST. Correções de bugs, segurança e compatibilidade permanecem permitidas; novas funcionalidades exigem reabrir o marco.
+O dashboard **DESENVOLVIMENTO** está congelado para novas funcionalidades na versão atual: em cada seção, seis cards (projetos ou tarefas) em grade 3 × 2 ao lado do gauge de progresso médio, no formato V2 do Grafana e com a mesma aparência do Service Desk. Os cards separam **Em andamento** (incluindo fases intermediárias), **Não iniciados**, **Pausados**, **Finalizados** e **Sem estado**, e somam o total; o progresso médio considera apenas itens em andamento. Em 2026-11-19, a revisão foi implantada em homologação e em produção, e os cards de cada grupo foram comparados com uma contagem SQL equivalente por grupo, com Entity em All, nos dois ambientes; os valores coincidiram. Correções de bugs, segurança e compatibilidade permanecem permitidas; novas funcionalidades exigem reabrir o marco.
 
 Consulte [Layout do GLPI Projects](docs/projects-layout.md), [Desenvolvimento e implantação](docs/development.md) e [Marcos e roadmap](docs/milestones.md) para detalhes e limitações.
 
@@ -155,7 +155,7 @@ Para instruções completas, leia [Desenvolvimento e implantação](docs/develop
 | --- | --- |
 | **CI / validação estática** | Compose, JSON, YAML, Markdown, SQL read-only, correspondência SQL/dashboard, arquivos de ambiente e whitespace |
 | **Runtime — Service Desk** | Comparação com a interface GLPI e implantação validada |
-| **Runtime — Projects** | Consultas originais verificadas no banco; queries revisadas e integração dos painéis pendentes em TEST |
+| **Runtime — Projects** | Cards por grupo comparados com contagens SQL em homologação e produção (2026-11-19) |
 
 As consultas dependem do schema e de valores de domínio da instalação de referência. Versões, estados, relacionamentos, seleção de entidades e comportamento temporal podem variar. Antes de reutilizar o projeto, faça o discovery do banco, confira charset/collation/timezone e compare os resultados com a interface correspondente. A versão do MariaDB não é fixada pelo repositório.
 

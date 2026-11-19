@@ -152,7 +152,7 @@ Enquanto este marco estiver Planejado, não serão incluídas alterações em SQ
 
 ## Marco 5 — Dashboard gerencial e operacional de Projetos
 
-Status: Congelado para novas funcionalidades; correção dos grupos de estado e alinhamento visual ao Service Desk aplicados em 2026-11-19, com validação integrada em homologação pendente.
+Status: Validado e implantado em produção em 2026-11-19; congelado para novas funcionalidades. Os cards de cada grupo de estado coincidiram com contagens SQL equivalentes em homologação e produção.
 
 O dashboard **DESENVOLVIMENTO** fica congelado no estado versionado atual: em cada seção, seis cards em grade 3 × 2 ao lado do gauge de progresso médio da seção. Novas funcionalidades ficam pausadas. Correções de bugs, segurança e compatibilidade continuam permitidas; para retomar a evolução, o marco precisa ser reaberto explicitamente. A revisão de 2026-11-19 corrigiu os grupos de estado, que não reconheciam o estado `Não Inicializado` de produção, e aplicou a aparência do Service Desk a pedido do responsável pelo projeto.
 

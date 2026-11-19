@@ -1,6 +1,6 @@
 # GLPI Projects layout
 
-Status: Congelado para novas funcionalidades; a validação integrada dos grupos de estado revisados e do layout em TEST está pendente.
+Status: Validado em homologação e produção em 2026-11-19; congelado para novas funcionalidades.
 
 The `glpi-projects` dashboard follows the Service Desk appearance: a compact **PAINEL DE ENGENHARIA / DESENVOLVIMENTO** heading in the theme text color with a short cyan underline, two numbered section labels (**01 PROJETOS**, **02 TAREFAS**), twelve solid-color Stat cards, and two percentage Gauges. Headings and section labels use the theme text color, so they are readable in light and dark themes. Like the Service Desk, each section puts its main content on the left two thirds and its Gauge on the right third, so the progress indicator sits next to the cards it summarizes. The whole dashboard fits a 1920×1080 screen without scrolling.
 
@@ -20,4 +20,4 @@ All indicators are current snapshots independent of the time range, so the time 
 
 The status groups partition the records, so the five group cards add up to **Total**. **Finalizados** uses `glpi_projectstates.is_finished = 1`. **Não iniciados** matches `A Fazer` (TEST) and `Não Inicializado` (production). **Pausados** matches states whose name contains `paus`. **Em andamento** is every other non-finished state, including intermediate phases such as Design, Revisão de código and Fase de teste. **Sem estado** covers `projectstates_id = 0` and missing states; a record with no state is never treated as ongoing. Average progress uses `percent_done` only for records in **Em andamento**; it is not a completion rate.
 
-The production state list was checked on 2026-11-19. The revised queries were executed only in a local preview with synthetic data and the production states, where the group cards added up to the totals. Integrated validation with real data in TEST is pending.
+The production state list was checked on 2026-11-19. The revised queries were first checked in a local preview with synthetic data and the production states. On 2026-11-19 the dashboard was deployed to TEST and production, and each group card matched an equivalent SQL count per group with Entity set to All in both environments. Average progress was not compared separately.
