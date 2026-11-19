@@ -457,7 +457,7 @@
             "axisSoftMin": 0
           },
           "mappings": [],
-          "unit": "short",
+          "unit": "none",
           "decimals": 0
         },
         "overrides": [
@@ -606,7 +606,7 @@
       "fieldConfig": {
         "defaults": {
           "decimals": 0,
-          "unit": "locale",
+          "unit": "none",
           "mappings": [],
           "displayName": "Total de chamados",
           "color": {
@@ -625,7 +625,7 @@
           "calcs": [
             "lastNotNull"
           ],
-          "fields": "",
+          "fields": "/.*/",
           "values": false
         },
         "textMode": "value_and_name",
@@ -645,7 +645,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "-- Current snapshot: all tickets not logically deleted.\nSELECT COUNT(*) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.entities_id IN ($entity);\n",
+          "rawSql": "-- Current snapshot: all tickets not logically deleted.\n-- Formatted in SQL (60,900) so the thousands separator does not depend on the browser locale.\nSELECT FORMAT(COUNT(*), 0) AS value\nFROM glpi_tickets AS t\nWHERE t.is_deleted = 0\n  AND t.entities_id IN ($entity);\n",
           "refId": "A"
         }
       ]
